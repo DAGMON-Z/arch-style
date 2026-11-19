@@ -198,7 +198,7 @@ setup_scale() {
         width=${size%x*}
         height=${size#*x}
         options=()
-        for s in 1 1.25 1.5 1.6 1.75 2; do
+        for s in 1 1.2 1.25 1.5 1.6 1.75 2; do
             scale_fits "$width" "$height" "$s" && options+=("$s")
         done
         echo "  $name: $width x $height, automatic size is $(percent "$current")"
