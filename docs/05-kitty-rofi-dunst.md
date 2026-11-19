@@ -13,16 +13,23 @@ Config: `~/.config/kitty/kitty.conf` and `tokyo-night.conf`
 Reload with `Ctrl + Shift + F5`. An already open window may not pick up a
 transparency change, so open a new window to check.
 
-### The "Are you sure you want to close this window?" dialog
+### Closing windows doesn't ask first
 
-When you close a kitty window that's still running something, such as Neovim,
-kitty asks first. It only accepts the letters `y` and `n`, so on the Arabic
-keyboard layout those keys don't work, because they type Arabic letters. Use
-these instead, which work on any layout:
+`kitty.conf` sets `confirm_os_window_close 0`, so kitty closes right away, even
+when a program like Neovim is still running. (kitty's question only accepted
+the letters `y` and `n`, which don't work on the Arabic keyboard layout.)
 
-- **Enter:** yes, close it (Enter picks the default answer, which is yes).
-- **Esc:** no, keep it open.
-- Or click **Yes** or **No** with the mouse.
+**Save before closing.** Press `Ctrl + S` in Neovim, or quit it with `:wq`. If
+you close a window with unsaved changes, Neovim keeps them in a recovery file.
+The next time you open that file, it shows `E325: ATTENTION`. Press `r` to
+recover your changes, save with `:w`, then delete the old recovery file:
+
+```bash
+rm ~/.local/state/nvim/swap/*yourfile.cpp.sw*
+```
+
+To get the question back, delete the `confirm_os_window_close 0` line from
+`kitty.conf`.
 
 ## rofi (command runner and app launcher)
 
