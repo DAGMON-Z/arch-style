@@ -199,10 +199,6 @@ standard, unchanged colors.
   lost, switch **HDMI Black Level** (sometimes called RGB range) between its
   two settings and keep the one that looks better.
 
-If it still looks duller than you'd like, turn on the
-[vivid shader](03-hyprland.md#colors-look-dull-on-another-screen-vivid-shader)
-for that computer only.
-
 ## No performance mode on a desktop PC
 
 **What happened:** on a desktop with an AMD Ryzen 5 3400G, the power pill only
