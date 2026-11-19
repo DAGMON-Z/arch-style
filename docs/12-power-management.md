@@ -79,31 +79,6 @@ On a **desktop PC** there's no battery, so the script does nothing and leaves
 the profile alone. (An earlier version picked power-saver on desktops, because
 it couldn't find a charger.)
 
-## Only two modes, and no performance?
-
-Run `powerprofilesctl list`. If it shows only `balanced` and `power-saver`, each
-with `PlatformDriver: placeholder`, your computer has no driver that
-power-profiles-daemon can use. Then:
-
-- the modes **don't change anything**, and
-- **performance isn't offered**, because there's nothing to switch.
-
-This is normal on **older AMD CPUs**, such as the Ryzen 5 3400G and other Ryzen
-2000 and 3000G chips. They use the older `acpi-cpufreq` CPU driver, and AMD's
-newer driver (`amd_pstate`) needs a newer CPU generation. Check yours:
-
-```bash
-cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver
-```
-
-- `intel_pstate` (Intel) or `amd-pstate-epp` (newer AMD): all three modes work.
-- `acpi-cpufreq`: only the placeholder modes.
-
-**You don't lose speed.** With `acpi-cpufreq`, the CPU uses the `schedutil`
-setting, which raises the speed to maximum whenever there's work to do. The
-Waybar power pill still shows and cycles the placeholder modes, but on these
-computers it has no effect.
-
 ### Installing it by hand
 
 ```bash
@@ -135,3 +110,28 @@ sudo rm /usr/local/bin/power-profile-auto /etc/udev/rules.d/99-power-profile-aut
 sudo udevadm control --reload
 sudo systemctl daemon-reload
 ```
+
+## Only two modes, and no performance?
+
+Run `powerprofilesctl list`. If it shows only `balanced` and `power-saver`, each
+with `PlatformDriver: placeholder`, your computer has no driver that
+power-profiles-daemon can use. Then:
+
+- the modes **don't change anything**, and
+- **performance isn't offered**, because there's nothing to switch.
+
+This is normal on **older AMD CPUs**, such as the Ryzen 5 3400G and other Ryzen
+2000 and 3000G chips. They use the older `acpi-cpufreq` CPU driver, and AMD's
+newer driver (`amd_pstate`) needs a newer CPU generation. Check yours:
+
+```bash
+cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_driver
+```
+
+- `intel_pstate` (Intel) or `amd-pstate-epp` (newer AMD): all three modes work.
+- `acpi-cpufreq`: only the placeholder modes.
+
+**You don't lose speed.** With `acpi-cpufreq`, the CPU uses the `schedutil`
+setting, which raises the speed to maximum whenever there's work to do. The
+Waybar power pill still shows and cycles the placeholder modes, but on these
+computers it has no effect.
