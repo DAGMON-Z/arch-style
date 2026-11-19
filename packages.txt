@@ -1,6 +1,7 @@
 adw-gtk-theme
 awww
 base-devel
+blueman
 bluez
 bluez-utils
 brightnessctl

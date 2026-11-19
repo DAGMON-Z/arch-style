@@ -60,10 +60,36 @@ often don't display in editors. You can browse them at
 | Volume | Opens the mixer (`pavucontrol`) | Right-click mutes, scroll changes volume |
 | Brightness | | Scroll changes brightness |
 | Network | Opens `nmtui` in a terminal | Hover shows the details |
-| Bluetooth | Opens `bluetoothctl` in a terminal | |
+| Bluetooth | Opens Blueman, the Bluetooth window | Right-click opens `bluetoothctl` in a terminal |
 | Keyboard | Shows `us` or `ar` | Press Alt+Shift to switch |
 | Power mode | Cycles power-saver, balanced and performance | Hover shows the mode ([chapter 12](12-power-management.md)) |
 | Power | Lock, log out, reboot, shut down | |
+
+## Connecting a Bluetooth device
+
+Click the **Bluetooth icon** on the bar to open **Blueman**.
+
+1. Make sure the switch at the top right is **on** (blue).
+2. Put your device in pairing mode. For headphones, that's usually holding the
+   power button until a light flashes. For a mouse or keyboard, it's often a
+   small button underneath.
+3. Click **Search**. Your device appears in the list.
+4. Right-click it and choose **Pair**. If a code appears, check that it matches
+   the one on the device, then confirm.
+5. Right-click it again and choose **Trust**, so it reconnects by itself next
+   time.
+6. Right-click it and choose **Connect**.
+
+For headphones or speakers, sound should switch to them. If not, click the
+volume pill and choose them under **Output Devices**.
+
+**Without Blueman:** right-click the Bluetooth icon to open `bluetoothctl`, the
+text version. Type `power on`, `scan on`, wait for your device, `scan off`,
+`pair <address>`, `trust <address>`, then `connect <address>`. Press `Tab`
+after the first characters of an address to complete it.
+
+**`No default controller available`** means the computer has no Bluetooth
+hardware. Many desktop PCs need a small USB Bluetooth adapter.
 
 ## The power menu
 

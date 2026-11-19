@@ -76,7 +76,7 @@ these on:
 | Service | Type | What it does |
 | --- | --- | --- |
 | `NetworkManager.service` | system | Wi-Fi and wired network |
-| `bluetooth.service` | system | Bluetooth |
+| `bluetooth.service` | system | Bluetooth (managed with Blueman, by clicking the bar icon) |
 | `sddm.service` | system | Login screen |
 | `hyprpolkitagent.service` | user | Shows the password popup when an app needs admin rights |
 | `hypridle.service` | user | Locks after 5 minutes and suspends after 15 |
