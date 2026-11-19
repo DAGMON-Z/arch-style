@@ -76,6 +76,7 @@ hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("XCURSOR_THEME", "capitaine-cursors")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct") -- Qt apps such as Dolphin follow the qt6ct theme
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto") -- Electron apps (Discord, VS Code...) run natively on Wayland, so they are sharp when scaled
 
 
 -----------------------

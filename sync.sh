@@ -28,6 +28,7 @@ HOME_ITEMS=(
     .config/fastfetch
     .config/Thunar/uca.xml
     .config/persepolis_download_manager/persepolis.conf
+    .config/spotify-launcher.conf
     .config/clangd
 )
 

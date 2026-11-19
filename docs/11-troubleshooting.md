@@ -236,6 +236,40 @@ shows a notification with a preview. If you still see no notification:
   ~/.config/hypr/scripts/screenshot.sh full
   ```
 
+## Blurry or pixelated apps (Spotify, Discord)
+
+**What happened:** with the screen at 150%, Spotify looked pixelated, while
+other apps were sharp.
+
+**Why:** Spotify was running through **XWayland**, the compatibility layer for
+apps that don't speak Wayland yet. XWayland apps are drawn at 100% and then
+stretched to 150%, which makes them blurry. Native Wayland apps are drawn at
+the real size, so they're sharp.
+
+**Check which apps use XWayland:**
+
+```bash
+hyprctl clients | grep -E 'class:|xwayland:'
+```
+
+`xwayland: 1` means that app uses XWayland, and `xwayland: 0` means it's native.
+
+**Fix:** tell the app to run natively on Wayland.
+
+- **Spotify:** `~/.config/spotify-launcher.conf` (included in this setup):
+
+  ```ini
+  [spotify]
+  extra_arguments = ["--enable-features=UseOzonePlatform", "--ozone-platform=wayland"]
+  ```
+
+- **Electron apps** (Discord, VS Code, Teams for Linux, Obsidian and many more):
+  `hyprland.lua` sets `ELECTRON_OZONE_PLATFORM_HINT=auto`, which tells them to
+  use Wayland when they can.
+
+Close the app completely and open it again to apply. Spotify may keep running
+in the background after you close its window, so run `pkill spotify` first.
+
 ## General tips
 
 - Read error messages, and search for the exact text.

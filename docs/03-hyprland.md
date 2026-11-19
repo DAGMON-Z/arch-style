@@ -37,7 +37,7 @@ each part.
 | MONITORS | Screen resolution and scaling (`auto` works for most laptops) |
 | MY PROGRAMS | Which terminal (kitty), file manager (Thunar) and launcher (rofi) the keybinds open |
 | AUTOSTART | Programs started at login: Waybar, the wallpaper, clipboard history |
-| ENVIRONMENT VARIABLES | Cursor size and theme, and telling Qt apps to use `qt6ct` |
+| ENVIRONMENT VARIABLES | Cursor size and theme, telling Qt apps to use `qt6ct`, and Electron apps to use Wayland |
 | LOOK AND FEEL | Gaps, the gradient border, rounding, opacity, blur, shadows, animations |
 | INPUT | Keyboard layouts (`us,ara`, switched with Alt+Shift) and touchpad |
 | KEYBINDINGS | All shortcuts. See the [cheat sheet](../README.md#keybinds-cheat-sheet) |
