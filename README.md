@@ -239,6 +239,8 @@ This setup is built on the work of these projects:
   [LazyVim](https://github.com/LazyVim/LazyVim) and its
   [starter](https://github.com/LazyVim/starter),
   [starship](https://starship.rs/),
+  [competitest.nvim](https://github.com/xeluxee/competitest.nvim) with
+  [Competitive Companion](https://github.com/jmerle/competitive-companion),
   [fastfetch](https://github.com/fastfetch-cli/fastfetch)
 - Boot and login: [SDDM](https://github.com/sddm/sddm),
   [GRUB](https://www.gnu.org/software/grub/)

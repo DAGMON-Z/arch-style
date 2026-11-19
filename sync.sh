@@ -40,8 +40,9 @@ SYSTEM_ITEMS=(
     /etc/systemd/system/power-profile-auto.service
 )
 
-# Start clean, so files you deleted also disappear from the backup
-rm -rf "$REPO/home" "$REPO/system"
+# Start clean, so files you deleted also disappear from the backup.
+# system/ is not cleaned: the repository is the source for those files.
+rm -rf "$REPO/home"
 mkdir -p "$REPO/home" "$REPO/system"
 
 tar -C "$HOME" --exclude='*.bak' --exclude='*.bak.*' --exclude='.git' \
@@ -55,9 +56,20 @@ if [[ -d $HOME/.local/bin ]]; then
     done < <(find "$HOME/.local/bin" -maxdepth 1 -type f -print0)
 fi
 
+# System files are installed FROM this repository, so they are never copied
+# back (that could undo a newer fix). New ones are added once; after that,
+# a difference only prints a warning.
 for file in "${SYSTEM_ITEMS[@]}"; do
-    mkdir -p "$REPO/system$(dirname "$file")"
-    cp -p "$file" "$REPO/system$file"
+    if [[ ! -e $REPO/system$file ]]; then
+        [[ -e $file ]] || continue
+        mkdir -p "$REPO/system$(dirname "$file")"
+        cp -p "$file" "$REPO/system$file"
+        echo "Added new system file: $file"
+    elif [[ -e $file ]] && ! cmp -s "$file" "$REPO/system$file"; then
+        echo "Note: $file differs from the repository's version."
+        echo "      To install the repository's version: bash $REPO/install.sh --update"
+        echo "      To keep your change instead, edit $REPO/system$file"
+    fi
 done
 
 # Replace your home folder path with @HOME@, so the repository does not

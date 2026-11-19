@@ -15,6 +15,8 @@ Config: `~/.config/nvim/` (started from the
 | `lua/plugins/colorscheme.lua` | tokyonight, "night" style |
 | `lua/plugins/cpp.lua` | Uses the system `clangd` instead of downloading another copy |
 | `~/.config/clangd/config.yaml` | Treats single `.cpp` files as C++20 |
+| `lua/plugins/competitest.lua` | Receives problems from the browser and runs sample tests ([below](#get-problems-from-brave-competitive-companion)) |
+| `templates/cp.cpp` | The starting code for every received problem |
 
 ## First start
 
@@ -47,6 +49,75 @@ g++ -std=c++20 -O2 -Wall a.cpp -o a && ./a
 ```
 
 ## Competitive programming: compile, test, debug
+
+### Get problems from Brave (Competitive Companion)
+
+The fastest way: one click in the browser creates the `.cpp` file **and** all
+the sample tests. Two pieces work together:
+
+- **[Competitive Companion](https://chromewebstore.google.com/detail/competitive-companion/cjnmckjndlpiamhfimnnjmnckgghkjbl)**,
+  a browser extension (Brave, Chrome, Firefox). It reads the problem page and
+  sends the problem to your computer.
+- **[competitest.nvim](https://github.com/xeluxee/competitest.nvim)**, a Neovim
+  plugin (already in this setup). It receives the problem on port 27121, the
+  port Competitive Companion sends to.
+
+**One-time setup:** install Competitive Companion from the link above. A green
+plus icon appears in Brave's toolbar. Pin it with the puzzle-piece menu so it's
+always visible.
+
+**For each problem:**
+
+1. Open Neovim (`nvim`).
+2. Press `Space C r` (receive problem). Neovim now waits for a problem.
+3. In Brave, open the problem page (Codeforces, AtCoder, CSES, and many more)
+   and click the green **+** icon.
+4. Neovim shows where it will save the file. Press Enter to accept.
+5. The file opens with the [template](#the-template), and the sample tests are
+   saved next to it.
+
+Files go to `~/cp/<site>/<contest>/<problem>.cpp`, for example
+`~/cp/Codeforces/Round 1000/A. Example.cpp`. The tests are saved next to it as
+`A. Example_input0.txt`, `A. Example_output0.txt`, and so on.
+
+**Test your solution:** press `Space C t`. Neovim compiles with the judge's
+flags (`-std=c++20 -O2 -Wall`), runs every sample test, and shows each one as
+passed or failed, with your output next to the expected output. Press `q` to
+close the results.
+
+| Keys | Action |
+| --- | --- |
+| `Space C r` | Receive one problem from the browser |
+| `Space C c` | Receive a whole contest (click the icon on the contest page) |
+| `Space C t` | Compile and run all sample tests |
+| `Space C a` | Add your own test |
+| `Space C e` | Edit a test |
+| `Space C d` | Delete a test |
+
+> **CPH Submit**, another extension, only works with the CPH extension for VS
+> Code. It isn't used with Neovim.
+
+### The template
+
+Every received problem starts from `~/.config/nvim/templates/cp.cpp`:
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+}
+```
+
+`ios::sync_with_stdio(false)` and `cin.tie(nullptr)` make `cin` and `cout`
+much faster. Edit the file to change the starting code for future problems.
+
+### Without the extension
+
+The steps below work for any problem, even without Competitive Companion.
 
 ### 1. Put the sample input in a file
 
