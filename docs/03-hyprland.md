@@ -122,6 +122,46 @@ Hyprland shows a red warning and picks the closest value if yours doesn't fit.
 
 **Go back to automatic:** `rm ~/.config/hypr/monitors.lua && hyprctl reload`
 
+## Colors look dull on another screen (vivid shader)
+
+The same config sends the same colors to every screen, but screens differ. A
+budget desktop monitor can look darker and duller than a laptop panel. First
+try the monitor's own menu (see
+[troubleshooting](11-troubleshooting.md#colors-look-different-on-another-screen)).
+If it still looks dull, Hyprland can boost the colors.
+
+A **screen shader** is a tiny program that adjusts every pixel just before it's
+shown. `~/.config/hypr/shaders/vivid.frag` makes colors a bit stronger and a bit
+brighter. It's **off** unless a computer turns it on in its own `monitors.lua`:
+
+```bash
+echo 'hl.config({ decoration = { screen_shader = os.getenv("HOME") .. "/.config/hypr/shaders/vivid.frag" } })' >> ~/.config/hypr/monitors.lua
+hyprctl reload
+```
+
+- `echo '...'` prints the line between the quotes.
+- `>>` adds that line to the **end** of the file, keeping what's already there.
+  (A single `>` would replace the whole file.)
+- `hyprctl reload` applies it.
+
+**Adjusting it:** open the shader with
+`nvim ~/.config/hypr/shaders/vivid.frag` and change these two lines:
+
+```glsl
+const float SATURATION = 1.15;  // 1.0 = unchanged, higher = stronger colors
+const float BRIGHTNESS = 1.05;  // 1.0 = unchanged, higher = lighter
+```
+
+Small steps work best, such as `1.1` to `1.25`. Run `hyprctl reload` after each
+change. The installer's `--update` replaces this file with the repository's
+version, saving yours as `vivid.frag.bak`, so note your values.
+
+**Turning it off:** delete the `screen_shader` line from `monitors.lua`, then
+run `hyprctl reload`.
+
+Screenshots don't show the shader's effect, because they're taken before it
+runs.
+
 ## Testing changes safely
 
 Hyprland reloads the config every time you save it. A mistake shows a red error
