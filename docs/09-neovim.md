@@ -13,7 +13,7 @@ Config: `~/.config/nvim/` (started from the
 | File | Change |
 | --- | --- |
 | `lua/config/lazy.lua` | Turns on LazyVim's clangd extra for C and C++ |
-| `lua/config/options.lua` | Relative line numbers |
+| `lua/config/options.lua` | Relative line numbers, and no reformatting when saving |
 | `lua/plugins/colorscheme.lua` | tokyonight, "night" style |
 | `lua/plugins/cpp.lua` | Uses the system `clangd` instead of downloading another copy |
 | `~/.config/clangd/config.yaml` | Treats single `.cpp` files as C++20 |
@@ -70,6 +70,17 @@ What still works:
 
 To turn autocomplete back on, delete
 `~/.config/nvim/lua/plugins/no-autocomplete.lua` and restart Neovim.
+
+### Saving doesn't change your code
+
+LazyVim normally runs a **formatter** (`clang-format`) every time you save. It
+rearranges your code into its own style: for example, it splits a long
+`#define` over several lines with `\` at the ends, and moves `{` up next to
+`int main()`. That's confusing while learning, so it's turned off with
+`vim.g.autoformat = false` in `lua/config/options.lua`.
+
+- **`Space c f`**: format the file on purpose, when you want it tidied.
+- **`Space u f`**: turn format-on-save back on (or off) for now.
 
 
 ### Get problems from Brave (Competitive Companion)

@@ -5,3 +5,7 @@
 -- Show the real number on the cursor line and distances on all other lines
 vim.opt.number = true
 vim.opt.relativenumber = true
+
+-- Don't reformat code when saving, so it stays exactly as you wrote it.
+-- Format on purpose with Space c f. Space u f toggles format-on-save.
+vim.g.autoformat = false
