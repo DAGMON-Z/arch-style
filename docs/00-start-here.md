@@ -179,6 +179,8 @@ The full list of shortcuts is in the
 3. **Optional extras:**
    - AUR apps: `bash ~/arch-style/install.sh` and answer **y** at step 2.
    - On an MSI Modern 15 F13MG with touchpad trouble: answer **y** at step 6.
+   - Secure Boot: follow [chapter 13](13-secure-boot.md) **after** everything
+     else works. It changes firmware settings, so do it last.
 
 ## Part 7: Learn how it works
 

@@ -58,6 +58,9 @@ sudo rm /etc/sddm.conf.d/10-tokyo-night.conf && sudo systemctl restart sddm
 It never runs `grub-install` and never changes UEFI boot entries, so the
 bootloader program itself is untouched.
 
+With Secure Boot on, GRUB can't load extra modules from disk. The theme then
+needs its modules built into GRUB (see [chapter 13](13-secure-boot.md#step-4-reinstall-grub-with-its-modules-built-in)).
+
 > It assumes `/boot` is its own partition, as archinstall sets it up. With that
 > layout, GRUB writes theme paths without `/boot` at the start.
 

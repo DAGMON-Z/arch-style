@@ -41,6 +41,7 @@ explains the options.
 10. [Boot menu and login screen themes](docs/10-boot-and-login-themes.md)
 11. [Troubleshooting: problems I hit](docs/11-troubleshooting.md)
 12. [Power management](docs/12-power-management.md)
+13. [Secure Boot (optional)](docs/13-secure-boot.md)
 
 ## Screenshots
 

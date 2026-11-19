@@ -23,6 +23,7 @@ Official guide: <https://wiki.archlinux.org/title/Archinstall>
 The **bootloader** is the first program that runs when you turn the computer on.
 It shows a menu and starts Linux. I chose **GRUB** because it is common, well
 documented, and can be themed (see [chapter 10](10-boot-and-login-themes.md)).
+GRUB can also work with Secure Boot (see [chapter 13](13-secure-boot.md)).
 
 **Install to removable location** puts a copy of GRUB at the fallback path
 `EFI/BOOT/BOOTX64.EFI`. Every UEFI computer checks that path, even if it forgets
