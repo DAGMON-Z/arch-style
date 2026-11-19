@@ -391,7 +391,7 @@ fi
 
 echo
 echo "Optional: switch to power-saver on battery and balanced on the charger."
-echo "Works on most laptops, and does nothing on desktops. See docs/12-power-management.md."
+echo "Works on most laptops. Desktops are kept on balanced. See docs/12-power-management.md."
 if ask "Install automatic power-saver on battery?"; then
     try "power-saver on battery" sudo install -m 755 "$REPO/system/usr/local/bin/power-profile-auto" /usr/local/bin/power-profile-auto
     try "power-saver on battery" sudo install -m 644 "$REPO/system/etc/udev/rules.d/99-power-profile-auto.rules" /etc/udev/rules.d/99-power-profile-auto.rules

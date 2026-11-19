@@ -56,7 +56,7 @@ setup adds three small files:
 
 | File | What it does |
 | --- | --- |
-| `/usr/local/bin/power-profile-auto` | Checks whether a charger is connected and sets the mode |
+| `/usr/local/bin/power-profile-auto` | Checks for a battery and a charger, and sets the mode |
 | `/etc/udev/rules.d/99-power-profile-auto.rules` | Runs the script when the charger is plugged in or removed |
 | `/etc/systemd/system/power-profile-auto.service` | Runs the script once at boot |
 
@@ -75,9 +75,11 @@ stays until the next plug event.
 This works on most laptops, because it looks for any charger instead of one
 specific model. Unlike the touchpad fix, it isn't hardware-specific.
 
-On a **desktop PC** there's no battery, so the script does nothing and leaves
-the profile alone. (An earlier version picked power-saver on desktops, because
-it couldn't find a charger.)
+On a **desktop PC** there's no battery, so the script sets **balanced** at every
+boot. (An earlier version picked power-saver on desktops, because it couldn't
+find a charger. power-profiles-daemon remembers the last mode across restarts,
+so setting balanced at boot also repairs desktops that were stuck on
+power-saver.)
 
 ### Installing it by hand
 

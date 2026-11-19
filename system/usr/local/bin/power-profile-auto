@@ -2,7 +2,7 @@
 # Picks a power profile from the charger state:
 #   charger connected -> balanced
 #   on battery        -> power-saver
-# Does nothing on computers without a battery, such as desktop PCs.
+#   no battery (desktop PC) -> balanced
 # Run by a udev rule when the charger is plugged in or removed, and once at boot.
 # Works on most laptops. Needs power-profiles-daemon.
 
@@ -16,10 +16,8 @@ for supply in "$supplies"/*; do
     esac
 done
 
-# A desktop PC has no battery, so leave its profile alone
-[ "$has_battery" = yes ] || exit 0
-
-if [ "$on_charger" = yes ]; then
+# A desktop PC has no battery, so it always gets balanced
+if [ "$has_battery" = no ] || [ "$on_charger" = yes ]; then
     profile=balanced
 else
     profile=power-saver

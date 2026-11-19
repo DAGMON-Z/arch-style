@@ -212,8 +212,9 @@ had power-saver and balanced, and at boot it was always set to power-saver.
 2. The automatic power-saver script treated "no charger found" as "on battery".
    A desktop has no charger, so it picked power-saver at every boot.
 
-**Fix:** the script now does nothing on computers without a battery. Get it with
-the [update command](00-start-here.md#part-8-getting-updates). The missing
+**Fix:** the script now sets balanced on computers without a battery. That also
+resets desktops that power-profiles-daemon remembered as power-saver. Get it
+with the [update command](00-start-here.md#part-8-getting-updates), then restart. The missing
 performance mode is a limit of the CPU, and the CPU still runs at full speed
 when needed.
 
