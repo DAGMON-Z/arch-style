@@ -13,6 +13,17 @@ Config: `~/.config/kitty/kitty.conf` and `tokyo-night.conf`
 Reload with `Ctrl + Shift + F5`. An already open window may not pick up a
 transparency change, so open a new window to check.
 
+### The "Are you sure you want to close this window?" dialog
+
+When you close a kitty window that's still running something, such as Neovim,
+kitty asks first. It only accepts the letters `y` and `n`, so on the Arabic
+keyboard layout those keys don't work, because they type Arabic letters. Use
+these instead, which work on any layout:
+
+- **Enter:** yes, close it (Enter picks the default answer, which is yes).
+- **Esc:** no, keep it open.
+- Or click **Yes** or **No** with the mouse.
+
 ## rofi (command runner and app launcher)
 
 Config: `~/.config/rofi/config.rasi` and `tokyo-night.rasi`
