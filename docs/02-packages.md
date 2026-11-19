@@ -51,7 +51,7 @@ Every item is covered by `packages.txt`:
 | Welcome app item | Package in this setup | Other options the app accepts |
 | --- | --- | --- |
 | Authentication agent * | `hyprpolkitagent` | `polkit-kde-agent` |
-| File manager * | `dolphin` | thunar, nautilus, nemo, pcmanfm, ranger, yazi |
+| File manager * | `thunar` | dolphin, nautilus, nemo, pcmanfm, ranger, yazi |
 | Terminal * | `kitty` | alacritty, foot, wezterm, konsole, gnome-terminal, xterm |
 | Pipewire * | `pipewire` (plus `wireplumber`, `pipewire-pulse`) | |
 | XDG Desktop Portal * | `xdg-desktop-portal-hyprland` | |

@@ -42,6 +42,7 @@ explains the options.
 11. [Troubleshooting: problems I hit](docs/11-troubleshooting.md)
 12. [Power management](docs/12-power-management.md)
 13. [Secure Boot (optional)](docs/13-secure-boot.md)
+14. [Files and downloads: Thunar and Persepolis](docs/14-files-and-downloads.md)
 
 ## Screenshots
 
@@ -72,6 +73,8 @@ because GRUB can't be captured from inside Linux. More details are in
 | Waybar | Top bar with workspaces, clock, system info and a power menu | `home/.config/waybar/` |
 | kitty | Terminal | `home/.config/kitty/` |
 | rofi | Command runner and app launcher | `home/.config/rofi/` |
+| Thunar | File manager | `home/.config/Thunar/` |
+| Persepolis | Download manager | `home/.config/persepolis_download_manager/` |
 | dunst | Notifications and the volume and brightness popup | `home/.config/dunst/` |
 | hyprlock | Lock screen | `home/.config/hypr/hyprlock.conf` |
 | hypridle | Locks after 5 minutes and suspends after 15 | `home/.config/hypr/hypridle.conf` |
@@ -108,7 +111,7 @@ laptops. See [power management](docs/12-power-management.md).
 | `SUPER + Q` | Open terminal (kitty) |
 | `SUPER + R` | Run a command (rofi in Run mode) |
 | Click the Arch logo on the bar | App launcher with icons (rofi in Apps mode) |
-| `SUPER + E` | File manager (Dolphin) |
+| `SUPER + E` | File manager (Thunar) |
 | `SUPER + C` | Close window |
 | `SUPER + F` | Maximize or restore |
 | `SUPER + SHIFT + F` | Fullscreen or restore |

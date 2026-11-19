@@ -5,9 +5,9 @@ differently. To get every app dark, you theme each toolkit.
 
 | Toolkit | Example apps | Themed with |
 | --- | --- | --- |
-| GTK 3 | Waybar, nwg-look | `~/.config/gtk-3.0/` and the `adw-gtk3-dark` theme |
+| GTK 3 | Thunar, Waybar, nwg-look | `~/.config/gtk-3.0/` and the `adw-gtk3-dark` theme |
 | GTK 4 | pavucontrol, GNOME apps | `~/.config/gtk-4.0/` |
-| Qt 6 | qt6ct | `~/.config/qt6ct/` |
+| Qt 6 | qt6ct, Persepolis | `~/.config/qt6ct/` |
 | KDE (Qt) | Dolphin | `~/.config/kdeglobals` and a color scheme |
 
 ## GTK
@@ -39,7 +39,11 @@ in `qt6ct/colors/tokyo-night.conf`.
 Run `qt6ct` to change these settings with a window. qt6ct rewrites its own
 config file when you save, so I didn't add comments to it.
 
-## KDE apps (Dolphin)
+## KDE apps (Dolphin, optional)
+
+This setup now uses Thunar as its file manager. These files only matter if you
+install Dolphin or other KDE apps.
+
 
 KDE apps choose their own colors, so qt6ct alone leaves Dolphin white. Three
 files fix that:

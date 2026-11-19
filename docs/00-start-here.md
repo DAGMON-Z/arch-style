@@ -159,6 +159,7 @@ up to date are skipped.
    | Look at the top | The Waybar pills: workspaces, clock, system info |
    | `SUPER + Q` | A see-through kitty terminal with the system summary |
    | `SUPER + R` | rofi's Run list: type a program name and press Enter |
+   | `SUPER + E` | Thunar, the file manager, in dark colors with Papirus icons |
    | Click the Arch logo on the bar | rofi's app list with icons |
    | Volume or brightness keys | A popup with a progress bar |
    | Power button on the bar → Lock | The lock screen. Unlock with your password |

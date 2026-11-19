@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Thunar custom actions (right-click menu). Edit in Thunar: Edit > Configure custom actions -->
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1700000000000001-1</unique-id>
+	<command>kitty --directory %f</command>
+	<description>Open kitty in this folder</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+</actions>

@@ -35,7 +35,7 @@ each part.
 | Section | What it does |
 | --- | --- |
 | MONITORS | Screen resolution and scaling (`auto` works for most laptops) |
-| MY PROGRAMS | Which terminal, file manager and launcher the keybinds open |
+| MY PROGRAMS | Which terminal (kitty), file manager (Thunar) and launcher (rofi) the keybinds open |
 | AUTOSTART | Programs started at login: Waybar, the wallpaper, clipboard history |
 | ENVIRONMENT VARIABLES | Cursor size and theme, and telling Qt apps to use `qt6ct` |
 | LOOK AND FEEL | Gaps, the gradient border, rounding, opacity, blur, shadows, animations |

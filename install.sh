@@ -211,13 +211,15 @@ if ask "Copy config files?"; then
 fi
 
 # 4. Desktop settings (these are stored by gsettings, not in files)
-if ask "Step 4: set dark mode, Papirus icons, cursor and monospace font?"; then
+if ask "Step 4: set dark mode, Papirus icons, cursor, monospace font, and Thunar for folders?"; then
     try "desktop settings" gsettings set org.gnome.desktop.interface color-scheme prefer-dark
     try "desktop settings" gsettings set org.gnome.desktop.interface gtk-theme adw-gtk3-dark
     try "desktop settings" gsettings set org.gnome.desktop.interface icon-theme Papirus-Dark
     try "desktop settings" gsettings set org.gnome.desktop.interface cursor-theme capitaine-cursors
     try "desktop settings" gsettings set org.gnome.desktop.interface cursor-size 24
     try "desktop settings" gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 11'
+    # Open folders with Thunar
+    try "desktop settings" xdg-mime default thunar.desktop inode/directory
 fi
 
 # 5. Services

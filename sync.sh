@@ -26,6 +26,8 @@ HOME_ITEMS=(
     .icons/default/index.theme
     # Other tools
     .config/fastfetch
+    .config/Thunar/uca.xml
+    .config/persepolis_download_manager/persepolis.conf
     .config/clangd
 )
 
