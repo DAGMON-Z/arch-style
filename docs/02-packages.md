@@ -6,7 +6,7 @@ This repository has two lists of exactly what this setup needs:
 
 | File | What's in it | Installed with |
 | --- | --- | --- |
-| [`packages.txt`](../packages.txt) | 55 packages from the official Arch repositories | `pacman` |
+| [`packages.txt`](../packages.txt) | Packages from the official Arch repositories | `pacman` |
 | [`aur-packages.txt`](../aur-packages.txt) | Apps from the AUR (the community repository) | `yay` |
 
 `install.sh` installs both, asking first. To do it by hand:
