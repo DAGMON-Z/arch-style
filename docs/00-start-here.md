@@ -59,8 +59,9 @@ to erase.
 
 ## Part 3: First login
 
-1. On the login screen, pick **Hyprland (uwsm-managed)** as the session,
-   usually at the bottom left, then log in.
+1. Log in. The session is shown somewhere on the login screen, often in a
+   corner. It should say **Hyprland (uwsm-managed)**. Change it only if it shows
+   something else. The login screen remembers your choice next time.
 2. The **Hyprland welcome app** may open. It shows which basic parts are
    installed. You can close it for now; the next part installs what it asks for
    ([chapter 2](02-packages.md#hyprland-welcome-app-checklist)).
@@ -147,7 +148,10 @@ up to date are skipped.
 1. Restart: `systemctl reboot`.
 2. You should see:
    - the **Tokyo Night boot menu** (GRUB), with a 5-second countdown,
-   - the **Tokyo Night login screen**. Pick **Hyprland (uwsm-managed)**.
+   - the **Tokyo Night login screen**. There's no session menu to pick from:
+     it remembers your last session and shows it in the pill at the bottom
+     left. Check it says **Hyprland (uwsm-managed)**, and click it to switch if
+     not.
 3. After logging in, check:
 
    | Try this | You should see |
@@ -159,7 +163,7 @@ up to date are skipped.
    | Volume or brightness keys | A popup with a progress bar |
    | Power button on the bar → Lock | The lock screen. Unlock with your password |
    | Click the leaf or scale icon on the bar | The power mode changes |
-   | `hyprland-welcome` in a terminal | Every item green or blue |
+   | `hyprland-welcome` in a terminal | The welcome app's checklist: every item green or blue ([what each item means](02-packages.md#hyprland-welcome-app-checklist)) |
 
 The full list of shortcuts is in the
 [keybinds cheat sheet](../README.md#keybinds-cheat-sheet).

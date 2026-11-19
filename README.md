@@ -164,7 +164,10 @@ The [step-by-step guide](docs/00-start-here.md) covers this in detail. In short:
    set-wallpaper ~/Pictures/Wallpapers/your-image.jpg
    ```
 
-6. Restart, and choose **Hyprland (uwsm-managed)** on the login screen.
+6. Restart and log in. The session pill at the bottom left of the login screen
+   should say **Hyprland (uwsm-managed)**. Click it to switch if it doesn't.
+7. After logging in, run `hyprland-welcome` in a terminal. Every item should be
+   green or blue.
 
 ## Keeping your own copy up to date
 

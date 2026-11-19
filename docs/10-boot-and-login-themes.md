@@ -9,7 +9,7 @@ Source: `~/.local/share/rice-boot-themes/`
 | `install-sddm-theme.sh` | Installs the login theme (run with `sudo`) |
 | `install-grub-theme.sh` | Installs the boot theme (run with `sudo`) |
 
-Both themes come with a plain dark background as a placeholder. Run
+Both themes come with a Tokyo Night gradient as the default background. Run
 `set-wallpaper` with your own image to replace it (see [chapter 7](07-wallpaper.md)).
 
 ## Login screen (SDDM)

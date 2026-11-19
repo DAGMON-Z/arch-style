@@ -283,9 +283,9 @@ fi
 echo
 echo "Step 9 sets one image as the wallpaper everywhere."
 if [[ -z $WALLPAPER && $ALL == yes ]]; then
-    # No image given: use the plain Tokyo Night placeholder for now
+    # No image given: use the Tokyo Night gradient that comes with the themes
     WALLPAPER="$REPO/home/.local/share/rice-boot-themes/sddm/tokyo-night/background.jpg"
-    echo "No --wallpaper given, so using a plain dark placeholder."
+    echo "No --wallpaper given, so using the Tokyo Night gradient."
     echo "Later, run: set-wallpaper ~/Pictures/Wallpapers/your-image.jpg"
 elif [[ -z $WALLPAPER ]]; then
     echo "No wallpaper images are included, so use your own."
@@ -305,4 +305,6 @@ else
     echo "All done."
 fi
 [[ $DRY == yes ]] && echo "(That was a dry run. Nothing was changed.)"
-echo "Restart, then choose \"Hyprland (uwsm-managed)\" on the login screen."
+echo "Restart and log in. The session pill at the bottom left of the login screen"
+echo "should say \"Hyprland (uwsm-managed)\". Click it to switch if it doesn't."
+echo "Then run hyprland-welcome to check that every item is green or blue."

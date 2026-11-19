@@ -8,8 +8,8 @@ set-wallpaper ~/Pictures/Wallpapers/your-image.jpg
 ```
 
 That one command sets it in four places: desktop, lock screen, login screen and
-boot menu. The login and boot themes come with a plain dark placeholder until
-you do this.
+boot menu. Until you do, the installer uses a **Tokyo Night gradient**, made with
+`ffmpeg`, as the default. It's the one in the screenshots.
 
 Script: `~/.local/bin/set-wallpaper`
 
