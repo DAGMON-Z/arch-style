@@ -20,6 +20,9 @@ box and the keyboard layout. The password box border changes color:
 
 Lock now: power menu → **Lock**, or run `hyprlock`.
 
+The clock is 12-hour (`text = $TIME12` in `hyprlock.conf`). For 24-hour, change
+it to `text = $TIME`.
+
 ## hypridle (what happens when you're away)
 
 Config: `~/.config/hypr/hypridle.conf`

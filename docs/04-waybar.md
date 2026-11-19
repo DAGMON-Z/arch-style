@@ -17,6 +17,17 @@ Config: `~/.config/waybar/`
 - **Right:** CPU, memory, temperature, keyboard layout, volume, brightness,
   network, Bluetooth, power mode, battery, power menu
 
+## The clock
+
+The clock uses the 12-hour format, like `05:46 PM`. It's set by the `format`
+line of the `clock` module in `config.jsonc`:
+
+- `%I:%M %p` is 12-hour: `%I` is the hour 01 to 12, `%M` the minutes, and `%p`
+  is AM or PM.
+- For 24-hour, like `17:46`, change it to `%H:%M`.
+
+Hover over the clock to see a calendar.
+
 ## How the pills work
 
 The bar's background is transparent. Each module gets its own dark rounded

@@ -84,7 +84,7 @@ Rectangle {
         triggeredOnStart: true
         onTriggered: {
             const now = new Date()
-            clock.text = Qt.formatTime(now, "HH:mm")
+            clock.text = Qt.formatTime(now, "hh:mm AP")
             date.text = Qt.formatDate(now, "dddd, d MMMM")
         }
     }

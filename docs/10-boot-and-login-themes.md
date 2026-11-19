@@ -26,6 +26,10 @@ Current=tokyo-night
 CursorTheme=capitaine-cursors
 ```
 
+The clock is 12-hour. It's set by `Qt.formatTime(now, "hh:mm AP")` in
+`Main.qml`. For 24-hour, change it to `"HH:mm"`, then reinstall the theme with
+`install.sh --update`.
+
 You can preview a theme in a window without logging out:
 
 ```bash
