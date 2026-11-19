@@ -58,7 +58,8 @@ and the starship prompt on the right.
 | --- | --- |
 | ![Lock screen](docs/screenshots/lockscreen.jpg) | ![Login screen](docs/screenshots/login.jpg) |
 
-The wallpaper in these screenshots is a plain gradient. Set your own with
+The screenshots use a plain gradient; a fresh install uses the included sci-fi
+city wallpaper. Change it any time with
 [`set-wallpaper`](docs/07-wallpaper.md). There's no screenshot of the boot menu,
 because GRUB can't be captured from inside Linux. More details are in
 [docs/screenshots](docs/screenshots/README.md).
@@ -158,7 +159,8 @@ The [step-by-step guide](docs/00-start-here.md) covers this in detail. In short:
    `--all` skips the AUR apps and the MSI touchpad fix. Add
    `--wallpaper <image>` to set your wallpaper at the same time.
 
-5. Set your own wallpaper. No wallpaper images are included:
+5. The installer sets the included sci-fi city wallpaper everywhere. To use your
+   own image instead:
 
    ```bash
    set-wallpaper ~/Pictures/Wallpapers/your-image.jpg
@@ -220,6 +222,9 @@ This setup is built on the work of these projects:
 - Boot and login: [SDDM](https://github.com/sddm/sddm),
   [GRUB](https://www.gnu.org/software/grub/)
 - Installer: [archinstall](https://github.com/archlinux/archinstall)
+- Default wallpaper: a sci-fi city artwork whose original artist I couldn't
+  find. If you made it, please open an issue so I can credit you, or remove it
+  if you prefer.
 
 ## License
 

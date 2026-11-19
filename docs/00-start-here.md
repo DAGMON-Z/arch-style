@@ -170,7 +170,8 @@ The full list of shortcuts is in the
 
 ## Part 6: Make it yours
 
-1. **Wallpaper:** put an image in `~/Pictures/Wallpapers`, then run:
+1. **Wallpaper:** the installer already set the included sci-fi city wallpaper
+   everywhere. To use your own, put an image in `~/Pictures/Wallpapers`, then run:
 
    ```bash
    set-wallpaper ~/Pictures/Wallpapers/my-image.jpg

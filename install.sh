@@ -283,14 +283,16 @@ fi
 echo
 echo "Step 9 sets one image as the wallpaper everywhere."
 if [[ -z $WALLPAPER && $ALL == yes ]]; then
-    # No image given: use the Tokyo Night gradient that comes with the themes
+    # No image given: use the wallpaper that comes with the themes
     WALLPAPER="$REPO/home/.local/share/rice-boot-themes/sddm/tokyo-night/background.jpg"
-    echo "No --wallpaper given, so using the Tokyo Night gradient."
+    echo "No --wallpaper given, so using the included sci-fi city wallpaper."
     echo "Later, run: set-wallpaper ~/Pictures/Wallpapers/your-image.jpg"
 elif [[ -z $WALLPAPER ]]; then
-    echo "No wallpaper images are included, so use your own."
-    read -r -p "Path to an image (or press Enter to skip): " WALLPAPER
+    read -r -p "Path to your own image (or press Enter for the included wallpaper): " WALLPAPER
     WALLPAPER="${WALLPAPER/#\~/$HOME}"
+    if [[ -z $WALLPAPER ]]; then
+        WALLPAPER="$REPO/home/.local/share/rice-boot-themes/sddm/tokyo-night/background.jpg"
+    fi
 fi
 if [[ -n $WALLPAPER ]]; then
     try "wallpaper" "$HOME/.local/bin/set-wallpaper" "$WALLPAPER"

@@ -1,15 +1,22 @@
 # 7. Wallpaper and `set-wallpaper`
 
-**No wallpaper images are included in this repository.** Use your own: put it
-in `~/Pictures/Wallpapers` and run:
+The installer sets the included **sci-fi city wallpaper** everywhere by default.
+To use your own image instead, put it in `~/Pictures/Wallpapers` and run:
 
 ```bash
 set-wallpaper ~/Pictures/Wallpapers/your-image.jpg
 ```
 
 That one command sets it in four places: desktop, lock screen, login screen and
-boot menu. Until you do, the installer uses a **Tokyo Night gradient**, made with
-`ffmpeg`, as the default. It's the one in the screenshots.
+boot menu.
+
+The included wallpaper is stored as the login and boot themes' background:
+`home/.local/share/rice-boot-themes/sddm/tokyo-night/background.jpg`.
+To set it again later:
+
+```bash
+set-wallpaper ~/.local/share/rice-boot-themes/sddm/tokyo-night/background.jpg
+```
 
 Script: `~/.local/bin/set-wallpaper`
 
