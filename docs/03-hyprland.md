@@ -55,6 +55,11 @@ each part.
   See [chapter 5](05-kitty-rofi-dunst.md).
 - **Volume and brightness keys:** run `~/.config/hypr/scripts/osd.sh`, which
   changes the level and shows a popup (see [chapter 5](05-kitty-rofi-dunst.md)).
+- **Screenshots:** the `Print` keys run `~/.config/hypr/scripts/screenshot.sh`.
+  It uses `grim` (take the picture), `slurp` (drag to select an area) and
+  `wl-copy` (copy to the clipboard). It creates `~/Pictures/Screenshots` if it's
+  missing and shows a notification with a preview, so you can see that it
+  worked. `Esc` cancels an area selection.
 - **Autostart:** `set-wallpaper --restore` shows the wallpaper (see [chapter 7](07-wallpaper.md)).
 - **Safety:** `allow_session_lock_restore` lets you restart the lock screen if
   it crashes (see [chapter 6](06-lockscreen.md)).

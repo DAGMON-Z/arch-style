@@ -402,7 +402,8 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("~/.local/bin/set-wallpaper --restore") -- wallpaper with awww (hyprpaper.conf kept as backup)
 	hl.exec_cmd("wl-paste --watch cliphist store")
 end)
--- Screenshots
-hl.bind("Print", hl.dsp.exec_cmd('grim ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png'))
-hl.bind("SUPER + Print", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | wl-copy'))
-hl.bind("SUPER + SHIFT + Print", hl.dsp.exec_cmd('grim -g "$(slurp -d)" ~/Pictures/Screenshots/$(date +%Y%m%d_%H%M%S).png'))
+-- Screenshots. The script saves to ~/Pictures/Screenshots (creating it if
+-- needed) and shows a notification, so you can see that it worked.
+hl.bind("Print",                 hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh full"))      -- whole screen to a file
+hl.bind("SUPER + Print",         hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh area-copy")) -- area to the clipboard
+hl.bind("SUPER + SHIFT + Print", hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh area-save")) -- area to a file

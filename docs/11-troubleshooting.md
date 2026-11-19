@@ -218,6 +218,24 @@ with the [update command](00-start-here.md#part-8-getting-updates), then restart
 performance mode is a limit of the CPU, and the CPU still runs at full speed
 when needed.
 
+## The Print key does nothing
+
+**What happened:** pressing `Print` seemed to do nothing.
+
+**Why:** the first version saved the screenshot silently, so there was no sign
+it worked. It also failed silently if `~/Pictures/Screenshots` didn't exist.
+
+**Fix:** the `Print` keys now run `screenshot.sh`, which creates the folder and
+shows a notification with a preview. If you still see no notification:
+
+- Check the key works at all. On some keyboards, especially gaming and laptop
+  keyboards, `Print` (or `PrtSc`) only works together with `Fn`.
+- Run the script by hand to see any error:
+
+  ```bash
+  ~/.config/hypr/scripts/screenshot.sh full
+  ```
+
 ## General tips
 
 - Read error messages, and search for the exact text.
