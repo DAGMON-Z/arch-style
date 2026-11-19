@@ -179,8 +179,12 @@ The [step-by-step guide](docs/00-start-here.md) covers this in detail. In short:
 When this repository changes, one command updates an installed computer:
 
 ```bash
-bash ~/arch-style/install.sh --update
+git -C ~/arch-style pull --ff-only && bash ~/arch-style/install.sh --update
 ```
+
+`git -C ~/arch-style pull --ff-only` downloads the latest version first, so this
+works even if your copy is older than the `--update` option. `&&` runs the
+update only if the download worked.
 
 It downloads the latest version and installs any new packages. It also copies
 changed config files (backing up the old ones), turns on any new services, and

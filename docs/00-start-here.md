@@ -206,10 +206,15 @@ Before editing a config file, copy it to `<file>.bak`, so you can always go back
 When the repository gets new features or fixes, update with:
 
 ```bash
-bash ~/arch-style/install.sh --update
+git -C ~/arch-style pull --ff-only && bash ~/arch-style/install.sh --update
 ```
 
-- It downloads the latest version from GitHub with `git pull`.
+- `git -C ~/arch-style` runs git inside the `~/arch-style` folder.
+- `pull --ff-only` downloads the latest version, but only if it fits cleanly on
+  top of yours. Otherwise it stops instead of mixing versions.
+- `&&` runs the next command only if the previous one worked.
+- `bash ~/arch-style/install.sh --update` then applies what changed:
+
 - It installs only the packages you don't have yet.
 - It copies only the config files that changed, saving your old version as `.bak`.
 - It turns on any new services, and reloads the desktop so you see the changes.
