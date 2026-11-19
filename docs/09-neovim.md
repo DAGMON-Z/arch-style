@@ -127,15 +127,29 @@ Every received problem starts from `~/.config/nvim/templates/cp.cpp`:
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+#define elgayar ios::sync_with_stdio(0); cin.tie(0); cout.tie(0)
+#define endl '\n'
 
+int main()
+{
+  elgayar;
+  
 }
 ```
 
-`ios::sync_with_stdio(false)` and `cin.tie(nullptr)` make `cin` and `cout`
-much faster. Edit the file to change the starting code for future problems.
+- `#include <bits/stdc++.h>` includes the whole standard library at once.
+- `#define` creates a shortcut: before compiling, the compiler replaces the
+  name with the text after it.
+- `elgayar` stands for the three fast input/output lines:
+  `ios::sync_with_stdio(0)` stops `cin`/`cout` from syncing with C's
+  `scanf`/`printf`, and `cin.tie(0)` and `cout.tie(0)` stop them from flushing
+  each other before every read. Together they make reading big inputs much
+  faster.
+- `#define endl '\n'` makes `endl` print a plain newline. The real `endl` also
+  *flushes* the output every time, which is slow when printing many lines.
+
+Edit the file to change the starting code for future problems. Files you
+already received keep their old code.
 
 ### Without the extension
 
