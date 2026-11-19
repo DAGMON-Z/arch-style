@@ -1,0 +1,128 @@
+/* Tokyo Night theme for Rofi */
+
+* {
+    bg:        #1a1b26f2;
+    bg-solid:  #1a1b26;
+    bg-alt:    #292e42;
+    line:      #414868;
+    fg:        #c0caf5;
+    dim:       #565f89;
+    blue:      #7aa2f7;
+    magenta:   #bb9af7;
+    red:       #f7768e;
+    yellow:    #e0af68;
+
+    background-color: transparent;
+    text-color: @fg;
+}
+
+window {
+    location: center;
+    anchor: center;
+    width: 560px;
+    padding: 14px;
+    background-color: @bg;
+    border: 2px solid;
+    border-color: @blue;
+    border-radius: 14px;
+}
+
+mainbox {
+    spacing: 12px;
+    children: [ inputbar, listview, mode-switcher ];
+}
+
+/* Search box */
+inputbar {
+    padding: 10px 12px;
+    spacing: 10px;
+    background-color: @bg-alt;
+    border-radius: 10px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @blue;
+}
+
+entry {
+    placeholder: "Search";
+    placeholder-color: @dim;
+    cursor: text;
+}
+
+/* Results */
+listview {
+    lines: 8;
+    columns: 1;
+    fixed-height: true;
+    spacing: 4px;
+    scrollbar: false;
+}
+
+element {
+    padding: 7px 10px;
+    spacing: 10px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+element normal.urgent,
+element alternate.urgent {
+    text-color: @red;
+}
+
+element normal.active,
+element alternate.active {
+    text-color: @magenta;
+}
+
+element selected.normal,
+element selected.active,
+element selected.urgent {
+    background-color: @blue;
+    text-color: @bg-solid;
+}
+
+element-icon {
+    size: 24px;
+    vertical-align: 0.5;
+    background-color: transparent;
+    cursor: inherit;
+}
+
+element-text {
+    vertical-align: 0.5;
+    background-color: transparent;
+    text-color: inherit;
+    highlight: bold;
+    cursor: inherit;
+}
+
+/* Apps and Run tabs */
+mode-switcher {
+    spacing: 8px;
+}
+
+button {
+    padding: 7px;
+    background-color: @bg-alt;
+    text-color: @dim;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+button selected {
+    background-color: @magenta;
+    text-color: @bg-solid;
+}
+
+message {
+    padding: 8px 10px;
+    background-color: @bg-alt;
+    border-radius: 9px;
+}
+
+textbox {
+    text-color: @yellow;
+}

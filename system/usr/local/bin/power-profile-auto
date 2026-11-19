@@ -1,0 +1,22 @@
+#!/bin/sh
+# Picks a power profile from the charger state:
+#   charger connected -> balanced
+#   on battery        -> power-saver
+# Run by a udev rule when the charger is plugged in or removed, and once at boot.
+# Works on most laptops. Needs power-profiles-daemon.
+
+profile=power-saver
+for supply in /sys/class/power_supply/*; do
+    if [ "$(cat "$supply/type" 2>/dev/null)" = Mains ] &&
+       [ "$(cat "$supply/online" 2>/dev/null)" = 1 ]; then
+        profile=balanced
+    fi
+done
+
+# Ask power-profiles-daemon over D-Bus. This does the same as
+# "powerprofilesctl set", but doesn't need Python.
+exec /usr/bin/busctl set-property \
+    org.freedesktop.UPower.PowerProfiles \
+    /org/freedesktop/UPower/PowerProfiles \
+    org.freedesktop.UPower.PowerProfiles \
+    ActiveProfile s "$profile"

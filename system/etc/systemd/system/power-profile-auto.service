@@ -1,0 +1,12 @@
+# Sets the power profile once at boot, based on whether the charger is connected
+[Unit]
+Description=Pick a power profile based on the charger state
+After=power-profiles-daemon.service
+Wants=power-profiles-daemon.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/power-profile-auto
+
+[Install]
+WantedBy=multi-user.target

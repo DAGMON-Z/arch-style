@@ -1,0 +1,82 @@
+# Dunst notifications: Tokyo Night
+# Apply changes with: dunstctl reload
+
+[global]
+    # Position: top right. Dunst already stays below the bar,
+    # so this is only the extra gap.
+    follow = mouse
+    origin = top-right
+    offset = (10, 8)
+    width = 340
+    height = (0, 220)
+    notification_limit = 5
+    gap_size = 6
+
+    # Card shape
+    corner_radius = 12
+    frame_width = 2
+    frame_color = "#7aa2f7"
+    separator_height = 0
+    padding = 10
+    horizontal_padding = 12
+    text_icon_padding = 12
+
+    # Text
+    font = JetBrainsMono Nerd Font 10
+    markup = full
+    format = "<b>%s</b>\n%b"
+    alignment = left
+    vertical_alignment = center
+    word_wrap = yes
+    ellipsize = end
+    show_age_threshold = 60
+
+    # Icons
+    icon_theme = Papirus-Dark
+    enable_recursive_icon_lookup = true
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 48
+
+    # Progress bar, used by the volume and brightness indicator
+    progress_bar = true
+    progress_bar_height = 8
+    progress_bar_frame_width = 0
+    progress_bar_min_width = 150
+    progress_bar_max_width = 340
+    progress_bar_corner_radius = 4
+
+    # Mouse
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[urgency_low]
+    background = "#1a1b26f2"
+    foreground = "#a9b1d6"
+    frame_color = "#414868"
+    highlight = "#7aa2f7"
+    timeout = 5
+
+[urgency_normal]
+    background = "#1a1b26f2"
+    foreground = "#c0caf5"
+    frame_color = "#7aa2f7"
+    highlight = "#7aa2f7"
+    timeout = 8
+
+[urgency_critical]
+    background = "#1a1b26f2"
+    foreground = "#c0caf5"
+    frame_color = "#f7768e"
+    highlight = "#f7768e"
+    # 0 means it stays until you dismiss it
+    timeout = 0
+
+# Volume, mic and brightness popups from ~/.config/hypr/scripts/osd.sh
+[osd]
+    appname = osd
+    history_ignore = yes
+    format = "%b"
+    frame_color = "#7dcfff"
+    highlight = "#7dcfff"

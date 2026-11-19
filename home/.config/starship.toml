@@ -1,0 +1,49 @@
+# Starship prompt: Tokyo Night
+
+palette = "tokyo_night"
+add_newline = true
+
+format = "[](blue)$directory[](blue) $git_branch$git_status$cpp$cmd_duration$line_break$character"
+
+[palettes.tokyo_night]
+night = "#16161e"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+green = "#9ece6a"
+yellow = "#e0af68"
+magenta = "#bb9af7"
+red = "#f7768e"
+
+[directory]
+style = "bold fg:night bg:blue"
+format = "[ $path$read_only ]($style)"
+read_only = " "
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+style = "magenta"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "yellow"
+format = "([$all_status$ahead_behind]($style) )"
+
+# Shows a C++ icon in folders containing C++ files.
+# Add ($version ) after $symbol to show the compiler version too.
+[cpp]
+disabled = false
+symbol = " "
+style = "cyan"
+format = "[$symbol]($style)"
+
+# Shows how long a command took, if it took 2 seconds or more
+[cmd_duration]
+min_time = 2000
+style = "yellow"
+format = "[ $duration]($style) "
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"

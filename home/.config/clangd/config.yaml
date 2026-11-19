@@ -1,0 +1,5 @@
+# Lets a single .cpp file work without any project setup
+If:
+  PathMatch: [.*\.cpp, .*\.cc, .*\.cxx, .*\.hpp]
+CompileFlags:
+  Add: [-std=c++20, -Wall, -Wextra]

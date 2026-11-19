@@ -1,0 +1,164 @@
+#!/bin/bash
+# set-wallpaper: use one image for the desktop, lock screen, login screen and boot menu.
+#
+#   set-wallpaper <image>              all four
+#   set-wallpaper --no-system <image>  desktop and lock screen only (no sudo)
+#   set-wallpaper --restore            show the current wallpaper again (used at login)
+set -euo pipefail
+
+SELF="$(realpath "${BASH_SOURCE[0]}")"
+STATE="$HOME/.local/share/wallpaper"
+HYPRLOCK_CONF="$HOME/.config/hypr/hyprlock.conf"
+TRANSITION=(--transition-type grow --transition-pos center --transition-duration 1.2 --transition-fps 60)
+
+# System locations. RICE_TEST_ROOT is only used for testing in a sandbox.
+ROOT="${RICE_TEST_ROOT:-}"
+SDDM_DIR="$ROOT/usr/share/sddm/themes/tokyo-night"
+GRUB_THEME_DIR="$ROOT/boot/grub/themes/tokyo-night"
+GRUB_CFG="$ROOT/boot/grub/grub.cfg"
+
+usage() {
+    sed -n '2,7p' "$SELF" | sed 's/^# \{0,1\}//'
+    exit "${1:-0}"
+}
+
+# Copy a file to <file>.bak the first time it is changed
+backup_once() {
+    if [[ -e $1 && ! -e $1.bak ]]; then
+        cp -p "$1" "$1.bak"
+        echo "  backup: $1.bak"
+    fi
+}
+
+# Desktop: show an image with awww, starting its daemon if needed
+show_desktop() {
+    if ! command -v awww >/dev/null 2>&1; then
+        echo "  awww is not installed, so the desktop was not changed." >&2
+        return 1
+    fi
+    if ! awww query >/dev/null 2>&1; then
+        setsid -f awww-daemon >/dev/null 2>&1
+        for _ in $(seq 50); do
+            awww query >/dev/null 2>&1 && break
+            sleep 0.1
+        done
+    fi
+    pkill -x hyprpaper 2>/dev/null || true
+    awww img "$1" "${TRANSITION[@]}"
+}
+
+# Login screen and boot menu. Runs as root through sudo.
+system_stage() {
+    local jpg=$1 png=$2
+    if [[ -z $ROOT && $EUID -ne 0 ]]; then
+        echo "The --system step must run as root." >&2
+        exit 1
+    fi
+    [[ -s $jpg && -s $png ]] || { echo "Prepared images not found." >&2; exit 1; }
+
+    echo "Login screen (SDDM):"
+    if [[ -d $SDDM_DIR ]]; then
+        backup_once "$SDDM_DIR/background.jpg"
+        install -m 644 "$jpg" "$SDDM_DIR/background.jpg"
+        echo "  copied to $SDDM_DIR/background.jpg"
+    else
+        echo "  $SDDM_DIR not found, skipped." >&2
+    fi
+
+    echo "Boot menu (GRUB):"
+    if [[ ! -s $GRUB_THEME_DIR/theme.txt || ! -s $GRUB_CFG ]]; then
+        echo "  GRUB theme or grub.cfg not found, skipped." >&2
+        return 0
+    fi
+    backup_once "$GRUB_THEME_DIR/theme.txt"
+    backup_once "$GRUB_THEME_DIR/background.png"
+    install -m 644 "$png" "$GRUB_THEME_DIR/background.png"
+    sed -i -E 's|^desktop-image:.*|desktop-image: "background.png"|' "$GRUB_THEME_DIR/theme.txt"
+    echo "  copied to $GRUB_THEME_DIR/background.png"
+
+    # Rebuild the menu in a separate file and replace the working one
+    # only if every check passes
+    GRUB_NEW="$GRUB_CFG.new"
+    local new=$GRUB_NEW
+    if [[ -e $GRUB_CFG.bak ]]; then
+        cp -p "$GRUB_CFG" "$GRUB_CFG.bak.prev"
+    else
+        cp -p "$GRUB_CFG" "$GRUB_CFG.bak"
+    fi
+    trap 'rm -f "${GRUB_NEW:-}"' EXIT
+    grub-mkconfig -o "$new"
+    grub-script-check "$new"
+    grep -q '^menuentry ' "$new" || { echo "  New menu has no boot entries. Not changed." >&2; exit 1; }
+    grep -qF '/grub/themes/tokyo-night/theme.txt' "$new" || { echo "  New menu does not load the theme. Not changed." >&2; exit 1; }
+    kernel_lines() { grep -E '^[[:space:]]*(linux|initrd)[[:space:]]' "$1" | sed -E 's/^[[:space:]]+//' | sort -u; }
+    [[ -n $(kernel_lines "$new") ]] || { echo "  New menu has no kernel lines. Not changed." >&2; exit 1; }
+    if ! diff <(kernel_lines "$GRUB_CFG") <(kernel_lines "$new"); then
+        echo "  Kernel lines differ from the working menu. Not changed." >&2
+        exit 1
+    fi
+    mv "$new" "$GRUB_CFG"
+    sync
+    echo "  boot menu updated"
+}
+
+case "${1:-}" in
+    --restore)
+        [[ -s $STATE/current.jpg ]] || { echo "No wallpaper set yet." >&2; exit 1; }
+        show_desktop "$STATE/current.jpg"
+        exit 0
+        ;;
+    --system)
+        system_stage "$2" "$3"
+        exit 0
+        ;;
+    -h|--help|"")
+        usage
+        ;;
+esac
+
+SYSTEM=yes
+if [[ $1 == --no-system ]]; then
+    SYSTEM=no
+    shift
+fi
+[[ $# -eq 1 ]] || usage 1
+IMAGE="$(realpath "$1")"
+[[ -f $IMAGE ]] || { echo "Not a file: $1" >&2; exit 1; }
+
+# Screen size of the first monitor, for example 1920x1080
+SIZE=$(hyprctl monitors 2>/dev/null | awk '/^[[:space:]]+[0-9]+x[0-9]+@/ { split($1, a, "@"); print a[1]; exit }')
+SIZE=${SIZE:-1920x1080}
+WIDTH=${SIZE%x*}
+HEIGHT=${SIZE#*x}
+
+echo "Preparing $(basename "$IMAGE") at ${WIDTH}x${HEIGHT}:"
+mkdir -p "$STATE"
+TEMP=$(mktemp -d)
+trap 'rm -rf "$TEMP"' EXIT
+FILTER="scale=${WIDTH}:${HEIGHT}:force_original_aspect_ratio=increase,crop=${WIDTH}:${HEIGHT}"
+# JPG for desktop, lock and login. PNG for GRUB.
+ffmpeg -v error -y -i "$IMAGE" -vf "$FILTER" -frames:v 1 -q:v 2 "$TEMP/current.jpg"
+ffmpeg -v error -y -i "$IMAGE" -vf "$FILTER" -frames:v 1 -pix_fmt rgb24 "$TEMP/current.png"
+mv "$TEMP/current.jpg" "$TEMP/current.png" "$STATE/"
+ln -sfn "$IMAGE" "$STATE/source"
+echo "  saved in $STATE"
+
+echo "Desktop:"
+show_desktop "$STATE/current.jpg" && echo "  done" || true
+
+echo "Lock screen (hyprlock):"
+if [[ -f $HYPRLOCK_CONF ]]; then
+    if ! grep -qF "path = $STATE/current.jpg" "$HYPRLOCK_CONF"; then
+        backup_once "$HYPRLOCK_CONF"
+        sed -i -E "/^background[[:space:]]*\{/,/^\}/ s|^([[:space:]]*path[[:space:]]*=).*|\1 $STATE/current.jpg|" "$HYPRLOCK_CONF"
+    fi
+    echo "  uses $STATE/current.jpg"
+else
+    echo "  $HYPRLOCK_CONF not found, skipped." >&2
+fi
+
+if [[ $SYSTEM == yes ]]; then
+    echo "Login screen and boot menu (sudo will ask for your password)"
+    sudo "$SELF" --system "$STATE/current.jpg" "$STATE/current.png"
+fi
+echo "All done."

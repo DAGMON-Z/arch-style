@@ -1,0 +1,25 @@
+/* Rofi behavior. The look is in tokyo-night.rasi. */
+
+configuration {
+    modes: "drun,run";
+    show-icons: true;
+    icon-theme: "Papirus-Dark";
+    font: "JetBrainsMono Nerd Font 11";
+    terminal: "kitty";
+
+    /* Names shown on the tabs and in the search box */
+    display-drun: "Apps";
+    display-run: "Run";
+    drun-display-format: "{name}";
+
+    /* Typing "brv" can match "Brave" */
+    matching: "fuzzy";
+    sort: true;
+
+    /* Highlight on hover, open with one click */
+    hover-select: true;
+    me-select-entry: "";
+    me-accept-entry: "MousePrimary";
+}
+
+@theme "~/.config/rofi/tokyo-night.rasi"

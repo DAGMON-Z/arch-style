@@ -1,0 +1,25 @@
+// fastfetch: the system summary shown when a terminal opens
+{
+    "logo": {
+        "source": "arch_small",
+        "color": { "1": "blue" },
+        "padding": { "top": 1, "left": 1, "right": 3 }
+    },
+    "display": {
+        "separator": "  ",
+        "color": { "keys": "blue", "title": "magenta" }
+    },
+    "modules": [
+        "title",
+        { "type": "os", "key": " os    ", "format": "{pretty-name}" },
+        { "type": "kernel", "key": " kernel", "format": "{release}" },
+        { "type": "wm", "key": " wm    ", "format": "{pretty-name}" },
+        { "type": "terminal", "key": " term  ", "format": "{pretty-name}" },
+        { "type": "shell", "key": " shell ", "format": "{pretty-name}" },
+        { "type": "memory", "key": " ram   ", "format": "{used} / {total}" },
+        { "type": "battery", "key": " power ", "format": "{capacity}" },
+        { "type": "uptime", "key": " uptime" },
+        "break",
+        { "type": "colors", "symbol": "circle" }
+    ]
+}

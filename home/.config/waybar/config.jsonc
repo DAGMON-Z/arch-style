@@ -1,0 +1,184 @@
+// -*- mode: jsonc -*-
+// Waybar: which modules exist and what they do. The look is in style.css.
+// Icons are written as \uXXXX codes from JetBrainsMono Nerd Font.
+{
+    "layer": "top",
+    "position": "top",
+    "height": 34,
+    // Space around the bar, so the pills float
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "margin-bottom": 0,
+    "spacing": 3,
+
+    "modules-left": ["custom/arch", "hyprland/workspaces"],
+    "modules-center": ["clock"],
+    "modules-right": [
+        "cpu",
+        "memory",
+        "temperature",
+        "hyprland/language",
+        "pulseaudio",
+        "backlight",
+        "network",
+        "bluetooth",
+        "power-profiles-daemon",
+        "battery",
+        "custom/power"
+    ],
+
+    "custom/arch": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "rofi -show drun"
+    },
+
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate",
+        // Always show workspaces 1 to 5, even when empty
+        "persistent-workspaces": { "*": 5 },
+        "enable-bar-scroll": true,
+        "on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\" })'",
+        "on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\" })'"
+    },
+
+    "clock": {
+        "format": " {:%H:%M   %a %d %b}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "month",
+            "format": {
+                "months": "<span color='#7aa2f7'><b>{}</b></span>",
+                "weekdays": "<span color='#bb9af7'>{}</span>",
+                "today": "<span color='#ff9e64'><b>{}</b></span>"
+            }
+        }
+    },
+
+    "cpu": {
+        "interval": 3,
+        "format": " {usage}%",
+        "tooltip": false
+    },
+
+    "memory": {
+        "interval": 5,
+        "format": "󰍛 {percentage}%",
+        "tooltip-format": "{used:0.1f} GiB of {total:0.1f} GiB used"
+    },
+
+    // Reads the CPU package sensor by its stable path. The hwmonN number can
+    // change between boots, so it is not hard-coded here.
+    "temperature": {
+        "hwmon-path-abs": "/sys/devices/platform/coretemp.0/hwmon",
+        "input-filename": "temp1_input",
+        "critical-threshold": 85,
+        "interval": 3,
+        "format": "{icon} {temperatureC}°",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip-format": "CPU package: {temperatureC}°C"
+    },
+
+    // Display only. Alt+Shift still switches layout, from hyprland.lua.
+    "hyprland/language": {
+        "format": "{}",
+        "format-en": "us",
+        "format-ar": "ar",
+        "min-length": 2,
+        "tooltip": false
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-bluetooth": " {volume}%",
+        "format-bluetooth-muted": "󰖁 mute",
+        "format-muted": "󰖁 mute",
+        "format-icons": {
+            "headphone": "",
+            "headset": "",
+            "default": ["󰕿", "󰖀", "󰕾"]
+        },
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "on-scroll-up": "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+        "tooltip-format": "{desc}: {volume}%"
+    },
+
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "on-scroll-up": "brightnessctl -e4 -n2 set 5%+",
+        "on-scroll-down": "brightnessctl -e4 -n2 set 5%-",
+        "tooltip": false
+    },
+
+    // Icon only, to save space. Hover for the details.
+    "network": {
+        "interval": 5,
+        "format-wifi": "{icon}",
+        "format-ethernet": "󰈀",
+        "format-linked": "󰈀",
+        "format-disconnected": "󰖪",
+        "format-icons": ["󰤟", "󰤢", "󰤥", "󰤨"],
+        "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format-ethernet": "{ifname}: {ipaddr}/{cidr}",
+        "tooltip-format-linked": "{ifname}: no IP address",
+        "tooltip-format-disconnected": "Disconnected",
+        "on-click": "kitty -e nmtui"
+    },
+
+    "bluetooth": {
+        "format": "󰂯",
+        "format-connected": "󰂱",
+        "format-off": "󰂲",
+        "format-disabled": "󰂲",
+        "format-no-controller": "",
+        "tooltip-format": "Bluetooth: {status}",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}",
+        "on-click": "kitty -e bluetoothctl"
+    },
+
+    // Power mode from power-profiles-daemon. Click to cycle through the modes.
+    "power-profiles-daemon": {
+        "format": "{icon}",
+        "tooltip": true,
+        "tooltip-format": "Power mode: {profile}\nClick to switch",
+        "format-icons": {
+            "default": "\udb81\uddd1",
+            "power-saver": "\udb80\udf2a",
+            "balanced": "\udb81\uddd1",
+            "performance": "\udb85\udcde"
+        }
+    },
+
+    "battery": {
+        "bat": "BAT1",
+        "adapter": "ACAD",
+        "interval": 10,
+        "states": { "warning": 30, "critical": 15 },
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰚥 {capacity}%",
+        "format-icons": ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"],
+        "tooltip-format": "{timeTo}"
+    },
+
+    // Same menu and same actions as before.
+    "custom/power": {
+        "format": "⏻",
+        "tooltip": false,
+        "menu": "on-click",
+        "menu-file": "$HOME/.config/waybar/power_menu.xml",
+        "menu-actions": {
+            "lock": "hyprlock",
+            "logout": "uwsm stop",
+            "reboot": "systemctl reboot",
+            "shutdown": "systemctl poweroff"
+        }
+    }
+}

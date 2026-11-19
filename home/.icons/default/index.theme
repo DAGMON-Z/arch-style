@@ -1,0 +1,5 @@
+# Makes older apps use the same cursor as Hyprland
+[Icon Theme]
+Name=Default
+Comment=Default cursor theme
+Inherits=capitaine-cursors

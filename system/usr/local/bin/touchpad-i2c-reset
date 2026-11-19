@@ -1,0 +1,35 @@
+#!/bin/sh
+# MSI Modern 15 F13M: at boot the kernel disables the touchpad I2C controller's
+# interrupt (IRQ 27), so the touchpad fails to start with error -110.
+# Restarting the controller driver turns the interrupt back on.
+
+PCI=0000:00:15.0
+DRIVER=/sys/bus/pci/drivers/intel-lpss
+TOUCHPAD=/sys/bus/i2c/devices/i2c-LITE0650:00
+
+touchpad_ready() {
+    [ -e "$TOUCHPAD/driver" ]
+}
+
+# Give the normal startup 10 seconds. If the touchpad works, do nothing.
+i=0
+while [ "$i" -lt 10 ]; do
+    touchpad_ready && exit 0
+    sleep 1
+    i=$((i + 1))
+done
+
+# Otherwise restart the controller, up to three times.
+for attempt in 1 2 3; do
+    [ -e "$DRIVER/$PCI" ] && echo "$PCI" > "$DRIVER/unbind"
+    sleep 1
+    echo "$PCI" > "$DRIVER/bind"
+    sleep 3
+    if touchpad_ready; then
+        echo "Touchpad started after controller restart (attempt $attempt)"
+        exit 0
+    fi
+done
+
+echo "Touchpad still not available after 3 controller restarts" >&2
+exit 1

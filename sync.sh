@@ -1,0 +1,76 @@
+#!/bin/bash
+# Copies the current config files into this repository.
+# Run this before committing: ./sync.sh
+set -euo pipefail
+
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Paths inside your home folder
+HOME_ITEMS=(
+    .config/hypr
+    .config/waybar
+    .config/kitty
+    .config/rofi
+    .config/dunst
+    .config/nvim
+    .config/starship.toml
+    .bashrc
+    .local/share/rice-boot-themes
+    # GTK, Qt and KDE theme
+    .config/gtk-3.0
+    .config/gtk-4.0
+    .config/qt6ct
+    .config/kdeglobals
+    .config/dolphinrc
+    .local/share/color-schemes/TokyoNight.colors
+    .icons/default/index.theme
+    # Other tools
+    .config/fastfetch
+    .config/clangd
+)
+
+# Paths outside your home folder
+SYSTEM_ITEMS=(
+    /usr/local/bin/touchpad-i2c-reset
+    /etc/systemd/system/touchpad-i2c-reset.service
+    /usr/local/bin/power-profile-auto
+    /etc/udev/rules.d/99-power-profile-auto.rules
+    /etc/systemd/system/power-profile-auto.service
+)
+
+# Start clean, so files you deleted also disappear from the backup
+rm -rf "$REPO/home" "$REPO/system"
+mkdir -p "$REPO/home" "$REPO/system"
+
+tar -C "$HOME" --exclude='*.bak' --exclude='*.bak.*' --exclude='.git' \
+    -cf - "${HOME_ITEMS[@]}" | tar -C "$REPO/home" -xf -
+
+# ~/.local/bin: real files only. Links to installed programs are skipped.
+if [[ -d $HOME/.local/bin ]]; then
+    while IFS= read -r -d '' file; do
+        mkdir -p "$REPO/home/.local/bin"
+        cp -p "$file" "$REPO/home/.local/bin/"
+    done < <(find "$HOME/.local/bin" -maxdepth 1 -type f -print0)
+fi
+
+for file in "${SYSTEM_ITEMS[@]}"; do
+    mkdir -p "$REPO/system$(dirname "$file")"
+    cp -p "$file" "$REPO/system$file"
+done
+
+# Replace your home folder path with @HOME@, so the repository does not
+# contain your username. install.sh puts the reader's own path back.
+grep -rlIF "$HOME" "$REPO/home" | while IFS= read -r file; do
+    sed -i "s#$HOME#@HOME@#g" "$file"
+done
+
+# Stop if anything looks like a password, token or private key
+pattern='(pass(word|wd)|api[_-]?key|secret|auth[_-]?token|access[_-]?token)[[:space:]]*[=:][[:space:]]*[^[:space:]]'
+pattern+='|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_|sk-[A-Za-z0-9-]{20,}|AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY'
+if matches=$(grep -rIlEi "$pattern" "$REPO/home" "$REPO/system"); then
+    echo "Possible secrets found. Check these files before committing:" >&2
+    echo "$matches" >&2
+    exit 1
+fi
+
+echo "Sync complete. Next: git status"

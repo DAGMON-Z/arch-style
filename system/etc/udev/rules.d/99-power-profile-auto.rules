@@ -1,0 +1,3 @@
+# When a charger ("Mains" power supply) is plugged in or removed,
+# switch the power profile. See /usr/local/bin/power-profile-auto.
+SUBSYSTEM=="power_supply", ACTION=="change", ATTR{type}=="Mains", RUN+="/usr/local/bin/power-profile-auto"

@@ -1,0 +1,32 @@
+# Backup files
+*.bak
+*.bak.*
+*~
+
+# Passwords, tokens and keys
+.env
+.env.*
+*.env
+.netrc
+.git-credentials
+credentials*
+*secret*
+*password*
+*passwd*
+*token*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+id_ecdsa*
+hosts.yml
+
+# Program caches
+__pycache__/
+.cache/
+
+# Wallpaper images
+**/Wallpapers/*.jpg
+**/Wallpapers/*.png

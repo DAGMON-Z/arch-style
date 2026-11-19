@@ -1,0 +1,10 @@
+[Unit]
+Description=Restart the I2C controller if the touchpad failed to start
+After=systemd-udevd.service systemd-modules-load.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/touchpad-i2c-reset
+
+[Install]
+WantedBy=multi-user.target
