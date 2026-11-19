@@ -2,6 +2,8 @@
 
 **Neovim** is a keyboard-driven code editor. **LazyVim** is a ready-made Neovim
 setup with file search, completion and syntax colors already configured.
+(In this setup, autocomplete is turned off on purpose. See
+[below](#autocomplete-is-off-on-purpose).)
 
 Config: `~/.config/nvim/` (started from the
 [LazyVim starter](https://github.com/LazyVim/starter))
@@ -17,6 +19,7 @@ Config: `~/.config/nvim/` (started from the
 | `~/.config/clangd/config.yaml` | Treats single `.cpp` files as C++20 |
 | `lua/plugins/competitest.lua` | Receives problems from the browser and runs sample tests ([below](#get-problems-from-brave-competitive-companion)) |
 | `templates/cp.cpp` | The starting code for every received problem |
+| `lua/plugins/no-autocomplete.lua` | Turns off autocomplete popups, for practice ([below](#autocomplete-is-off-on-purpose)) |
 
 ## First start
 
@@ -49,6 +52,25 @@ g++ -std=c++20 -O2 -Wall a.cpp -o a && ./a
 ```
 
 ## Competitive programming: compile, test, debug
+
+### Autocomplete is off on purpose
+
+**Autocomplete is turned off in this setup, to learn better.** Suggestions
+don't pop up while you type, and no grey text guesses the rest of the line. In
+contests and interviews you have to remember function names, headers and
+syntax yourself, so practising without help builds that memory much faster.
+
+What still works:
+
+- **Error checking:** `clangd` still underlines mistakes, so you learn from them
+  right away.
+- **`Ctrl + Space`:** shows suggestions **on purpose**, when you're really
+  stuck. Try to remember first!
+- **`K`:** shows the documentation of the function under the cursor.
+
+To turn autocomplete back on, delete
+`~/.config/nvim/lua/plugins/no-autocomplete.lua` and restart Neovim.
+
 
 ### Get problems from Brave (Competitive Companion)
 
