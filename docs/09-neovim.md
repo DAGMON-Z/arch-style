@@ -45,7 +45,7 @@ Try it:
 mkdir -p ~/cp && cd ~/cp && nvim a.cpp
 ```
 
-To compile and run inside Neovim, press `Space f t` to open a terminal, then:
+To compile and run inside Neovim, press `` Ctrl + ` `` to open a terminal, then:
 
 ```bash
 g++ -std=c++20 -O2 -Wall a.cpp -o a && ./a
@@ -236,6 +236,39 @@ $1 = std::vector of length 3, capacity 3 = {1, 2, 3}
 (gdb) p sum
 $2 = 6
 ```
+
+## VS Code shortcuts
+
+`~/.config/nvim/lua/config/keymaps.lua` adds the main VS Code shortcuts, so
+Neovim feels familiar. They work in normal mode, while typing, and on selected
+text:
+
+| Keys | Action |
+| --- | --- |
+| `Ctrl + Z` | Undo |
+| `Ctrl + Shift + Z` or `Ctrl + Y` | Redo |
+| `Ctrl + S` | Save |
+| `Ctrl + A` | Select all |
+| `Ctrl + C` / `Ctrl + X` / `Ctrl + V` | Copy / cut / paste (system clipboard). With nothing selected, copy and cut take the whole line |
+| `Shift + arrows`, `Shift + Home/End` | Select text |
+| `Alt + Up` / `Alt + Down` | Move the line (or selection) up / down |
+| `Shift + Alt + Up` / `Down` | Copy the line (or selection) up / down |
+| `Ctrl + /` | Comment / uncomment |
+| `Ctrl + F` | Find (then `n` for the next match) |
+| `Ctrl + Backspace` | Delete the previous word |
+| `Tab` / `Shift + Tab` | Indent / unindent the selection |
+| `` Ctrl + ` `` | Open / hide the terminal |
+
+The Neovim keys still work as well. For example, `u` is undo, `Ctrl + R` is
+redo, `y` copies and `p` pastes.
+
+**Why `Ctrl + Z` needed fixing:** in a terminal, `Ctrl + Z` normally *pauses*
+the running program and drops you back to the shell. If that ever happens (for
+example in another program), type `fg` to bring the program back.
+
+**kitty:** kitty uses `Ctrl + Shift + Z` for its own scrolling, so
+`kitty.conf` frees it with `map kitty_mod+z`. Without that line, Neovim never
+receives the key.
 
 ## Survival keys
 
