@@ -118,7 +118,7 @@ Try `1.25` first, then `1.5` if you want it as big as my laptop. Run
 `hyprctl reload` after every change to the file.
 
 **Allowed values:** the screen's width and height divided by the scale must both
-be whole numbers. For a 1920×1080 screen, `1`, `1.2`, `1.25`, `1.5`, `1.6` and `2` work.
+be whole numbers. For a 1920×1080 screen, `1`, `1.25`, `1.5` and `2` work.
 Hyprland shows a red warning and picks the closest value if yours doesn't fit.
 
 **Go back to automatic:** `rm ~/.config/hypr/monitors.lua && hyprctl reload`
