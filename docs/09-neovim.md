@@ -113,7 +113,7 @@ Files go to `~/cp/<site>/<contest>/<problem>.cpp`, for example
 `~/cp/Codeforces/Round 1000/A. Example.cpp`. The tests are saved next to it as
 `A. Example_input0.txt`, `A. Example_output0.txt`, and so on.
 
-**Test your solution:** press `Space C t`. Neovim compiles with the judge's
+**Test your solution:** press **`F5`**, or `Space C t`. Neovim compiles with the judge's
 flags (`-std=c++20 -O2 -Wall`), runs every sample test, and shows each one as
 passed or failed, with your output next to the expected output. Press `q` to
 close the results.
@@ -122,7 +122,7 @@ close the results.
 | --- | --- |
 | `Space C r` | Receive one problem from the browser |
 | `Space C c` | Receive a whole contest (click the icon on the contest page) |
-| `Space C t` | Compile and run all sample tests |
+| `F5` or `Space C t` | Save, compile and run all sample tests |
 | `Space C a` | Add your own test |
 | `Space C e` | Edit a test |
 | `Space C d` | Delete a test |
@@ -261,7 +261,7 @@ text:
 | `Ctrl + S` | Save |
 | `Ctrl + A` | Select all |
 | `Ctrl + C` / `Ctrl + X` / `Ctrl + V` | Copy / cut / paste (system clipboard). With nothing selected, copy and cut take the whole line |
-| `Shift + arrows`, `Shift + Home/End` | Select text |
+| `Shift + arrows`, `Shift + Home/End` | Select text. You stay in typing mode: typing replaces the selection, and a plain arrow cancels it |
 | `Alt + Up` / `Alt + Down` | Move the line (or selection) up / down |
 | `Shift + Alt + Up` / `Down` | Copy the line (or selection) up / down |
 | `Ctrl + /` | Comment / uncomment |
@@ -269,9 +269,16 @@ text:
 | `Ctrl + Backspace` | Delete the previous word |
 | `Tab` / `Shift + Tab` | Indent / unindent the selection |
 | `` Ctrl + ` `` | Open / hide the terminal |
+| `F5` | Save and run the sample tests (works while typing too) |
 
 The Neovim keys still work as well. For example, `u` is undo, `Ctrl + R` is
 redo, `y` copies and `p` pastes.
+
+**How `Shift + arrows` works:** `options.lua` sets `keymodel` and `selectmode`,
+which turn on Neovim's **select mode**. It behaves like selecting in VS Code: the
+bottom-left corner shows `SELECT`, typing replaces the selected text, and a
+plain arrow key cancels the selection. (Neovim's other selection mode, *visual*
+mode, uses `v`, and there typing runs commands instead.)
 
 **Why `Ctrl + Z` needed fixing:** in a terminal, `Ctrl + Z` normally *pauses*
 the running program and drops you back to the shell. If that ever happens (for

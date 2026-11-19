@@ -13,8 +13,8 @@ map("v", "<C-z>", "<Esc>u", { desc = "Undo" })
 map({ "n", "i" }, "<C-S-z>", "<Cmd>redo<CR>", { desc = "Redo" })
 map({ "n", "i" }, "<C-y>", "<Cmd>redo<CR>", { desc = "Redo" })
 
--- Select all
-map({ "n", "i", "v" }, "<C-a>", "<Esc>ggVG", { desc = "Select all" })
+-- Select all. <C-g> switches to Select mode, so typing replaces everything.
+map({ "n", "i", "v" }, "<C-a>", "<Esc>ggVG<C-g>", { desc = "Select all" })
 
 -- Copy / cut / paste with the system clipboard (the "+ register).
 -- With nothing selected, copy and cut take the whole line, like VS Code.
@@ -26,12 +26,8 @@ map("n", "<C-v>", '"+P', { desc = "Paste" })
 map("v", "<C-v>", '"_d"+P', { desc = "Paste over selection" })
 map("i", "<C-v>", "<C-r><C-o>+", { desc = "Paste" })
 
--- Select with Shift + arrows (and Shift + Home/End)
-for _, key in ipairs({ "Left", "Right", "Up", "Down", "Home", "End" }) do
-  map("n", "<S-" .. key .. ">", "v<" .. key .. ">", { desc = "Select" })
-  map("i", "<S-" .. key .. ">", "<Esc>v<" .. key .. ">", { desc = "Select" })
-  map("v", "<S-" .. key .. ">", "<" .. key .. ">", { desc = "Select" })
-end
+-- Select with Shift + arrows: handled by the keymodel and selectmode settings
+-- in options.lua, which work like VS Code (typing replaces the selection).
 
 -- Move lines with Alt + Up/Down
 map("n", "<A-Up>", "<A-k>", { remap = true, desc = "Move line up" })
@@ -58,6 +54,13 @@ map("i", "<C-/>", "<Esc>gcca", { remap = true, desc = "Toggle comment" })
 map({ "n", "t" }, "<C-`>", function()
   Snacks.terminal.focus(nil, { cwd = LazyVim.root() })
 end, { desc = "Toggle terminal" })
+
+-- Run the sample tests with F5: save, then run (works while typing too)
+map({ "n", "i", "v" }, "<F5>", function()
+  vim.cmd("stopinsert")
+  vim.cmd("silent! write")
+  vim.cmd("CompetiTest run")
+end, { desc = "Save and run sample tests" })
 
 -- Find with Ctrl + F
 map("n", "<C-f>", "/", { desc = "Find" })

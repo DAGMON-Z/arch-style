@@ -9,3 +9,8 @@ vim.opt.relativenumber = true
 -- Don't reformat code when saving, so it stays exactly as you wrote it.
 -- Format on purpose with Space c f. Space u f toggles format-on-save.
 vim.g.autoformat = false
+
+-- Select text with Shift + arrows like VS Code: you stay in typing mode, typing
+-- replaces the selection, and a plain arrow key cancels it.
+vim.opt.keymodel = "startsel,stopsel"
+vim.opt.selectmode = "key,mouse"
