@@ -5,7 +5,7 @@
 #   1. installs the packages in packages.txt with pacman
 #   2. installs yay (if needed) and the AUR packages in aur-packages.txt
 #   3. copies the config files from home/ into your home folder
-#   4. sets dark mode, icons, cursor and font
+#   4. sets dark mode, icons, cursor and font, and asks how big things should be
 #   5. turns on the services this setup needs, and optionally switches to
 #      power-saver automatically on battery
 #   6. optionally installs the MSI Modern 15 touchpad fix (hardware-specific!)
@@ -21,6 +21,7 @@
 #   bash install.sh --dry-run        only show what would happen, change nothing
 #   bash install.sh --all            do every general step without asking
 #   bash install.sh --all --wallpaper ~/Pictures/my-image.jpg
+#   bash install.sh --all --scale 1.25    also make everything 125% size
 #   bash install.sh --update         get the latest version and apply what changed
 #
 # --all never installs the AUR apps (community-made) or the MSI touchpad fix
@@ -36,6 +37,7 @@ PULL=yes
 SINCE=""
 SHOW_PLACED=no
 WALLPAPER=""
+SCALE=""
 FAILED=()
 
 usage() {
@@ -48,6 +50,12 @@ while [[ $# -gt 0 ]]; do
         --all) ALL=yes ;;
         --dry-run) DRY=yes ;;
         --update) UPDATE=yes ;;
+        --scale)
+            [[ $# -ge 2 ]] || usage 1
+            SCALE=$2
+            [[ $SCALE =~ ^[0-9]+(\.[0-9]+)?$ ]] || { echo "--scale needs a number, like 1.25" >&2; exit 1; }
+            shift
+            ;;
         --no-pull) PULL=no ;;          # used internally by --update
         --since)                        # used internally by --update
             [[ $# -ge 2 ]] || usage 1
@@ -162,6 +170,83 @@ place() {
         [[ $SHOW_PLACED == yes ]] && echo "  added: ${target/#$HOME/\~}"
     fi
     mv "$ready" "$target"
+}
+
+# Screen size: "1.25" -> "125%"
+percent() { awk -v s="$1" 'BEGIN { printf "%d%%", s * 100 + 0.5 }'; }
+
+# Does this scale fit the resolution? Width and height divided by the scale
+# must both be whole numbers, or Hyprland picks a different value.
+scale_fits() { # width height scale
+    awk -v w="$1" -v h="$2" -v s="$3" 'BEGIN { x = w / s; y = h / s; exit !(x == int(x) && y == int(y)) }'
+}
+
+# Ask how big things should be on each screen and write ~/.config/hypr/monitors.lua
+setup_scale() {
+    local screens name size width height current choice options i lines="" file new
+    screens=$(hyprctl monitors 2>/dev/null | awk '
+        /^Monitor /  { name = $2 }
+        /^\t[0-9]+x[0-9]+@/ { split($1, r, "@"); size = r[1] }
+        /^\tscale:/  { print name, size, $2 }')
+    if [[ -z $screens ]]; then
+        echo "  Screens can only be detected from inside Hyprland, so this was skipped."
+        echo "  To change the size later, see docs/03-hyprland.md (\"Making things bigger\")."
+        return 0
+    fi
+    # The list of screens comes in on input 3, so questions still read the keyboard
+    while read -r name size current <&3; do
+        width=${size%x*}
+        height=${size#*x}
+        options=()
+        for s in 1 1.25 1.5 1.6 1.75 2; do
+            scale_fits "$width" "$height" "$s" && options+=("$s")
+        done
+        echo "  $name: $width x $height, automatic size is $(percent "$current")"
+        if [[ -n $SCALE ]]; then
+            choice=$SCALE
+            if ! scale_fits "$width" "$height" "$choice"; then
+                echo "  $(percent "$choice") doesn't fit $width x $height, so keeping automatic."
+                echo "  Sizes that fit: $(for s in "${options[@]}"; do printf '%s ' "$s"; done)"
+                continue
+            fi
+        elif [[ $ALL == yes ]]; then
+            echo "  Keeping automatic (add --scale 1.25 to choose a size)."
+            continue
+        else
+            echo "    0) keep automatic"
+            i=1
+            for s in "${options[@]}"; do
+                echo "    $i) $(percent "$s")"
+                i=$((i + 1))
+            done
+            read -r -p "  Choose a size for $name [0]: " choice
+            if [[ -z $choice || $choice == 0 ]]; then
+                continue
+            elif [[ $choice =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#options[@]} )); then
+                choice=${options[$((choice - 1))]}
+            else
+                echo "  Not one of the choices, so keeping automatic."
+                continue
+            fi
+        fi
+        lines+="hl.monitor({ output = \"$name\", mode = \"preferred\", position = \"auto\", scale = $choice })"$'\n'
+        echo "  $name will be $(percent "$choice")."
+    done 3<<< "$screens"
+    if [[ -z $lines ]]; then
+        return 0
+    fi
+    file="$HOME/.config/hypr/monitors.lua"
+    new="$(mktemp)"
+    {
+        echo "-- Screen sizes for this computer only. Not synced to GitHub."
+        echo "-- After editing, run: hyprctl reload"
+        printf '%s' "$lines"
+    } > "$new"
+    place "$new" "$file"
+    rm -f "$new"
+    run hyprctl reload >/dev/null || true
+    [[ $DRY == no ]] && echo "  Saved in ~/.config/hypr/monitors.lua"
+    return 0
 }
 
 # Print the list of failed steps, if any
@@ -368,6 +453,10 @@ if ask "Step 4: set dark mode, Papirus icons, cursor, monospace font, and Thunar
     # Open folders with Thunar
     try "desktop settings" xdg-mime default thunar.desktop inode/directory
 fi
+
+echo
+echo "Screen size: how big text, windows and the bar are drawn."
+setup_scale
 
 # 5. Services
 echo

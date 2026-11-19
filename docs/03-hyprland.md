@@ -70,6 +70,13 @@ Each computer can have its own size in **`~/.config/hypr/monitors.lua`**. That
 file isn't in the repository and `sync.sh` never copies it, so every computer
 keeps its own.
 
+**The easy way:** the installer asks about this. Run `bash ~/arch-style/install.sh`
+from inside Hyprland. After copying the configs, it lists each screen with the
+sizes that fit it, and writes `monitors.lua` for you. With `--all`, add
+`--scale 1.25` instead.
+
+**By hand:**
+
 **1. Find your screen's name:**
 
 ```bash

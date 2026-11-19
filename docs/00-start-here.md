@@ -97,6 +97,13 @@ previous command worked":
 2. `git clone ... ~/arch-style` downloads this repository to `~/arch-style`.
 3. `bash ~/arch-style/install.sh --all` runs the installer without questions.
 
+To make everything bigger, add `--scale` with a size: `1.25` is 125%, `1.5` is
+150%. Without it, `--all` keeps the automatic size:
+
+```bash
+... install.sh --all --scale 1.25
+```
+
 To use your own wallpaper right away, add `--wallpaper` and an image path at
 the end:
 
@@ -130,7 +137,7 @@ These are the steps the installer goes through:
 | 1 | Installs the packages in `packages.txt` | [Packages](02-packages.md) |
 | 2 | Installs yay and the AUR apps (optional) | [Packages](02-packages.md#aur-packages) |
 | 3 | Copies the config files into your home folder, backing up old ones | [Hyprland](03-hyprland.md) and the other chapters |
-| 4 | Sets dark mode, icons, cursor and font | [GTK and Qt theming](08-gtk-qt-theming.md) |
+| 4 | Sets dark mode, icons, cursor and font, then asks how big things should be on each screen | [GTK and Qt theming](08-gtk-qt-theming.md), [Scale](03-hyprland.md#making-things-bigger-or-smaller-scale) |
 | 5 | Turns on services, plus power-saver on battery | [Packages](02-packages.md#services-this-setup-needs), [Power](12-power-management.md) |
 | 6 | MSI touchpad fix (only that laptop) | [Troubleshooting](11-troubleshooting.md#touchpad-error--110) |
 | 7 | Login screen theme | [Boot and login themes](10-boot-and-login-themes.md) |

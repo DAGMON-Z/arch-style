@@ -160,7 +160,8 @@ The [step-by-step guide](docs/00-start-here.md) covers this in detail. In short:
    ```
 
    `--all` skips the AUR apps and the MSI touchpad fix. Add
-   `--wallpaper <image>` to set your wallpaper at the same time.
+   `--wallpaper <image>` to set your wallpaper at the same time, and
+   `--scale 1.25` to make everything 125% size.
 
 5. The installer sets the included sci-fi city wallpaper everywhere. To use your
    own image instead:
