@@ -59,6 +59,47 @@ each part.
 - **Safety:** `allow_session_lock_restore` lets you restart the lock screen if
   it crashes (see [chapter 6](06-lockscreen.md)).
 
+## Making things bigger or smaller (scale)
+
+**Scale** sets how big everything is drawn: text, windows, the bar, the cursor.
+`1` is 100%, `1.25` is 125%, `1.5` is 150%. The shared config uses `auto`,
+which picks a size from the screen. On my 15.6" laptop that's 1.5, but on a 22"
+desktop monitor it's 1, which looks small.
+
+Each computer can have its own size in **`~/.config/hypr/monitors.lua`**. That
+file isn't in the repository and `sync.sh` never copies it, so every computer
+keeps its own.
+
+**1. Find your screen's name:**
+
+```bash
+hyprctl monitors | grep Monitor
+```
+
+It prints something like `Monitor HDMI-A-1 (ID 0):`. Here the name is `HDMI-A-1`.
+Laptop screens are usually `eDP-1`.
+
+**2. Create the file**, using your screen's name:
+
+```bash
+cat > ~/.config/hypr/monitors.lua <<'EOF'
+hl.monitor({ output = "HDMI-A-1", mode = "preferred", position = "auto", scale = 1.25 })
+EOF
+```
+
+- `cat > file <<'EOF' ... EOF` writes the lines between the two `EOF`s into the
+  file.
+- `output` is your screen's name, and `scale` is the size.
+
+Hyprland reloads by itself when the file changes, so the new size appears right
+away. Try `1.25` first, then `1.5` if you want it as big as my laptop.
+
+**Allowed values:** the screen's width and height divided by the scale must both
+be whole numbers. For a 1920×1080 screen, `1`, `1.25`, `1.5` and `2` work.
+Hyprland shows a red warning and picks the closest value if yours doesn't fit.
+
+**Go back to automatic:** `rm ~/.config/hypr/monitors.lua`
+
 ## Testing changes safely
 
 Hyprland reloads the config every time you save it. A mistake shows a red error

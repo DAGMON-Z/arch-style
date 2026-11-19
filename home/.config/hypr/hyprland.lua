@@ -29,6 +29,16 @@ hl.monitor({
     scale    = "auto",
 })
 
+-- Settings for this computer only, such as making things bigger with "scale".
+-- Put them in ~/.config/hypr/monitors.lua. That file is never synced to GitHub,
+-- so each computer can have its own. Example: docs/03-hyprland.md
+local monitors_file = os.getenv("HOME") .. "/.config/hypr/monitors.lua"
+local exists = io.open(monitors_file, "r")
+if exists then
+    exists:close()
+    dofile(monitors_file)
+end
+
 
 ---------------------
 ---- MY PROGRAMS ----

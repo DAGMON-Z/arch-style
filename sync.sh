@@ -45,7 +45,8 @@ SYSTEM_ITEMS=(
 rm -rf "$REPO/home"
 mkdir -p "$REPO/home" "$REPO/system"
 
-tar -C "$HOME" --exclude='*.bak' --exclude='*.bak.*' --exclude='.git' \
+# monitors.lua holds settings for one computer only, so it is never copied
+tar -C "$HOME" --exclude='*.bak' --exclude='*.bak.*' --exclude='.git' --exclude='monitors.lua' \
     -cf - "${HOME_ITEMS[@]}" | tar -C "$REPO/home" -xf -
 
 # ~/.local/bin: real files only. Links to installed programs are skipped.
