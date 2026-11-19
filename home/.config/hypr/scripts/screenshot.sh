@@ -1,7 +1,7 @@
 #!/bin/bash
 # Takes a screenshot and shows a notification with the result.
 # Usage: screenshot.sh full | area-copy | area-save
-#   full       whole screen, saved to ~/Pictures/Screenshots
+#   full       whole screen, saved to ~/Pictures/Screenshots and copied to the clipboard
 #   area-copy  drag to select an area, copied to the clipboard
 #   area-save  drag to select an area, saved to ~/Pictures/Screenshots
 
@@ -21,7 +21,9 @@ failed() { notify "Screenshot failed" "$1" "" 2; exit 1; }
 case "$1" in
     full)
         grim "$FILE" || failed "grim could not capture the screen"
-        notify "Screenshot saved" "${FILE/#$HOME/\~}" "$FILE"
+        # Also copy it, so it can be pasted right away with Ctrl+V
+        wl-copy --type image/png < "$FILE" || failed "saved, but could not copy to the clipboard"
+        notify "Screenshot saved and copied" "${FILE/#$HOME/\~}  (paste with Ctrl+V)" "$FILE"
         ;;
     area-copy)
         # slurp lets you drag a box. Pressing Esc cancels, which is not an error.

@@ -59,7 +59,8 @@ each part.
   It uses `grim` (take the picture), `slurp` (drag to select an area) and
   `wl-copy` (copy to the clipboard). It creates `~/Pictures/Screenshots` if it's
   missing and shows a notification with a preview, so you can see that it
-  worked. `Esc` cancels an area selection.
+  worked. `Print` also copies the full screenshot, so you can paste it right
+  away with `Ctrl + V`. `Esc` cancels an area selection.
 - **Autostart:** `set-wallpaper --restore` shows the wallpaper (see [chapter 7](07-wallpaper.md)).
 - **Safety:** `allow_session_lock_restore` lets you restart the lock screen if
   it crashes (see [chapter 6](06-lockscreen.md)).

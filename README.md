@@ -127,7 +127,7 @@ laptops. See [power management](docs/12-power-management.md).
 | `SUPER + S` | Show or hide the scratchpad |
 | `SUPER + SHIFT + S` | Move window to the scratchpad |
 | Three-finger swipe | Switch workspace |
-| `Print` | Screenshot of the whole screen to `~/Pictures/Screenshots` |
+| `Print` | Screenshot of the whole screen, saved to `~/Pictures/Screenshots` and copied (paste with `Ctrl + V`) |
 | `SUPER + Print` | Screenshot of an area to the clipboard |
 | `SUPER + SHIFT + Print` | Screenshot of an area to a file |
 | Volume and brightness keys | Change level, with an on-screen popup |
