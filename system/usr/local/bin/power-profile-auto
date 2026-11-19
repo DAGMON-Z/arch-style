@@ -2,16 +2,28 @@
 # Picks a power profile from the charger state:
 #   charger connected -> balanced
 #   on battery        -> power-saver
+# Does nothing on computers without a battery, such as desktop PCs.
 # Run by a udev rule when the charger is plugged in or removed, and once at boot.
 # Works on most laptops. Needs power-profiles-daemon.
 
-profile=power-saver
-for supply in /sys/class/power_supply/*; do
-    if [ "$(cat "$supply/type" 2>/dev/null)" = Mains ] &&
-       [ "$(cat "$supply/online" 2>/dev/null)" = 1 ]; then
-        profile=balanced
-    fi
+supplies=${POWER_SUPPLY_DIR:-/sys/class/power_supply}
+has_battery=no
+on_charger=no
+for supply in "$supplies"/*; do
+    case "$(cat "$supply/type" 2>/dev/null)" in
+        Battery) has_battery=yes ;;
+        Mains) [ "$(cat "$supply/online" 2>/dev/null)" = 1 ] && on_charger=yes ;;
+    esac
 done
+
+# A desktop PC has no battery, so leave its profile alone
+[ "$has_battery" = yes ] || exit 0
+
+if [ "$on_charger" = yes ]; then
+    profile=balanced
+else
+    profile=power-saver
+fi
 
 # Ask power-profiles-daemon over D-Bus. This does the same as
 # "powerprofilesctl set", but doesn't need Python.

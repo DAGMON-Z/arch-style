@@ -199,6 +199,24 @@ standard, unchanged colors.
   lost, switch **HDMI Black Level** (sometimes called RGB range) between its
   two settings and keep the one that looks better.
 
+## No performance mode on a desktop PC
+
+**What happened:** on a desktop with an AMD Ryzen 5 3400G, the power pill only
+had power-saver and balanced, and at boot it was always set to power-saver.
+
+**Why:** two separate reasons.
+
+1. That CPU uses the older `acpi-cpufreq` driver, so power-profiles-daemon only
+   offers two "placeholder" modes, which don't change anything (see
+   [chapter 12](12-power-management.md#only-two-modes-and-no-performance)).
+2. The automatic power-saver script treated "no charger found" as "on battery".
+   A desktop has no charger, so it picked power-saver at every boot.
+
+**Fix:** the script now does nothing on computers without a battery. Get it with
+the [update command](00-start-here.md#part-8-getting-updates). The missing
+performance mode is a limit of the CPU, and the CPU still runs at full speed
+when needed.
+
 ## General tips
 
 - Read error messages, and search for the exact text.
