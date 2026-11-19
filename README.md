@@ -44,18 +44,23 @@ explains the options.
 
 ## Screenshots
 
-Screenshots are coming soon.
+**Desktop:** Waybar on top, Neovim with C++ on the left, kitty with fastfetch
+and the starship prompt on the right.
 
-<!-- Add screenshots to docs/screenshots/ and link them here, for example:
-![Desktop](docs/screenshots/desktop.png)
-![Lock screen](docs/screenshots/lockscreen.png)
-![Login screen](docs/screenshots/login.png)
-![Boot menu](docs/screenshots/grub.png)
--->
+![Desktop with Neovim and kitty](docs/screenshots/desktop.jpg)
 
-| Desktop | Lock screen | Login screen | Boot menu |
-| --- | --- | --- | --- |
-| *(screenshot)* | *(screenshot)* | *(screenshot)* | *(screenshot)* |
+**App launcher:** rofi in Apps mode (click the Arch logo on the bar).
+
+![rofi app launcher](docs/screenshots/launcher.jpg)
+
+| Lock screen (hyprlock) | Login screen (SDDM) |
+| --- | --- |
+| ![Lock screen](docs/screenshots/lockscreen.jpg) | ![Login screen](docs/screenshots/login.jpg) |
+
+The wallpaper in these screenshots is a plain gradient. Set your own with
+[`set-wallpaper`](docs/07-wallpaper.md). There's no screenshot of the boot menu,
+because GRUB can't be captured from inside Linux. More details are in
+[docs/screenshots](docs/screenshots/README.md).
 
 ## What's inside
 
