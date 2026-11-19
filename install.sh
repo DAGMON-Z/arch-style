@@ -21,6 +21,7 @@
 #   bash install.sh --dry-run        only show what would happen, change nothing
 #   bash install.sh --all            do every general step without asking
 #   bash install.sh --all --wallpaper ~/Pictures/my-image.jpg
+#   bash install.sh --update         get the latest version and apply what changed
 #
 # --all never installs the AUR apps (community-made) or the MSI touchpad fix
 # (one laptop model only). Run without --all to choose those yourself.
@@ -30,6 +31,10 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 ALL=no
 DRY=no
+UPDATE=no
+PULL=yes
+SINCE=""
+SHOW_PLACED=no
 WALLPAPER=""
 FAILED=()
 
@@ -42,6 +47,13 @@ while [[ $# -gt 0 ]]; do
     case $1 in
         --all) ALL=yes ;;
         --dry-run) DRY=yes ;;
+        --update) UPDATE=yes ;;
+        --no-pull) PULL=no ;;          # used internally by --update
+        --since)                        # used internally by --update
+            [[ $# -ge 2 ]] || usage 1
+            SINCE=$2
+            shift
+            ;;
         --wallpaper)
             [[ $# -ge 2 ]] || usage 1
             WALLPAPER="${2/#\~/$HOME}"
@@ -144,10 +156,145 @@ place() {
         backup="$target.bak"
         [[ -e $backup ]] && backup="$target.bak.$STAMP"
         cp -a "$target" "$backup"
+        [[ $SHOW_PLACED == yes ]] && echo "  updated: ${target/#$HOME/\~}"
         echo "  backup: $backup"
+    else
+        [[ $SHOW_PLACED == yes ]] && echo "  added: ${target/#$HOME/\~}"
     fi
     mv "$ready" "$target"
 }
+
+# Print the list of failed steps, if any
+summary() {
+    echo
+    if [[ ${#FAILED[@]} -gt 0 ]]; then
+        echo "Finished, but these steps had problems:"
+        printf '  - %s\n' "${FAILED[@]}" | sort -u
+        echo "See docs/11-troubleshooting.md, or run the installer again later."
+    else
+        echo "All done."
+    fi
+    [[ $DRY == yes ]] && echo "(That was a dry run. Nothing was changed.)"
+    return 0
+}
+
+# --update: get the latest version and apply only what changed.
+# Asks for your password only if something needs administrator rights.
+if [[ $UPDATE == yes ]]; then
+    echo "Arch Style update"
+    THEMES="$REPO/home/.local/share/rice-boot-themes"
+
+    # 1. Download the latest version of this repository
+    if [[ $PULL == yes && $DRY == no ]]; then
+        OLD=$(git -C "$REPO" rev-parse HEAD)
+        echo
+        echo "Downloading the latest version..."
+        if ! git -C "$REPO" pull --ff-only; then
+            echo "The repository couldn't be updated automatically. Fix it with:" >&2
+            echo "  cd $REPO && git fetch origin && git reset --hard origin/main" >&2
+            echo "That only replaces files inside $REPO. Then run this again." >&2
+            exit 1
+        fi
+        # Run the new version of this script, in case it changed too
+        exec bash "$REPO/install.sh" --update --no-pull --since "$OLD"
+    fi
+    [[ $DRY == yes ]] && echo "  would run: git pull --ff-only (in $REPO)"
+    echo
+    if [[ -n $SINCE && $SINCE != "$(git -C "$REPO" rev-parse HEAD)" ]]; then
+        echo "New in this update:"
+        git -C "$REPO" log --format='  - %s' "$SINCE..HEAD"
+    else
+        echo "You already have the latest version. Checking that everything is in place."
+    fi
+
+    # 2. Packages: install only the ones that are missing
+    echo
+    missing=$(pacman -T $(cat "$REPO/packages.txt") || true)
+    if [[ -n $missing ]]; then
+        echo "New packages:" $missing
+        install_list pacman "$REPO/packages.txt" || FAILED+=("packages")
+    else
+        echo "Packages: all installed."
+    fi
+
+    # 3. Config files: copy the ones that changed (old versions are backed up)
+    echo
+    echo "Config files:"
+    SHOW_PLACED=yes
+    while IFS= read -r -d '' file; do
+        rel=${file#"$REPO/home/"}
+        place "$file" "$HOME/$rel"
+    done < <(find "$REPO/home" -type f -print0)
+    echo "  checked"
+
+    # 4. Desktop settings (safe to apply again)
+    for setting in "color-scheme prefer-dark" "gtk-theme adw-gtk3-dark" "icon-theme Papirus-Dark" \
+                   "cursor-theme capitaine-cursors" "cursor-size 24"; do
+        try "desktop settings" gsettings set org.gnome.desktop.interface $setting
+    done
+    try "desktop settings" gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 11'
+    try "desktop settings" xdg-mime default thunar.desktop inode/directory
+
+    # 5. Services: turn on only the ones that are off
+    off=()
+    for service in NetworkManager bluetooth power-profiles-daemon thermald; do
+        systemctl is-enabled -q "$service.service" 2>/dev/null || off+=("$service.service")
+    done
+    if [[ ${#off[@]} -gt 0 ]]; then
+        echo
+        echo "Turning on services:" "${off[@]}"
+        try "system services" sudo systemctl enable --now "${off[@]}"
+    fi
+    systemctl is-enabled -q sddm.service 2>/dev/null || try "login screen service" sudo systemctl enable sddm.service
+    run systemctl --user enable --now hyprpolkitagent.service hypridle.service >/dev/null 2>&1 || true
+
+    # Automatic power-saver: update its files only if it's installed and changed
+    for f in usr/local/bin/power-profile-auto etc/udev/rules.d/99-power-profile-auto.rules \
+             etc/systemd/system/power-profile-auto.service; do
+        if [[ -e /$f ]] && ! cmp -s "$REPO/system/$f" "/$f"; then
+            mode=644; [[ $f == usr/local/bin/* ]] && mode=755
+            try "power-saver on battery" sudo install -m "$mode" "$REPO/system/$f" "/$f"
+        fi
+    done
+
+    # 6. Login screen theme: reinstall only if it changed (your wallpaper is kept)
+    sddm_dir=/usr/share/sddm/themes/tokyo-night
+    if [[ -d $sddm_dir ]]; then
+        changed=no
+        for f in Main.qml metadata.desktop theme.conf; do
+            cmp -s "$THEMES/sddm/tokyo-night/$f" "$sddm_dir/$f" || changed=yes
+        done
+        if [[ $changed == yes ]]; then
+            echo
+            echo "The login screen theme changed. Updating it:"
+            try "login screen theme" sudo bash "$THEMES/install-sddm-theme.sh"
+            if [[ -s $HOME/.local/share/wallpaper/current.jpg ]]; then
+                try "login screen theme" sudo install -m 644 "$HOME/.local/share/wallpaper/current.jpg" "$sddm_dir/background.jpg"
+            fi
+        fi
+    fi
+
+    # 7. Boot menu theme: reinstall only if it changed in this update
+    if [[ -n $SINCE ]] && git -C "$REPO" diff --name-only "$SINCE" HEAD -- \
+            home/.local/share/rice-boot-themes/grub | grep -qv 'background.jpg$'; then
+        echo
+        echo "The boot menu theme changed. Updating it:"
+        try "boot menu theme" sudo bash "$THEMES/install-grub-theme.sh"
+        echo "  Run set-wallpaper again to put your wallpaper back on the boot menu."
+    fi
+
+    # 8. Show the changes right away
+    if hyprctl -i 0 version >/dev/null 2>&1; then
+        run hyprctl -i 0 reload >/dev/null || true
+        run pkill -SIGUSR2 -x waybar || true
+        run dunstctl reload >/dev/null 2>&1 || true
+        run systemctl --user try-restart hypridle.service >/dev/null 2>&1 || true
+        echo
+        echo "Reloaded Hyprland, Waybar and dunst. Reopen apps to see their changes."
+    fi
+    summary
+    exit 0
+fi
 
 echo "Arch Style installer"
 [[ $DRY == yes ]] && echo "DRY RUN: nothing will be changed."
@@ -300,15 +447,7 @@ if [[ -n $WALLPAPER ]]; then
     try "wallpaper" "$HOME/.local/bin/set-wallpaper" "$WALLPAPER"
 fi
 
-echo
-if [[ ${#FAILED[@]} -gt 0 ]]; then
-    echo "Finished, but these steps had problems:"
-    printf '  - %s\n' "${FAILED[@]}" | sort -u
-    echo "See docs/11-troubleshooting.md, or run the installer again later."
-else
-    echo "All done."
-fi
-[[ $DRY == yes ]] && echo "(That was a dry run. Nothing was changed.)"
+summary
 echo "Restart and log in. The session pill at the bottom left of the login screen"
 echo "should say \"Hyprland (uwsm-managed)\". Click it to switch if it doesn't."
 echo "Then run hyprland-welcome to check that every item is green or blue."

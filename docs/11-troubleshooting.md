@@ -145,6 +145,60 @@ doesn't depend on Python at all (see [chapter 12](12-power-management.md)).
 > **Lesson:** when a command fails, read the last line of the error first. It
 > usually names exactly what's missing.
 
+## The SUPER (Windows) key does nothing
+
+**What happened:** on a desktop PC with a gaming keyboard, no `SUPER` shortcut
+worked. Hyprland was fine: `hyprctl binds` listed all the `SUPER` shortcuts,
+and there were no config errors.
+
+**Why:** many gaming keyboards have a **Windows key lock**, a "game mode" that
+switches the Windows key off so you don't leave a game by accident. While it's
+on, the key never reaches Linux.
+
+**Fix:** turn the lock off on the keyboard itself. Common ways:
+
+- `Fn` + the Windows key (the most common)
+- a key with a lock or joystick icon, often near `Fn` or at the top right
+- `Fn` + `F12`, or a key labeled "Game" or "Win Lock"
+
+A small light on the keyboard sometimes shows when the lock is on. Then test
+with `SUPER + Q`, which should open a terminal.
+
+To check whether Hyprland loaded the shortcuts at all:
+
+```bash
+hyprctl binds | grep -c 'modmask: 64'
+```
+
+`modmask: 64` means "uses SUPER". A number above 0 means the shortcuts are
+loaded, so the problem is the keyboard.
+
+## Colors look different on another screen
+
+**What happened:** the same setup looked different on a desktop PC with a
+Samsung monitor than on the laptop.
+
+**Why:** the computer sent exactly the same colors. The config files were
+identical, and both used Hyprland's standard color mode. Screens simply show
+colors differently, and monitors have their own picture settings on top.
+
+**Check what Hyprland sends:**
+
+```bash
+hyprctl monitors | grep -E 'Monitor|colorManagementPreset|sdrBrightness|sdrSaturation'
+```
+
+`colorManagementPreset: srgb`, `sdrBrightness: 1` and `sdrSaturation: 1` mean
+standard, unchanged colors.
+
+**Fix:** use the monitor's own menu (the buttons on the monitor):
+
+- Turn off **Eye Saver**, blue-light or reading modes. They make everything yellowish.
+- Use the **Standard** or **Custom** picture mode, not Dynamic or Cinema.
+- Over HDMI, if dark colors look grey and washed out, or too dark with detail
+  lost, switch **HDMI Black Level** (sometimes called RGB range) between its
+  two settings and keep the one that looks better.
+
 ## General tips
 
 - Read error messages, and search for the exact text.

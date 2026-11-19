@@ -201,7 +201,26 @@ Read the chapters in any order, and change one thing at a time:
 
 Before editing a config file, copy it to `<file>.bak`, so you can always go back.
 
-## Part 8: If something goes wrong
+## Part 8: Getting updates
+
+When the repository gets new features or fixes, update with:
+
+```bash
+bash ~/arch-style/install.sh --update
+```
+
+- It downloads the latest version from GitHub with `git pull`.
+- It installs only the packages you don't have yet.
+- It copies only the config files that changed, saving your old version as `.bak`.
+- It turns on any new services, and reloads the desktop so you see the changes.
+
+To see what it would do without changing anything, add `--dry-run`:
+
+```bash
+bash ~/arch-style/install.sh --update --dry-run
+```
+
+## Part 9: If something goes wrong
 
 - Every file the installer replaced has a `.bak` copy next to it. Copy it back
   to undo.

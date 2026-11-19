@@ -174,6 +174,20 @@ The [step-by-step guide](docs/00-start-here.md) covers this in detail. In short:
 7. After logging in, run `hyprland-welcome` in a terminal. Every item should be
    green or blue.
 
+## Getting updates
+
+When this repository changes, one command updates an installed computer:
+
+```bash
+bash ~/arch-style/install.sh --update
+```
+
+It downloads the latest version and installs any new packages. It also copies
+changed config files (backing up the old ones), turns on any new services, and
+reloads Hyprland, Waybar and dunst. Your wallpaper stays as it is. It asks for
+your password only if something needs administrator rights. Add `--dry-run` to
+see what it would do first.
+
 ## Keeping your own copy up to date
 
 If you fork this repository for your own configs, `sync.sh` copies your current
