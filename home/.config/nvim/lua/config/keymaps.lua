@@ -62,6 +62,43 @@ map({ "n", "i", "v" }, "<F5>", function()
   vim.cmd("CompetiTest run")
 end, { desc = "Save and run sample tests" })
 
+-- Run the code normally with F6: save, compile, and run it in a terminal where
+-- you type the input yourself. Press any key at the end to close the terminal.
+local function run_command()
+  local file = vim.fn.expand("%:t")     -- name.cpp
+  local name = vim.fn.expand("%:t:r")   -- name
+  local q = vim.fn.shellescape
+  local build = {
+    cpp = "g++ -std=c++20 -O2 -Wall " .. q(file) .. " -o " .. q(name),
+    c = "gcc -std=c17 -O2 -Wall " .. q(file) .. " -o " .. q(name),
+    java = "javac " .. q(file),
+  }
+  local run = {
+    cpp = "./" .. q(name),
+    c = "./" .. q(name),
+    java = "java " .. q(name),
+    python = "python3 " .. q(file),
+  }
+  local ft = vim.bo.filetype
+  if not run[ft] then
+    return nil
+  end
+  local start = "echo '--- running: type the input, Ctrl+D ends it ---' && " .. run[ft]
+  local cmd = build[ft] and (build[ft] .. " && " .. start) or start
+  return cmd .. "; echo; echo '--- finished: press any key to close ---'; read -rsn1"
+end
+
+map({ "n", "i", "v" }, "<F6>", function()
+  vim.cmd("stopinsert")
+  vim.cmd("silent! write")
+  local cmd = run_command()
+  if not cmd then
+    vim.notify("F6 can run C, C++, Java and Python files", vim.log.levels.WARN)
+    return
+  end
+  Snacks.terminal.open(cmd, { cwd = vim.fn.expand("%:p:h"), auto_close = true, start_insert = true, auto_insert = true })
+end, { desc = "Save, compile and run" })
+
 -- Find with Ctrl + F
 map("n", "<C-f>", "/", { desc = "Find" })
 

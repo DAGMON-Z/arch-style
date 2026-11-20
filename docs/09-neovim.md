@@ -45,7 +45,12 @@ Try it:
 mkdir -p ~/cp && cd ~/cp && nvim a.cpp
 ```
 
-To compile and run inside Neovim, press `` Ctrl + ` `` to open a terminal, then:
+**The quick way:** press **`F6`**. It saves, compiles with the judge's flags
+and runs your program in a terminal at the bottom. Type the input, and press
+`Ctrl + D` when you've finished typing it. When the program ends, press any key
+to close the terminal. `F6` also runs C, Java and Python files.
+
+**By hand:** press `` Ctrl + ` `` to open a terminal, then:
 
 ```bash
 g++ -std=c++20 -O2 -Wall a.cpp -o a && ./a
@@ -123,6 +128,7 @@ close the results.
 | `Space C r` | Receive one problem from the browser |
 | `Space C c` | Receive a whole contest (click the icon on the contest page) |
 | `F5` or `Space C t` | Save, compile and run all sample tests |
+| `F6` | Save, compile and run normally: type the input yourself |
 | `Space C a` | Add your own test |
 | `Space C e` | Edit a test |
 | `Space C d` | Delete a test |
@@ -270,6 +276,7 @@ text:
 | `Tab` / `Shift + Tab` | Indent / unindent the selection |
 | `` Ctrl + ` `` | Open / hide the terminal |
 | `F5` | Save and run the sample tests (works while typing too) |
+| `F6` | Save, compile and run the code normally, typing the input yourself |
 
 The Neovim keys still work as well. For example, `u` is undo, `Ctrl + R` is
 redo, `y` copies and `p` pastes.
