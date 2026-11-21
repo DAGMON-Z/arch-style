@@ -11,6 +11,8 @@
 #   - Claude Code        with Anthropic's own installer, if it's missing
 #   - an "Outlook" app   Outlook on the web in its own window (Outlook classic
 #                        is Windows-only)
+#   - VS Code keyring    tells VS Code to keep sign-ins in KWallet, because it
+#                        doesn't recognise Hyprland
 # and sets up VirtualBox: kernel part for your kernel, USB access, then the
 # Extension Pack (virtualbox-ext-oracle, from the AUR).
 # Restart afterwards so VirtualBox can load its kernel part.
@@ -71,7 +73,7 @@ echo "  ${official[*]}" | fold -s -w 78
 echo "From the AUR (made by the community, not by Arch):"
 echo "  ${aur[*]}" | fold -s -w 78
 echo "Then VirtualBox setup, and its Extension Pack (virtualbox-ext-oracle, AUR)."
-echo "Plus: Claude Code (if missing) and an Outlook web app."
+echo "Plus: Claude Code (if missing), an Outlook web app, and KWallet for VS Code sign-ins."
 if [[ $YES == no && $DRY == no ]]; then
     echo
     read -r -p "Install all of this? [y/N] " answer
@@ -149,6 +151,26 @@ run sudo modprobe vboxdrv 2>/dev/null ||
 # The Extension Pack (USB 3, webcam, disk encryption) goes in after VirtualBox
 echo "  Extension Pack:"
 try "VirtualBox Extension Pack" yay -S --needed --noconfirm --answerclean None --answerdiff None virtualbox-ext-oracle
+
+# 6. VS Code: keep sign-ins in KWallet. VS Code picks a keyring by desktop name,
+#    doesn't know Hyprland, and otherwise asks to use "weaker encryption".
+echo
+echo "6. VS Code keyring (KWallet)"
+argv="$HOME/.vscode/argv.json"
+if [[ -f $argv ]] && grep -q '"password-store"' "$argv"; then
+    echo "  already set in ${argv/#$HOME/\~}"
+elif [[ $DRY == yes ]]; then
+    echo "  would set \"password-store\": \"kwallet6\" in ${argv/#$HOME/\~}"
+elif [[ -f $argv ]]; then
+    # add the setting right after the opening { (the file allows comments)
+    sed -i '0,/^{/s//{\n\t\/\/ Hyprland is not detected, so name the keyring: KWallet\n\t"password-store": "kwallet6",/' "$argv"
+    echo "  set in ${argv/#$HOME/\~}"
+else
+    # VS Code hasn't run yet: create the file, VS Code adds its own entries later
+    mkdir -p "$(dirname "$argv")"
+    printf '{\n\t// Hyprland is not detected, so name the keyring: KWallet\n\t"password-store": "kwallet6"\n}\n' > "$argv"
+    echo "  created ${argv/#$HOME/\~}"
+fi
 
 echo
 if [[ ${#FAILED[@]} -gt 0 ]]; then

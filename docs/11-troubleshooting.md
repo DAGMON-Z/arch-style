@@ -368,6 +368,25 @@ Now `Alt + Shift` switches both ways with either Alt key. The only exception is
 pressing Right Shift *first* and then Right Alt, so press Alt first. The left
 Alt key works in any order.
 
+## VS Code: "An OS keyring couldn't be identified"
+
+**What happened:** signing in to GitHub in VS Code showed "An OS keyring
+couldn't be identified for storing the encryption related data in your current
+desktop environment", with a button to use weaker encryption.
+
+**Why:** VS Code chooses a keyring (password store) from the desktop's name.
+It recognises GNOME and KDE, but not Hyprland, so it finds none.
+
+**Fix:** don't pick weaker encryption. Tell VS Code to use KWallet by adding
+this to `~/.vscode/argv.json`, then close VS Code completely and reopen it:
+
+```jsonc
+"password-store": "kwallet6"
+```
+
+`apps.sh` installs `kwallet` and adds this line for you. See
+[chapter 16](16-personal-apps.md#vs-code-sign-in-kwallet).
+
 ## General tips
 
 - Read error messages, and search for the exact text.
