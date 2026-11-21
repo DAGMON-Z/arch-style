@@ -446,6 +446,15 @@ example in another program), type `fg` to bring the program back.
 `kitty.conf` frees it with `map kitty_mod+z`. Without that line, Neovim never
 receives the key.
 
+## Files open in insert mode
+
+Files open ready for typing (insert mode), like in VS Code. Press `Esc` when
+you want normal mode, and `i` to type again. The start screen, file finder,
+test results and terminal work as usual.
+
+This is an autocmd in `~/.config/nvim/lua/config/autocmds.lua`. To start in
+normal mode again, delete the block under "Open files in insert mode".
+
 ## Arabic keyboard layout
 
 With the Arabic layout on, every key types an Arabic letter: `q` types `ض`,
