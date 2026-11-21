@@ -25,12 +25,12 @@ Running it again is safe: anything already installed is skipped.
 | LibreOffice | `libreoffice-fresh` | Official repositories |
 | Spotify | `spotify-launcher` | Official repositories |
 | VirtualBox | `virtualbox`, `virtualbox-host-dkms`, `virtualbox-guest-iso` | Official repositories |
+| VirtualBox Extension Pack | `virtualbox-ext-oracle` | AUR (free for personal use), installed right after VirtualBox |
 | VS Code | `visual-studio-code-bin` | AUR (Microsoft's own build, with the extension marketplace) |
 | Brave | `brave-bin` | AUR |
 | Google Chrome | `google-chrome` | AUR |
 | AnyDesk | `anydesk-bin` | AUR |
 | Zoom | `zoom` | AUR |
-| VirtualBox Extension Pack | `virtualbox-ext-oracle` | AUR (free for personal use) |
 | Microsoft Teams | `teams-for-linux` | AUR, unofficial app |
 | Notion | `notion-app-electron` | AUR, unofficial app |
 | WhatsApp | `zapzap` | AUR, unofficial app |
@@ -39,7 +39,8 @@ Running it again is safe: anything already installed is skipped.
 | Outlook | an "Outlook" app entry | Outlook on the web, opened by Brave in its own window |
 
 The lists are in `apps/official.txt` and `apps/aur.txt`. Add or remove a line
-to change what gets installed.
+to change what gets installed. The VirtualBox Extension Pack isn't in those
+lists: `apps.sh` installs it in its VirtualBox step, after VirtualBox is set up.
 
 ### Apps without an official Linux version
 
@@ -67,7 +68,9 @@ VirtualBox needs a part that runs inside the Linux kernel. `apps.sh` installs:
   the build needs. The script detects which kernels you have.
 
 It also adds you to the **`vboxusers`** group, which lets virtual machines use
-USB devices through the **Extension Pack**.
+USB devices. Then, as the last VirtualBox step, it installs the **Extension
+Pack** (`virtualbox-ext-oracle`), which adds USB 2 and 3, webcam and disk
+encryption support.
 
 **Restart after installing.** The kernel part loads at boot, and group
 changes apply after you log in again.

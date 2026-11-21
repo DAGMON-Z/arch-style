@@ -7,4 +7,3 @@ teams-for-linux
 notion-app-electron
 zapzap
 claude-desktop
-virtualbox-ext-oracle

@@ -11,7 +11,8 @@
 #   - Claude Code        with Anthropic's own installer, if it's missing
 #   - an "Outlook" app   Outlook on the web in its own window (Outlook classic
 #                        is Windows-only)
-# and sets up VirtualBox (kernel part for your kernel, USB access).
+# and sets up VirtualBox: kernel part for your kernel, USB access, then the
+# Extension Pack (virtualbox-ext-oracle, from the AUR).
 # Restart afterwards so VirtualBox can load its kernel part.
 set -euo pipefail
 
@@ -69,7 +70,8 @@ echo "From the official repositories:"
 echo "  ${official[*]}" | fold -s -w 78
 echo "From the AUR (made by the community, not by Arch):"
 echo "  ${aur[*]}" | fold -s -w 78
-echo "Plus: Claude Code (if missing), an Outlook web app, and VirtualBox setup."
+echo "Then VirtualBox setup, and its Extension Pack (virtualbox-ext-oracle, AUR)."
+echo "Plus: Claude Code (if missing) and an Outlook web app."
 if [[ $YES == no && $DRY == no ]]; then
     echo
     read -r -p "Install all of this? [y/N] " answer
@@ -136,7 +138,7 @@ EOF
     echo "  added \"Outlook\" to your app list"
 fi
 
-# 5. VirtualBox: load its kernel part and allow USB devices
+# 5. VirtualBox: load its kernel part, allow USB devices, then the Extension Pack
 echo
 echo "5. VirtualBox setup"
 if getent group vboxusers >/dev/null 2>&1 || [[ $DRY == yes ]]; then
@@ -144,6 +146,9 @@ if getent group vboxusers >/dev/null 2>&1 || [[ $DRY == yes ]]; then
 fi
 run sudo modprobe vboxdrv 2>/dev/null ||
     echo "  The VirtualBox kernel part loads after you restart."
+# The Extension Pack (USB 3, webcam, disk encryption) goes in after VirtualBox
+echo "  Extension Pack:"
+try "VirtualBox Extension Pack" yay -S --needed --noconfirm --answerclean None --answerdiff None virtualbox-ext-oracle
 
 echo
 if [[ ${#FAILED[@]} -gt 0 ]]; then
