@@ -422,6 +422,7 @@ text:
 | `Ctrl + /` | Comment / uncomment |
 | `Ctrl + F` | Find (then `n` for the next match) |
 | `Ctrl + Backspace` | Delete the previous word |
+| `Ctrl + [` / `Ctrl + ]` | Go to the beginning (first character that isn't a space) / end of the line |
 | `Tab` / `Shift + Tab` | Indent / unindent the selection |
 | `` Ctrl + ` `` | Open / hide the terminal |
 | `F5` | Save and run the sample tests (works while typing too) |

@@ -25,6 +25,7 @@ too, in case you switch back).
 | `Ctrl + Shift + Z` or `Ctrl + Y` | Redo |
 | `Ctrl + Left` / `Ctrl + Right` | Jump a word |
 | `Ctrl + Backspace` | Delete the previous word |
+| `Ctrl + [` / `Ctrl + ]` | Go to the beginning / end of the line |
 | `Up` / `Down` | Previous / next command from history |
 | `Tab` | Complete a command or file name (press again for a menu) |
 
@@ -69,6 +70,11 @@ bindkey '^A' _vs_select_all  # connect it to Ctrl + A
 `Ctrl + C` is special: the terminal turns it into a *signal* rather than a key.
 `~/.zshrc` catches that signal with a function called `TRAPINT`. If text is
 selected it copies it, and otherwise it lets the signal cancel as usual.
+
+**`Ctrl + [`** is normally sent exactly like `Esc`, so programs can't tell the
+two apart. kitty sends it as a different code (`map ctrl+[ ...` in
+`kitty.conf`), and `~/.zshrc` and Neovim treat that code as "beginning of the
+line". The `Esc` key itself works as before.
 
 ## Switching shells
 

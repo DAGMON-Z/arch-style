@@ -27,11 +27,16 @@ M.keys = {
 -- 2. Ctrl + Arabic letter does what Ctrl + the English letter does
 function M.map_ctrl_keys()
   for arabic, english in pairs(M.keys) do
+    -- Ctrl + [ and Ctrl + ] have their own mappings in keymaps.lua
+    if english == "[" or english == "]" then
+      goto continue
+    end
     vim.keymap.set({ "n", "i", "v", "o", "c", "t" }, "<C-" .. arabic .. ">", "<C-" .. english .. ">", {
       remap = true, -- run your mapping for the English key, or Neovim's own command
       silent = true,
       desc = "Ctrl+" .. english .. " (Arabic layout)",
     })
+    ::continue::
   end
 end
 

@@ -132,6 +132,11 @@ bindkey '^Z' undo
 bindkey '^[[122;6u' redo
 bindkey '^Y' redo
 
+# Ctrl + [ : beginning of the line, Ctrl + ] : end of the line (like Neovim).
+# kitty sends Ctrl + [ as the code below (see kitty.conf).
+bindkey '^[[91;5u' _vs_move_beginning-of-line
+bindkey '^]' _vs_move_end-of-line
+
 # ---------- Prompt and system summary ----------
 # Starship prompt, if it is installed
 if command -v starship >/dev/null 2>&1; then

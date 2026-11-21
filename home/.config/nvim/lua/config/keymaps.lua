@@ -117,6 +117,19 @@ map("i", "<C-H>", "<C-w>", { desc = "Delete word" }) -- some terminals send this
 map("v", "<Tab>", ">gv", { desc = "Indent" })
 map("v", "<S-Tab>", "<gv", { desc = "Unindent" })
 
+-- Ctrl + ] : end of the line. Ctrl + [ : beginning of the line (the first
+-- character that isn't a space). kitty sends Ctrl + [ differently from Esc
+-- (see kitty.conf), so Esc still works as usual.
+local function line_keys(lhs_end, lhs_start)
+  map({ "n", "o" }, lhs_end, "$", { desc = "End of line" })
+  map("x", lhs_end, "g_", { desc = "End of line" })
+  map("i", lhs_end, "<End>", { desc = "End of line" })
+  map({ "n", "x", "o" }, lhs_start, "^", { desc = "Beginning of line" })
+  map("i", lhs_start, "<Cmd>normal! ^<CR>", { desc = "Beginning of line" })
+end
+line_keys("<C-]>", "<C-[>")
+line_keys("<C-د>", "<C-ج>") -- the same keys with the Arabic layout
+
 -- Arabic layout: Ctrl + an Arabic letter works like Ctrl + the English letter
 -- on that key, so the shortcuts above also work while typing Arabic
 require("arabic_keys").map_ctrl_keys()
