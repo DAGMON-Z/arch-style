@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=PC2 Team
+Comment=Submit solutions in a PC2 programming contest
+Exec=@HOME@/.local/bin/pc2
+Icon=applications-development
+Categories=Development;
+Terminal=false

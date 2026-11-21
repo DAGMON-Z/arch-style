@@ -243,6 +243,8 @@ Neovim is the editor. gcc and clang compile C and C++; clang also provides clang
 | `llvm-lit` | An LLVM testing tool |
 | `compiler-rt` | Compiler runtime libraries for clang |
 | `gdb` | The GNU Debugger |
+| `jdk-openjdk` | Java (newest version), to write and run Java solutions |
+| `jre17-openjdk` | Java 17, which the PC2 contest program runs on |
 | `make` | GNU make utility to maintain groups of programs |
 | `patch` | A utility to apply patch files to original sources |
 | `pkgconf` | Package compiler and linker metadata toolkit |

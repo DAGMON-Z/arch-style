@@ -287,6 +287,67 @@ $1 = std::vector of length 3, capacity 3 = {1, 2, 3}
 $2 = 6
 ```
 
+### Java
+
+Java is installed for competitive programming (`jdk-openjdk`, the newest
+version). Open a `.java` file and press **`F6`**: it compiles with `javac` and
+runs it. Name the file after its class: `public class Main` goes in `Main.java`.
+
+Check it's installed:
+
+```bash
+java -version
+```
+
+### PC2 contests
+
+Many university and ICPC contests use **PC2** to submit solutions. Your team
+gets a **kit** from the contest admin: a folder with `bin/` and `lib/` in it.
+PC2 is a Java program and runs on **Java 17** (`jre17-openjdk`, installed by
+this setup next to the newest Java).
+
+**Setup (once per contest):**
+
+1. Unzip the kit to `~/cp/PC2-team-contest`:
+
+   ```bash
+   mkdir -p ~/cp && unzip ~/Downloads/PC2-team-contest.zip -d ~/cp
+   ```
+
+   - `unzip <file> -d <folder>` extracts the zip into that folder.
+   - Check that you now have `~/cp/PC2-team-contest/bin`. If the zip made an
+     extra folder level, move things so `bin` and `lib` are directly inside
+     `PC2-team-contest`.
+
+2. Set the server address the admin gives you, in `bin/pc2v9.ini`:
+
+   ```bash
+   nvim ~/cp/PC2-team-contest/bin/pc2v9.ini
+   ```
+
+   Find the `server=` line, for example `server=192.168.1.30:50002`. Keep
+   `:50002` at the end unless the admin says otherwise.
+
+3. Connect to the contest Wi-Fi.
+
+**Start PC2:** open the app launcher (click the Arch logo on the bar) and choose
+**PC2 Team**, or type `pc2` in a terminal. Log in with the team name and
+password from the admin.
+
+The `pc2` command runs the long Java command from the kit's README for you, and
+always uses Java 17. If your kit is somewhere else, pass its folder:
+
+```bash
+pc2 ~/Desktop/PC2-team-contest
+```
+
+The kit's `.bat` files are for Windows. Ignore them.
+
+> **PC2 doesn't open?** Run `pc2` in a terminal to see its messages. "Contacting
+> server" that never finishes means the computer can't reach the contest
+> server: check the Wi-Fi and the address in `pc2v9.ini`. PC2 also writes logs
+> in the kit's `bin/logs` folder.
+
 ## VS Code shortcuts
 
 `~/.config/nvim/lua/config/keymaps.lua` adds the main VS Code shortcuts, so
