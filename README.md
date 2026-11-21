@@ -44,6 +44,7 @@ explains the options.
 13. [Secure Boot (optional)](docs/13-secure-boot.md)
 14. [Files and downloads: Thunar and Persepolis](docs/14-files-and-downloads.md)
 15. [The terminal shell: zsh with VS Code keys](docs/15-terminal-shell.md)
+16. [My personal apps](docs/16-personal-apps.md)
 
 ## Screenshots
 
@@ -258,3 +259,25 @@ My configs and scripts are under the [MIT License](LICENSE). Parts that come
 from other projects keep their own licenses. For example, the Neovim config
 starts from the LazyVim starter, which is Apache 2.0 (see
 `home/.config/nvim/LICENSE`).
+
+## My personal apps (one command)
+
+The apps I use every day: VS Code, Telegram, WhatsApp, Notion, Microsoft Teams,
+Discord, Brave, Chrome, Outlook, AnyDesk, VLC, Claude Code, Claude Desktop,
+Spotify, LibreOffice, Git, Zoom, and VirtualBox with its Extension Pack.
+
+```bash
+sudo pacman -S --needed git && { [ -d ~/arch-style ] || git clone https://github.com/DAGMON-Z/arch-style.git ~/arch-style; } && bash ~/arch-style/apps.sh
+```
+
+- `sudo pacman -S --needed git` installs git, if it's missing.
+- `[ -d ~/arch-style ] || git clone ...` downloads this repository, unless you
+  already have it. `[ -d folder ]` checks whether a folder exists, and `||`
+  runs the next part only if it doesn't.
+- `bash ~/arch-style/apps.sh` shows the list of apps, asks once, then installs
+  everything.
+
+Restart afterwards, so VirtualBox is ready. WhatsApp, Notion and Teams have no
+official Linux apps, and Outlook classic is Windows-only, so those use
+unofficial apps or the web version. See [docs/16-personal-apps.md](docs/16-personal-apps.md).
+

@@ -1,0 +1,10 @@
+git
+telegram-desktop
+discord
+vlc
+vlc-plugins-all
+libreoffice-fresh
+spotify-launcher
+virtualbox
+virtualbox-host-dkms
+virtualbox-guest-iso
