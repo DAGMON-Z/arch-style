@@ -454,6 +454,14 @@ if ask "Step 4: set dark mode, Papirus icons, cursor, monospace font, and Thunar
     try "desktop settings" xdg-mime default thunar.desktop inode/directory
 fi
 
+# zsh as the terminal shell: VS Code style editing (see docs/15-terminal-shell.md)
+if command -v zsh >/dev/null 2>&1 && [[ $(getent passwd "$USER" | cut -d: -f7) != */zsh ]]; then
+    if ask "Use zsh as your terminal shell (select, copy, undo and redo like VS Code)?"; then
+        try "zsh as shell" sudo chsh -s "$(command -v zsh)" "$USER"
+        echo "  Log out and back in to start using zsh."
+    fi
+fi
+
 echo
 echo "Screen size: how big text, windows and the bar are drawn."
 setup_scale

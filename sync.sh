@@ -15,6 +15,7 @@ HOME_ITEMS=(
     .config/nvim
     .config/starship.toml
     .bashrc
+    .zshrc
     .local/share/rice-boot-themes
     # GTK, Qt and KDE theme
     .config/gtk-3.0

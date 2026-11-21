@@ -43,6 +43,7 @@ explains the options.
 12. [Power management](docs/12-power-management.md)
 13. [Secure Boot (optional)](docs/13-secure-boot.md)
 14. [Files and downloads: Thunar and Persepolis](docs/14-files-and-downloads.md)
+15. [The terminal shell: zsh with VS Code keys](docs/15-terminal-shell.md)
 
 ## Screenshots
 
@@ -82,6 +83,7 @@ because GRUB can't be captured from inside Linux. More details are in
 | SDDM and GRUB themes | Login screen and boot menu | `home/.local/share/rice-boot-themes/` |
 | GTK and Qt theming | Dark apps with Papirus icons | `home/.config/gtk-3.0/`, `gtk-4.0/`, `qt6ct/`, `kdeglobals` |
 | Neovim and LazyVim | Code editor with C++ support | `home/.config/nvim/` |
+| zsh | Terminal shell: select, copy, cut, paste, undo and redo like VS Code | `home/.zshrc` |
 | starship | Shell prompt | `home/.config/starship.toml` |
 | fastfetch | System summary in new terminals | `home/.config/fastfetch/` |
 | Power management | Power modes, Intel cooling, power-saver on battery | `system/usr/local/bin/power-profile-auto` |

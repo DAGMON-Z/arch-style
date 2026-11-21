@@ -66,3 +66,4 @@ wl-clipboard
 xarchiver
 xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
+zsh
