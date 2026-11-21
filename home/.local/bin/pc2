@@ -6,8 +6,8 @@
 #
 # The kit is the folder the contest admin gives you, with bin/ and lib/ in it.
 # Set the server address in bin/pc2v9.ini first (the admin tells you).
-# PC2 runs on Java 17 (package jre17-openjdk), so this uses Java 17 even when
-# your default Java is newer.
+# It uses your normal Java (the newest version, package jdk-openjdk). PC2's
+# kit asks for Java 17, but it works with newer Java too.
 
 kit="${1:-$HOME/cp/PC2-team-contest}"
 if [[ ! -d $kit/bin || ! -d $kit/lib ]]; then
@@ -16,10 +16,9 @@ if [[ ! -d $kit/bin || ! -d $kit/lib ]]; then
     exit 1
 fi
 
-java=/usr/lib/jvm/java-17-openjdk/bin/java
-if [[ ! -x $java ]]; then
-    echo "Java 17 isn't installed (sudo pacman -S jre17-openjdk). Trying your default Java." >&2
-    java=java
+if ! command -v java >/dev/null 2>&1; then
+    echo "Java isn't installed. Install it with: sudo pacman -S jdk-openjdk" >&2
+    exit 1
 fi
 
 # Sharp on scaled screens: Hyprland draws XWayland apps (Java is one) at 100%
@@ -42,5 +41,5 @@ opts=(
 
 # PC2 reads bin/pc2v9.ini and writes its logs in bin/logs, so start it from bin
 cd "$kit/bin" || exit 1
-exec "$java" "${opts[@]}" -Djdk.crypto.KeyAgreement.legacyKDF=true -Xms64M -Xmx768M \
+exec java "${opts[@]}" -Djdk.crypto.KeyAgreement.legacyKDF=true -Xms64M -Xmx768M \
     -cp '../lib/*' edu.csus.ecs.pc2.Starter
