@@ -26,6 +26,14 @@ To see what it would do first, without changing anything, run the installer
 with `--dry-run`. The [guide](docs/00-start-here.md#part-4-install-arch-style)
 explains the options.
 
+**Already installed? Update** to the newest version with one command:
+
+```bash
+git -C ~/arch-style pull --ff-only && bash ~/arch-style/install.sh --update
+```
+
+See [Getting updates](#getting-updates) for what it does.
+
 ## Table of contents
 
 0. [**Start here: step-by-step guide**](docs/00-start-here.md)
@@ -195,6 +203,12 @@ changed config files (backing up the old ones), turns on any new services, and
 reloads Hyprland, Waybar and dunst. Your wallpaper stays as it is. It asks for
 your password only if something needs administrator rights. Add `--dry-run` to
 see what it would do first.
+
+- If you're still using bash, it asks whether to switch to zsh for the VS Code
+  style terminal keys. Answer **y**, then log out and back in.
+- Close and reopen apps (Neovim, kitty and so on) to use their new settings.
+- Restart if it updated system files, such as the touchpad fix or the login
+  screen.
 
 ## Keeping your own copy up to date
 
