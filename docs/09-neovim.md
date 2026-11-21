@@ -299,6 +299,22 @@ Check it's installed:
 java -version
 ```
 
+> **Already had Java from a version-numbered package**, such as
+> `jdk25-openjdk`? The installer and update command install `jdk-openjdk`
+> next to it, and that becomes your default Java. To keep only one, remove the
+> old one afterwards:
+>
+> ```bash
+> sudo pacman -Rns jdk25-openjdk
+> ```
+>
+> - `-R` removes the package.
+> - `n` also deletes its saved settings files, and `s` removes anything it
+>   pulled in that nothing else needs.
+>
+> See which Java versions you have, and which one is the default, with
+> `archlinux-java status`.
+
 ### PC2 contests
 
 Many university and ICPC contests use **PC2** to submit solutions. Your team
