@@ -27,6 +27,7 @@ Running it again is safe: anything already installed is skipped.
 | VirtualBox | `virtualbox`, `virtualbox-host-dkms`, `virtualbox-guest-iso` | Official repositories |
 | VirtualBox Extension Pack | `virtualbox-ext-oracle` | AUR (free for personal use), installed right after VirtualBox |
 | VS Code | `visual-studio-code-bin` | AUR (Microsoft's own build, with the extension marketplace) |
+| KWallet | `kwallet` | Official repositories, keeps VS Code's sign-ins ([see below](#vs-code-sign-in-kwallet)) |
 | Brave | `brave-bin` | AUR |
 | Google Chrome | `google-chrome` | AUR |
 | AnyDesk | `anydesk-bin` | AUR |
@@ -58,6 +59,29 @@ To make it one command, `apps.sh` tells `yay` not to show each build file
 (`--answerdiff None`). These are popular, well-known packages, but AUR packages
 are made by the community, so check them once with `yay -Si <package>` if you're
 unsure. See [chapter 2](02-packages.md#aur-packages).
+
+## VS Code sign-in (KWallet)
+
+VS Code keeps sign-ins (GitHub, Copilot, Settings Sync) encrypted in a
+**keyring**, the system's password store. It picks the keyring by the name of
+your desktop. It knows GNOME and KDE but not Hyprland, so without help it shows:
+
+> An OS keyring couldn't be identified for storing the encryption related data
+> in your current desktop environment.
+
+Don't choose **Use weaker encryption**: that stores secrets with a key that is
+easy to find. Instead, `apps.sh` installs **KWallet** (KDE's keyring) and adds
+this line to `~/.vscode/argv.json`, the file for VS Code's startup options:
+
+```jsonc
+"password-store": "kwallet6"
+```
+
+Close VS Code completely and open it again to apply. The first time you sign
+in, KWallet asks you to create a wallet and choose its password.
+
+To set it by hand, open the Command Palette (`Ctrl + Shift + P`), run
+**Preferences: Configure Runtime Arguments**, add the line above and restart.
 
 ## VirtualBox
 
