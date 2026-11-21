@@ -53,17 +53,25 @@ local function save_folder(task)
   return vim.uv.os_homedir() .. "/cp/" .. clean(judge) .. "/" .. clean(contest)
 end
 
--- Start listening for problems and contests from the browser
+-- Start listening for the browser extensions. lua/cp/server.lua listens on
+-- port 27121: it receives problems from Competitive Companion (and passes them
+-- to competitest on port 27122) and hands F7 submissions to CPH Submit.
 local function listen(show_errors)
   local cfg = require("competitest.config").current_setup
-  local err = require("competitest.receive").start_receiving(
-    "persistently", cfg.companion_port, show_errors, cfg.receive_print_message, nil, cfg
-  )
+  local err = require("cp.server").start()
+    or require("competitest.receive").start_receiving(
+      "persistently", cfg.companion_port, show_errors, cfg.receive_print_message, nil, cfg
+    )
   -- An error at startup usually means another Neovim is already listening.
-  -- That one receives the problems, so stay quiet.
+  -- That one receives the problems and submits, so stay quiet.
   if err and show_errors then
-    vim.notify("CompetiTest: " .. err, vim.log.levels.WARN)
+    vim.notify("CP: " .. err, vim.log.levels.WARN)
   end
+end
+
+local function stop_listening()
+  require("cp.server").stop()
+  require("competitest.receive").stop_receiving()
 end
 
 return {
@@ -79,13 +87,24 @@ return {
       { "<leader>Ca", "<cmd>CompetiTest add_testcase<cr>", desc = "Add a test" },
       { "<leader>Ce", "<cmd>CompetiTest edit_testcase<cr>", desc = "Edit a test" },
       { "<leader>Cd", "<cmd>CompetiTest delete_testcase<cr>", desc = "Delete a test" },
-      { "<leader>Cs", "<cmd>CompetiTest receive status<cr>", desc = "Is it listening?" },
+      {
+        "<leader>Cs",
+        function()
+          local yes = require("cp.server").is_listening()
+          vim.notify(yes and "This Neovim receives problems and submits (port 27121)."
+            or "Not listening here. Press Space C r to listen in this Neovim.", vim.log.levels.INFO, { title = "CP" })
+        end,
+        desc = "Is it listening?",
+      },
       -- Only needed if another Neovim was listening and you closed it
       {
         "<leader>Cr",
         function()
-          require("competitest.receive").stop_receiving()
+          stop_listening()
           listen(true)
+          if require("cp.server").is_listening() then
+            vim.notify("Listening here now.", vim.log.levels.INFO, { title = "CP" })
+          end
         end,
         desc = "Listen for problems here",
       },
@@ -95,8 +114,9 @@ return {
       compile_command = {
         cpp = { exec = "g++", args = { "-std=c++20", "-O2", "-Wall", "$(FNAME)", "-o", "$(FNOEXT)" } },
       },
-      -- Port 27121 is where Competitive Companion sends problems
-      companion_port = 27121,
+      -- Competitive Companion sends to port 27121, where lua/cp/server.lua
+      -- listens and passes problems on to competitest here
+      companion_port = 27122,
       -- New problems start from this template
       template_file = { cpp = vim.fn.stdpath("config") .. "/templates/cp.cpp" },
       -- Save problems in the current folder, or ask (see save_folder above)

@@ -101,6 +101,11 @@ map({ "n", "i", "v" }, "<F6>", function()
   Snacks.terminal.open({ "bash", "-c", cmd }, { cwd = vim.fn.expand("%:p:h"), auto_close = true, start_insert = true, auto_insert = true })
 end, { desc = "Save, compile and run" })
 
+-- F7: save and submit with the CPH Submit browser extension (see lua/cp/server.lua)
+map({ "n", "i", "v" }, "<F7>", function()
+  require("cp.server").submit()
+end, { desc = "Submit (CPH Submit)" })
+
 -- Find with Ctrl + F
 map("n", "<C-f>", "/", { desc = "Find" })
 

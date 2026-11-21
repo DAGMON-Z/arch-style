@@ -19,6 +19,7 @@ Config: `~/.config/nvim/` (started from the
 | `~/.config/clangd/config.yaml` | Treats single `.cpp` files as C++20 |
 | `lua/plugins/competitest.lua` | Receives problems from the browser and runs sample tests ([below](#get-problems-from-brave-competitive-companion)) |
 | `templates/cp.cpp` | The starting code for every received problem |
+| `lua/cp/server.lua` | Talks to the browser extensions on port 27121: receives problems and submits with `F7` ([below](#submit-with-f7-cph-submit)) |
 | `lua/plugins/no-autocomplete.lua` | Turns off autocomplete popups, for practice ([below](#autocomplete-is-off-on-purpose)) |
 
 ## First start
@@ -162,12 +163,52 @@ close the results.
 | `Space C s` | Show whether this Neovim is listening |
 | `F5` or `Space C t` | Save, compile and run all sample tests |
 | `F6` | Save, compile and run normally: type the input yourself |
+| `F7` | Save and submit the solution ([CPH Submit](#submit-with-f7-cph-submit)) |
 | `Space C a` | Add your own test |
 | `Space C e` | Edit a test |
 | `Space C d` | Delete a test |
 
-> **CPH Submit**, another extension, only works with the CPH extension for VS
-> Code. It isn't used with Neovim.
+### Submit with F7 (CPH Submit)
+
+**[CPH Submit](https://chromewebstore.google.com/detail/cph-submit/ekplnobooikgpdbobcciehbhcmlklgnc)**
+is a browser extension that submits your solution for you. It works on
+**Codeforces** and **CSES**. It was made for CPH, a VS Code extension, and
+this setup makes Neovim talk to it the same way CPH does.
+
+**One-time setup:**
+
+1. Install CPH Submit in Brave from the link above.
+2. Log in to Codeforces (and CSES, if you use it) in Brave.
+
+**To submit:** press **`F7`** in your solution. Keep Brave open (it can be in
+the background). Within a few seconds, Brave opens the problem's submit page,
+fills in your code and the language, and clicks Submit. Then you see the
+verdict on the page.
+
+Languages it submits as:
+
+| File | Codeforces compiler |
+| --- | --- |
+| `.cpp` | GNU G++20 13.2 (64 bit) |
+| `.c` | GNU GCC C11 5.1.0 |
+| `.java` | Java 21 64bit |
+| `.py` | PyPy 3.10 (64 bit) |
+
+**How it knows the problem:** when a problem arrives from Competitive
+Companion, Neovim remembers its link. For a file you made yourself, F7 asks for
+the problem's link once (copy it from Brave's address bar).
+
+> **How it works:** CPH Submit asks `localhost:27121` every 3 seconds whether
+> there's something to submit. That's the same port Competitive Companion
+> sends problems to, so `~/.config/nvim/lua/cp/server.lua` listens there and
+> handles both: problems are passed on to competitest (on port 27122), and F7
+> hands your solution to CPH Submit. Only the first Neovim you open listens;
+> F7 in other Neovims sends the solution to that one.
+
+> **Nothing happens after F7?** After 10 seconds Neovim warns you. Check that
+> Brave is open, CPH Submit is installed and turned on, and you're logged in.
+> If you closed the Neovim that was listening, press `Space C r` in the one
+> you're using.
 
 ### The template
 
@@ -384,6 +425,7 @@ text:
 | `` Ctrl + ` `` | Open / hide the terminal |
 | `F5` | Save and run the sample tests (works while typing too) |
 | `F6` | Save, compile and run the code normally, typing the input yourself |
+| `F7` | Save and submit with CPH Submit |
 
 The Neovim keys still work as well. For example, `u` is undo, `Ctrl + R` is
 redo, `y` copies and `p` pastes.
