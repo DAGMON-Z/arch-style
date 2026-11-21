@@ -387,6 +387,28 @@ this to `~/.vscode/argv.json`, then close VS Code completely and reopen it:
 `apps.sh` installs `kwallet` and adds this line for you. See
 [chapter 16](16-personal-apps.md#vs-code-sign-in-kwallet).
 
+### Then: "the OS keyring is not available for encryption"
+
+**What happened:** after the fix, VS Code said "You're running in a KDE
+environment but the OS keyring is not available for encryption. Ensure you
+have kwallet running."
+
+**Why:** KWallet was running but had **no wallet yet**. It had opened a
+"KDE Wallet Service" window to create one, but Hyprland tiled it like a normal
+app, so it was easy to miss behind other windows.
+
+**Check whether a wallet exists:**
+
+```bash
+ls ~/.local/share/kwalletd/
+```
+
+An empty folder means no wallet yet.
+
+**Fix:** find the **KDE Wallet Service** window, choose **Blowfish** (not GPG)
+and set a password, then restart VS Code. `hyprland.lua` now has a
+`float-kde-wallet` rule, so the window floats in the middle of the screen.
+
 ## General tips
 
 - Read error messages, and search for the exact text.

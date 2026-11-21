@@ -399,6 +399,16 @@ hl.window_rule({
     move  = "20 monitor_h-120",
     float = true,
 })
+
+-- KDE Wallet password prompts (VS Code sign-ins and other saved logins).
+-- Float them in the middle, so they don't get lost as a tiled window.
+hl.window_rule({
+    name   = "float-kde-wallet",
+    match  = { class = "^org\\.kde\\.(ksecretd|kwalletd6)$" },
+
+    float  = true,
+    center = true,
+})
 hl.on("hyprland.start", function()
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("~/.local/bin/set-wallpaper --restore") -- wallpaper with awww (hyprpaper.conf kept as backup)

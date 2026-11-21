@@ -77,8 +77,22 @@ this line to `~/.vscode/argv.json`, the file for VS Code's startup options:
 "password-store": "kwallet6"
 ```
 
-Close VS Code completely and open it again to apply. The first time you sign
-in, KWallet asks you to create a wallet and choose its password.
+Close VS Code completely and open it again to apply.
+
+### Creating the wallet (first time only)
+
+The first time you sign in, a **KDE Wallet Service** window opens to create a
+wallet: the encrypted safe your secrets go in. `hyprland.lua` floats it in the
+middle of the screen (the `float-kde-wallet` rule).
+
+1. When it asks for the encryption type, choose **Blowfish** (classic), not
+   **GPG**. GPG needs a GPG key, which a new system doesn't have.
+2. Choose a wallet password. Using your login password is easiest to
+   remember.
+
+The wallet is saved in `~/.local/share/kwalletd/`. After each login, the
+first app that needs a secret asks for this password once, and the wallet
+stays unlocked until you log out.
 
 To set it by hand, open the Command Palette (`Ctrl + Shift + P`), run
 **Preferences: Configure Runtime Arguments**, add the line above and restart.
