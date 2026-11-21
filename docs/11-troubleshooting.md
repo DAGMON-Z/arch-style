@@ -302,6 +302,27 @@ Noto Arabic fonts and never uses FreeMono or FreeSerif:
 Restart the app afterwards. Discord keeps running in the background after you
 close its window, so stop it completely first with `pkill -i discord`.
 
+## Alt + Shift switches to Arabic but not back
+
+**What happened:** `Alt + Shift` switched from English to Arabic, but not back
+to English.
+
+**Why:** the Arabic keyboard layout turns the **Right Alt** key into an extra
+key for typing more Arabic characters (called `ISO_Level3_Shift`). Then it isn't
+an Alt key anymore, so `Right Alt + Shift` can't switch back. The left Alt key
+always worked.
+
+**Fix:** `hyprland.lua` adds the keyboard option `lv3:ralt_alt`, which keeps
+Right Alt a normal Alt key in every layout:
+
+```lua
+kb_options = "grp:alt_shift_toggle,lv3:ralt_alt",
+```
+
+Now `Alt + Shift` switches both ways with either Alt key. The only exception is
+pressing Right Shift *first* and then Right Alt, so press Alt first. The left
+Alt key works in any order.
+
 ## General tips
 
 - Read error messages, and search for the exact text.

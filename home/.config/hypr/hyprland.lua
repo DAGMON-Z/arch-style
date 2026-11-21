@@ -253,7 +253,7 @@ hl.config({
 	kb_layout = "us,ara",
         kb_variant = "",
         kb_model   = "",
-	kb_options = "grp:alt_shift_toggle",
+	kb_options = "grp:alt_shift_toggle,lv3:ralt_alt", -- lv3:ralt_alt: Right Alt stays a normal Alt in Arabic, so Alt+Shift switches back
         kb_rules   = "",
 
         follow_mouse = 1,
