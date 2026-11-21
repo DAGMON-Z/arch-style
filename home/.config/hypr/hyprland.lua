@@ -232,6 +232,16 @@ hl.config({
     },
 })
 
+-- XWayland apps (older X11-only apps, such as Java apps like PC2): don't
+-- stretch them to the screen scale, which made them blurry. They're drawn
+-- sharp at 100% instead, so on a 125% or 133% screen they look a bit smaller.
+-- (Java can only scale by whole numbers, so it can't match 133% exactly.)
+hl.config({
+    xwayland = {
+        force_zero_scaling = true,
+    },
+})
+
 
 ----------------
 ---- LAYERS ----

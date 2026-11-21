@@ -343,6 +343,10 @@ pc2 ~/Desktop/PC2-team-contest
 
 The kit's `.bat` files are for Windows. Ignore them.
 
+PC2 looks sharp but a bit smaller than other apps on a 125% or 133% screen.
+That's on purpose: Java can't scale by 1.33, and stretching it made it blurry.
+See [troubleshooting](11-troubleshooting.md#java-apps-pc2-cant-run-on-wayland).
+
 > **PC2 doesn't open?** Run `pc2` in a terminal to see its messages. "Contacting
 > server" that never finishes means the computer can't reach the contest
 > server: check the Wi-Fi and the address in `pc2v9.ini`. PC2 also writes logs
