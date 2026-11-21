@@ -106,13 +106,22 @@ always visible.
 
 **For each problem:**
 
-1. Open Neovim (`nvim`).
-2. Press `Space C r` (receive problem). Neovim now waits for a problem.
-3. In Brave, open the problem page (Codeforces, AtCoder, CSES, and many more)
+1. Open Neovim (`nvim`). It starts listening for problems by itself.
+2. In Brave, open the problem page (Codeforces, AtCoder, CSES, and many more)
    and click the green **+** icon.
-4. Neovim shows where it will save the file. Press Enter to accept.
-5. The file opens with the [template](#the-template), and the sample tests are
-   saved next to it.
+3. The file opens in Neovim with the [template](#the-template), and the sample
+   tests are saved next to it. No keys and no questions.
+
+Keep Neovim open and click **+** on the next problem: it opens too. On a contest
+page, **+** sends the whole contest, and every problem gets its own file.
+
+> **Two Neovim windows open?** Only one program can listen on a port, so the
+> first Neovim you opened receives the problems. If you close it, press
+> `Space C r` in another one to make it listen. `Space C s` shows whether the
+> current Neovim is listening.
+>
+> If a problem's file already exists, Neovim asks before replacing it, so your
+> code is never overwritten by surprise.
 
 Files go to `~/cp/<site>/<contest>/<problem>.cpp`, for example
 `~/cp/Codeforces/Round 1000/A. Example.cpp`. The tests are saved next to it as
@@ -125,8 +134,9 @@ close the results.
 
 | Keys | Action |
 | --- | --- |
-| `Space C r` | Receive one problem from the browser |
-| `Space C c` | Receive a whole contest (click the icon on the contest page) |
+| (nothing) | Problems and contests from the browser arrive by themselves |
+| `Space C r` | Make this Neovim listen (only if another one was listening) |
+| `Space C s` | Show whether this Neovim is listening |
 | `F5` or `Space C t` | Save, compile and run all sample tests |
 | `F6` | Save, compile and run normally: type the input yourself |
 | `Space C a` | Add your own test |
