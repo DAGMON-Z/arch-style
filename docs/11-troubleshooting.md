@@ -92,15 +92,60 @@ sudo sh -c 'echo 0000:00:15.0 > /sys/bus/pci/drivers/intel-lpss/bind'
 
 To fix it at every boot, `system/` has a script and a service:
 
-- `touchpad-i2c-reset` waits 10 seconds. If the touchpad works by then, it does
-  nothing. Otherwise it restarts the controller, up to 3 times.
+- `touchpad-i2c-reset` checks whether the touchpad started. If it works, the
+  script does nothing. If the kernel already reported the `-110` error, it
+  restarts the controller right away (up to 3 times). Otherwise it waits up to
+  10 seconds for the touchpad first.
 - `touchpad-i2c-reset.service` runs the script at boot.
+- `sddm.service.d/wait-for-touchpad.conf` makes the login screen start only
+  after the fix has finished (see the next section).
 
 Check whether it ran:
 
 ```bash
 journalctl -b -u touchpad-i2c-reset
 ```
+
+## The touchpad doesn't work on the login screen
+
+**What happened:** with the touchpad fix above, the touchpad worked in Hyprland
+but not on the login screen. It only started working there after a USB mouse
+was plugged in and moved.
+
+**Why:** a timing problem. The login screen started about 6 seconds after power
+on, but the fix only brought the touchpad back at about 16 seconds. The login
+screen started with no pointer at all, and it ignored the touchpad that appeared
+later until a mouse moved. Hyprland was fine because you log in later.
+
+**Check the timing** (`-o short-monotonic` shows seconds since power on):
+
+```bash
+journalctl -b -o short-monotonic -u touchpad-i2c-reset -u sddm | grep -E 'Started|Finished'
+```
+
+The touchpad fix should finish *before* the login screen starts.
+
+**Fix:** two changes, both part of the touchpad fix:
+
+1. A systemd **drop-in** makes the login screen wait for the fix. A drop-in is
+   a small file in a `<service>.d/` folder that adds settings to a service
+   without editing its original file:
+
+   ```ini
+   # /etc/systemd/system/sddm.service.d/wait-for-touchpad.conf
+   [Unit]
+   After=touchpad-i2c-reset.service
+   ```
+
+   `After=` means "start only after that service has finished".
+
+2. The script no longer waits 10 seconds when the kernel has already reported
+   the `-110` error, so the login screen appears after about 9 seconds instead
+   of 16.
+
+Also, the login screen runs on **Xorg**, not Hyprland, and Xorg leaves **tap to
+click** off by default. `/etc/X11/xorg.conf.d/30-touchpad.conf` (installed with
+the login screen theme) turns it on.
 
 ## Waybar's missing power menu
 

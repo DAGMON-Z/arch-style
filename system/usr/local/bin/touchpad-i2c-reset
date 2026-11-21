@@ -11,10 +11,20 @@ touchpad_ready() {
     [ -e "$TOUCHPAD/driver" ]
 }
 
-# Give the normal startup 10 seconds. If the touchpad works, do nothing.
+# The kernel already reported the -110 failure for the touchpad this boot
+already_failed() {
+    journalctl -k -b -q --no-pager 2>/dev/null |
+        grep -q 'i2c-LITE0650:00: can.t add hid device: -110'
+}
+
+# Give the normal startup up to 10 seconds. If the touchpad works, do nothing.
+# If the kernel already reported the failure, don't wait: restart right away.
+# (The login screen waits for this script, so a shorter wait means a faster
+# login screen.)
 i=0
 while [ "$i" -lt 10 ]; do
     touchpad_ready && exit 0
+    already_failed && break
     sleep 1
     i=$((i + 1))
 done

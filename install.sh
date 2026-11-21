@@ -342,9 +342,28 @@ if [[ $UPDATE == yes ]]; then
         fi
     done
 
+    # Touchpad fix (MSI Modern 15 only): update it only if it's installed.
+    # The login screen waits for it, so the touchpad works there too.
+    if [[ -e /etc/systemd/system/touchpad-i2c-reset.service ]]; then
+        tp_changed=no
+        for f in usr/local/bin/touchpad-i2c-reset etc/systemd/system/touchpad-i2c-reset.service \
+                 etc/systemd/system/sddm.service.d/wait-for-touchpad.conf; do
+            if ! cmp -s "$REPO/system/$f" "/$f"; then
+                mode=644; [[ $f == usr/local/bin/* ]] && mode=755
+                try "touchpad fix" sudo install -D -m "$mode" "$REPO/system/$f" "/$f"
+                tp_changed=yes
+            fi
+        done
+        [[ $tp_changed == yes ]] && try "touchpad fix" sudo systemctl daemon-reload
+    fi
+
     # 6. Login screen theme: reinstall only if it changed (your wallpaper is kept)
     sddm_dir=/usr/share/sddm/themes/tokyo-night
     if [[ -d $sddm_dir ]]; then
+        # tap to click on the login screen
+        f=etc/X11/xorg.conf.d/30-touchpad.conf
+        cmp -s "$REPO/system/$f" "/$f" ||
+            try "login screen tap to click" sudo install -D -m 644 "$REPO/system/$f" "/$f"
         changed=no
         for f in Main.qml metadata.desktop theme.conf; do
             cmp -s "$THEMES/sddm/tokyo-night/$f" "$sddm_dir/$f" || changed=yes
@@ -507,6 +526,8 @@ echo "Skip this unless you have that laptop and its touchpad fails with error -1
 if ask_yourself "Install the MSI Modern 15 touchpad fix?"; then
     try "touchpad fix" sudo install -m 755 "$REPO/system/usr/local/bin/touchpad-i2c-reset" /usr/local/bin/touchpad-i2c-reset
     try "touchpad fix" sudo install -m 644 "$REPO/system/etc/systemd/system/touchpad-i2c-reset.service" /etc/systemd/system/touchpad-i2c-reset.service
+    # the login screen waits for the fix, so the touchpad works there too
+    try "touchpad fix" sudo install -D -m 644 "$REPO/system/etc/systemd/system/sddm.service.d/wait-for-touchpad.conf" /etc/systemd/system/sddm.service.d/wait-for-touchpad.conf
     try "touchpad fix" sudo systemctl daemon-reload
     try "touchpad fix" sudo systemctl enable touchpad-i2c-reset
 fi
@@ -514,6 +535,8 @@ fi
 # 7. Login screen theme
 if ask "Step 7: install the Tokyo Night login screen theme (SDDM)?"; then
     try "login screen theme" sudo bash "$REPO/home/.local/share/rice-boot-themes/install-sddm-theme.sh"
+    # tap to click on the login screen
+    try "login screen tap to click" sudo install -D -m 644 "$REPO/system/etc/X11/xorg.conf.d/30-touchpad.conf" /etc/X11/xorg.conf.d/30-touchpad.conf
 fi
 
 # 8. Boot menu theme
