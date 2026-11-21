@@ -18,7 +18,7 @@ box and the keyboard layout. The password box border changes color:
 > with Alt+Shift, your password is typed in Arabic letters and fails. The label
 > under the password box shows `us` or `ar`, and you can click it to switch.
 
-Lock now: power menu → **Lock**, or run `hyprlock`.
+Lock now: press `SUPER + L`, use power menu → **Lock**, or run `hyprlock`.
 
 The clock is 12-hour (`text = $TIME12` in `hyprlock.conf`). For 24-hour, change
 it to `text = $TIME`.
@@ -34,7 +34,7 @@ Config: `~/.config/hypr/hypridle.conf`
 
 There's **no lock after a few idle minutes**: that was turned off on purpose,
 so the screen doesn't lock while you're reading or thinking. When you leave,
-lock it yourself with **Lock** in Waybar's power menu. To bring the automatic lock
+lock it yourself with **`SUPER + L`**, or **Lock** in Waybar's power menu. To bring the automatic lock
 back, uncomment the `listener` block for it in `hypridle.conf` and run
 `systemctl --user restart hypridle`.
 

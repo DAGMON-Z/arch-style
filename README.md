@@ -143,6 +143,7 @@ laptops. See [power management](docs/12-power-management.md).
 | `SUPER + SHIFT + Print` | Screenshot of an area to a file |
 | Volume and brightness keys | Change level, with an on-screen popup |
 | `Alt + Shift` | Switch keyboard layout (English and Arabic) |
+| `SUPER + L` | Lock the screen (unlock with your password) |
 | `SUPER + M` | **Log out right away** (closes all apps) |
 
 ## Install

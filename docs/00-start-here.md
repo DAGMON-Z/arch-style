@@ -169,7 +169,7 @@ up to date are skipped.
    | `SUPER + E` | Thunar, the file manager, in dark colors with Papirus icons |
    | Click the Arch logo on the bar | rofi's app list with icons |
    | Volume or brightness keys | A popup with a progress bar |
-   | Power button on the bar → Lock | The lock screen. Unlock with your password |
+   | `SUPER + L` (or power button on the bar → Lock) | The lock screen. Unlock with your password |
    | Click the leaf or scale icon on the bar | The power mode changes |
    | `hyprland-welcome` in a terminal | The welcome app's checklist: every item green or blue ([what each item means](02-packages.md#hyprland-welcome-app-checklist)) |
 
