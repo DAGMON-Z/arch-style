@@ -96,7 +96,9 @@ map({ "n", "i", "v" }, "<F6>", function()
     vim.notify("F6 can run C, C++, Java and Python files", vim.log.levels.WARN)
     return
   end
-  Snacks.terminal.open(cmd, { cwd = vim.fn.expand("%:p:h"), auto_close = true, start_insert = true, auto_insert = true })
+  -- Run it with bash: the "press any key" part (read -rsn1) is bash syntax,
+  -- and Neovim's own shell may be zsh, which doesn't understand it
+  Snacks.terminal.open({ "bash", "-c", cmd }, { cwd = vim.fn.expand("%:p:h"), auto_close = true, start_insert = true, auto_insert = true })
 end, { desc = "Save, compile and run" })
 
 -- Find with Ctrl + F
