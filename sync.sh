@@ -30,6 +30,7 @@ HOME_ITEMS=(
     .config/Thunar/uca.xml
     .config/persepolis_download_manager/persepolis.conf
     .config/spotify-launcher.conf
+    .config/fontconfig/fonts.conf
     .config/clangd
 )
 

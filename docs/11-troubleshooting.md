@@ -270,6 +270,35 @@ hyprctl clients | grep -E 'class:|xwayland:'
 Close the app completely and open it again to apply. Spotify may keep running
 in the background after you close its window, so run `pkill spotify` first.
 
+## Arabic letters don't join (Discord)
+
+**What happened:** in Discord, Arabic text showed every letter separately,
+spaced out like a typewriter, instead of joined words.
+
+**Why:** Discord asks for fonts such as "Helvetica Neue". There's no such font,
+so for Arabic letters the system picked **FreeMono**, an old monospace font that
+has Arabic letters but can't join them properly.
+
+**Check which font an app gets for Arabic:**
+
+```bash
+fc-match "Helvetica Neue:charset=0627" family
+```
+
+- `fc-match` asks fontconfig (the system that picks fonts) which font it would use.
+- `charset=0627` means "a font that has the Arabic letter alef".
+
+It should print `Noto Sans Arabic`, not `FreeMono`.
+
+**Fix:** `~/.config/fontconfig/fonts.conf` (included in this setup) prefers the
+Noto Arabic fonts and never uses FreeMono or FreeSerif:
+
+- normal text, Helvetica and Arial use **Noto Sans Arabic** for Arabic,
+- serif text uses **Noto Naskh Arabic**.
+
+Restart the app afterwards. Discord keeps running in the background after you
+close its window, so stop it completely first with `pkill -i discord`.
+
 ## General tips
 
 - Read error messages, and search for the exact text.
