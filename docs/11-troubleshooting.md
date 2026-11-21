@@ -288,12 +288,15 @@ fc-match "Helvetica Neue:charset=0627" family
 - `fc-match` asks fontconfig (the system that picks fonts) which font it would use.
 - `charset=0627` means "a font that has the Arabic letter alef".
 
-It should print `Noto Sans Arabic`, not `FreeMono`.
+It should print `Noto Sans Arabic UI`, not `FreeMono`.
 
 **Fix:** `~/.config/fontconfig/fonts.conf` (included in this setup) prefers the
 Noto Arabic fonts and never uses FreeMono or FreeSerif:
 
-- normal text, Helvetica and Arial use **Noto Sans Arabic** for Arabic,
+- normal text, Helvetica and Arial use **Noto Sans Arabic UI** for Arabic. It's
+  the compact interface version of Noto Sans Arabic, so Arabic lines up evenly
+  with English text, close to how Windows shows it with Segoe UI (which is a
+  Microsoft font and can't be installed here),
 - serif text uses **Noto Naskh Arabic**.
 
 Restart the app afterwards. Discord keeps running in the background after you
