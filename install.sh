@@ -387,6 +387,15 @@ if [[ $UPDATE == yes ]]; then
         echo "  Run set-wallpaper again to put your wallpaper back on the boot menu."
     fi
 
+    # Java: make sure one is set as the default. Removing the default Java (for
+    # example an older version) leaves none, and then "java" isn't found.
+    if command -v archlinux-java >/dev/null 2>&1 && [[ -z $(archlinux-java get 2>/dev/null) ]] &&
+            [[ -n $(archlinux-java status 2>/dev/null | sed -n 2p) ]]; then
+        echo
+        echo "No default Java is set. Setting it:"
+        try "default Java" sudo archlinux-java fix
+    fi
+
     # zsh as the terminal shell (VS Code style editing). Computers set up before
     # this existed got .zshrc but were still on bash, so ask here too.
     if command -v zsh >/dev/null 2>&1 && [[ $(getent passwd "$USER" | cut -d: -f7) != */zsh ]]; then
@@ -480,6 +489,15 @@ if ask "Step 4: set dark mode, Papirus icons, cursor, monospace font, and Thunar
     try "desktop settings" gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrainsMono Nerd Font 11'
     # Open folders with Thunar
     try "desktop settings" xdg-mime default thunar.desktop inode/directory
+fi
+
+# Java: make sure one is set as the default. Removing the default Java (for
+# example an older version) leaves none, and then "java" isn't found.
+if command -v archlinux-java >/dev/null 2>&1 && [[ -z $(archlinux-java get 2>/dev/null) ]] &&
+        [[ -n $(archlinux-java status 2>/dev/null | sed -n 2p) ]]; then
+    echo
+    echo "No default Java is set. Setting it:"
+    try "default Java" sudo archlinux-java fix
 fi
 
 # zsh as the terminal shell: VS Code style editing (see docs/15-terminal-shell.md)
