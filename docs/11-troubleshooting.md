@@ -315,6 +315,32 @@ hyprctl clients | grep -E 'class:|xwayland:'
 Close the app completely and open it again to apply. Spotify may keep running
 in the background after you close its window, so run `pkill spotify` first.
 
+### Java apps (PC2) can't run on Wayland
+
+Java's window toolkit only speaks X11, so Java apps such as PC2 always use
+XWayland. Hyprland is set to **not stretch** XWayland apps:
+
+```lua
+hl.config({
+    xwayland = {
+        force_zero_scaling = true,
+    },
+})
+```
+
+Now they're drawn sharp at 100%. The trade-off: on a 125% or 133% screen they
+look a bit smaller than other apps. Java can only scale by whole numbers (1×,
+2×), so it can't match 133% exactly: `-Dsun.java2d.uiScale=1.33` is rounded
+down to 1. The `pc2` command passes the screen's scale rounded down (1 at 133%,
+2 at 200%), and turns on smooth text (`-Dawt.useSystemAAFontSettings=on`).
+
+To check which scale Java really uses, look at the window size, or ask Java:
+`GraphicsEnvironment...getDefaultTransform().getScaleX()` in a small test
+program prints it.
+
+If you'd rather have XWayland apps at the normal size but blurry, set
+`force_zero_scaling = false` and run `hyprctl reload`.
+
 ## Arabic letters don't join (Discord)
 
 **What happened:** in Discord, Arabic text showed every letter separately,

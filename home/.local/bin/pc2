@@ -22,7 +22,25 @@ if [[ ! -x $java ]]; then
     java=java
 fi
 
+# Sharp on scaled screens: Hyprland draws XWayland apps (Java is one) at 100%
+# without stretching (force_zero_scaling in hyprland.lua), so they're sharp.
+# Java on Linux can only scale by whole numbers (1, 2, 3), so use the screen's
+# scale rounded down: 1 at 125% or 133% (sharp but a bit small), 2 at 200%.
+scale=$(hyprctl monitors -j 2>/dev/null |
+    python3 -c 'import json,sys; print(max(1, int(next((m["scale"] for m in json.load(sys.stdin) if m["focused"]), 1) + 0.01)))' 2>/dev/null)
+scale=${scale:-1}
+
+# Java options:
+#   uiScale                   draw everything at that whole-number scale
+#   useSystemAAFontSettings   smooth (anti-aliased) text instead of jagged text
+#   swing.aatext              the same for older Swing code
+opts=(
+    -Dsun.java2d.uiScale="$scale"
+    -Dawt.useSystemAAFontSettings=on
+    -Dswing.aatext=true
+)
+
 # PC2 reads bin/pc2v9.ini and writes its logs in bin/logs, so start it from bin
 cd "$kit/bin" || exit 1
-exec "$java" -Djdk.crypto.KeyAgreement.legacyKDF=true -Xms64M -Xmx768M \
+exec "$java" "${opts[@]}" -Djdk.crypto.KeyAgreement.legacyKDF=true -Xms64M -Xmx768M \
     -cp '../lib/*' edu.csus.ecs.pc2.Starter
