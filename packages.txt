@@ -27,7 +27,6 @@ hyprlock
 hyprpaper
 hyprpolkitagent
 jdk-openjdk
-jre17-openjdk
 kitty
 neovim
 networkmanager

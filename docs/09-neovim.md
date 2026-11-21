@@ -303,8 +303,8 @@ java -version
 
 Many university and ICPC contests use **PC2** to submit solutions. Your team
 gets a **kit** from the contest admin: a folder with `bin/` and `lib/` in it.
-PC2 is a Java program and runs on **Java 17** (`jre17-openjdk`, installed by
-this setup next to the newest Java).
+PC2 is a Java program. The kit asks for Java 17, but it also runs on the newest
+Java that this setup installs, so you don't need a second Java.
 
 **Setup (once per contest):**
 
@@ -334,8 +334,8 @@ this setup next to the newest Java).
 **PC2 Team**, or type `pc2` in a terminal. Log in with the team name and
 password from the admin.
 
-The `pc2` command runs the long Java command from the kit's README for you, and
-always uses Java 17. If your kit is somewhere else, pass its folder:
+The `pc2` command runs the long Java command from the kit's README for you. If
+your kit is somewhere else, pass its folder:
 
 ```bash
 pc2 ~/Desktop/PC2-team-contest
