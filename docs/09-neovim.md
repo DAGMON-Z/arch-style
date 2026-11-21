@@ -106,7 +106,18 @@ always visible.
 
 **For each problem:**
 
-1. Open Neovim (`nvim`). It starts listening for problems by itself.
+1. In the terminal, go to the folder for your problems and open Neovim there.
+   It starts listening for problems by itself:
+
+   ```bash
+   mkdir -p ~/cp/sheet4 && cd ~/cp/sheet4 && nvim
+   ```
+
+   - `mkdir -p` creates the folder (and any missing parent folders). If it
+     already exists, it does nothing.
+   - `cd` goes into it, and `nvim` opens Neovim there.
+   - `&&` runs the next command only if the one before it worked.
+
 2. In Brave, open the problem page (Codeforces, AtCoder, CSES, and many more)
    and click the green **+** icon.
 3. The file opens in Neovim with the [template](#the-template), and the sample
@@ -114,6 +125,18 @@ always visible.
 
 Keep Neovim open and click **+** on the next problem: it opens too. On a contest
 page, **+** sends the whole contest, and every problem gets its own file.
+
+**Where the files go:** in the folder you opened Neovim in. If that folder isn't
+meant for problems, Neovim asks where to save instead, and suggests
+`~/cp/<site>/<contest>/`. Press Enter to accept, or type another path. These
+count as "not for problems":
+
+- your home folder itself (`~`), which is where Neovim starts if you open it
+  from the app menu,
+- hidden folders such as `~/.config` and `~/.local`, and everything inside them,
+- the standard folders themselves: Desktop, Documents, Downloads, Music,
+  Pictures, Videos, Public and Templates (folders *inside* them are fine),
+- anything outside your home folder, such as `/tmp`.
 
 > **Two Neovim windows open?** Only one program can listen on a port, so the
 > first Neovim you opened receives the problems. If you close it, press
@@ -123,9 +146,9 @@ page, **+** sends the whole contest, and every problem gets its own file.
 > If a problem's file already exists, Neovim asks before replacing it, so your
 > code is never overwritten by surprise.
 
-Files go to `~/cp/<site>/<contest>/<problem>.cpp`, for example
-`~/cp/Codeforces/Round 1000/A. Example.cpp`. The tests are saved next to it as
-`A. Example_input0.txt`, `A. Example_output0.txt`, and so on.
+Each problem is saved as `<problem>.cpp`, for example `A. Example.cpp`. The
+tests are saved next to it as `A. Example_input0.txt`, `A. Example_output0.txt`,
+and so on.
 
 **Test your solution:** press **`F5`**, or `Space C t`. Neovim compiles with the judge's
 flags (`-std=c++20 -O2 -Wall`), runs every sample test, and shows each one as

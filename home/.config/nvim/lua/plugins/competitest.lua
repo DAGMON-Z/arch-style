@@ -4,8 +4,54 @@
 -- Problems arrive automatically: while Neovim is open, it listens for the
 -- extension. Click the extension's green "+" button in the browser and the
 -- problem opens in Neovim, with its sample tests saved. No keys needed.
+-- It's saved in the folder you opened Neovim in (see save_folder below).
 --
 -- Keys: F5 runs the tests (see keymaps.lua), Space C t too. See docs/09-neovim.md.
+
+-- Where received problems go: the folder Neovim was opened in (run `nvim`
+-- inside the folder you want). If that folder isn't meant for problems, Neovim
+-- asks where to save, and suggests ~/cp/<site>/<contest>/.
+
+-- Replace characters that can't be in file names
+local function clean(name)
+  return (name:gsub('[<>:"/\\|?*]', "_"))
+end
+
+-- Not for problems: home itself, hidden folders (~/.config, ~/.local, ...),
+-- the standard home folders themselves (Downloads, Documents, ...), and
+-- anything outside home. Folders inside Documents etc. are fine.
+local function problem_folder(dir)
+  local home = vim.uv.os_homedir()
+  if dir == home or dir:sub(1, #home + 1) ~= home .. "/" then
+    return false
+  end
+  local rest = dir:sub(#home + 2)
+  if rest:match("^%.") or rest:match("/%.") then
+    return false
+  end
+  local standard = { "Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos", "Public", "Templates" }
+  return not vim.tbl_contains(standard, rest)
+end
+
+-- Turn the "where to save?" question on or off for this problem
+local function ask_where(ask)
+  local cfg = require("competitest.config").current_setup
+  cfg.received_problems_prompt_path = ask
+  cfg.received_contests_prompt_directory = ask
+end
+
+-- The folder to save in: the current one, or the suggestion ~/cp/<site>/<contest>
+local function save_folder(task)
+  local dir = vim.fn.getcwd()
+  if problem_folder(dir) then
+    ask_where(false)
+    return dir
+  end
+  ask_where(true)
+  local judge, contest = task.group:match("^(.-) %- (.+)$")
+  judge, contest = judge or task.group, contest or "unknown_contest"
+  return vim.uv.os_homedir() .. "/cp/" .. clean(judge) .. "/" .. clean(contest)
+end
 
 -- Start listening for problems and contests from the browser
 local function listen(show_errors)
@@ -53,11 +99,15 @@ return {
       companion_port = 27121,
       -- New problems start from this template
       template_file = { cpp = vim.fn.stdpath("config") .. "/templates/cp.cpp" },
-      -- Save problems as ~/cp/<site>/<contest>/<problem>.cpp
+      -- Save problems in the current folder, or ask (see save_folder above)
       received_files_extension = "cpp",
-      received_problems_path = "$(HOME)/cp/$(JUDGE)/$(CONTEST)/$(PROBLEM).$(FEXT)",
-      received_contests_directory = "$(HOME)/cp/$(JUDGE)/$(CONTEST)",
-      -- Don't ask where to save: use the paths above
+      received_problems_path = function(task, ext)
+        return save_folder(task) .. "/" .. clean(task.name) .. "." .. ext
+      end,
+      received_contests_directory = function(task)
+        return save_folder(task)
+      end,
+      -- Ask where to save only when save_folder says so
       received_problems_prompt_path = false,
       received_contests_prompt_directory = false,
       received_contests_prompt_extension = false,
