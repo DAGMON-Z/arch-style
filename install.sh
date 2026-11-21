@@ -387,6 +387,15 @@ if [[ $UPDATE == yes ]]; then
         echo "  Run set-wallpaper again to put your wallpaper back on the boot menu."
     fi
 
+    # zsh as the terminal shell (VS Code style editing). Computers set up before
+    # this existed got .zshrc but were still on bash, so ask here too.
+    if command -v zsh >/dev/null 2>&1 && [[ $(getent passwd "$USER" | cut -d: -f7) != */zsh ]]; then
+        if ask "Use zsh as your terminal shell (select, copy, undo and redo like VS Code)?"; then
+            try "zsh as shell" sudo chsh -s "$(command -v zsh)" "$USER"
+            echo "  Log out and back in to start using zsh."
+        fi
+    fi
+
     # 8. Show the changes right away
     if hyprctl -i 0 version >/dev/null 2>&1; then
         run hyprctl -i 0 reload >/dev/null || true

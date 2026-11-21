@@ -72,7 +72,9 @@ selected it copies it, and otherwise it lets the signal cancel as usual.
 
 ## Switching shells
 
-**To zsh** (the installer offers this):
+**To zsh:** the installer offers this, and so does the
+[update command](00-start-here.md#part-8-getting-updates) if you're still on
+bash. Or switch yourself:
 
 ```bash
 chsh -s /usr/bin/zsh
@@ -80,6 +82,10 @@ chsh -s /usr/bin/zsh
 
 `chsh` ("change shell") sets the shell that new terminals start. It asks for
 your password. Then log out and back in, so every program sees the change.
+
+> **Still bash after updating?** Getting `~/.zshrc` doesn't switch your shell
+> by itself, so the VS Code keys don't work in bash. Run the `chsh` command
+> above (or the update command and answer **y**), then log out and back in.
 
 **Back to bash:** `chsh -s /usr/bin/bash`, then log out and back in.
 
