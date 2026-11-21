@@ -19,6 +19,7 @@ Config: `~/.config/nvim/` (started from the
 | `~/.config/clangd/config.yaml` | Treats single `.cpp` files as C++20 |
 | `lua/plugins/competitest.lua` | Receives problems from the browser and runs sample tests ([below](#get-problems-from-brave-competitive-companion)) |
 | `templates/cp.cpp` | The starting code for every received problem |
+| `lua/arabic_keys.lua` | Makes Neovim work with the Arabic layout ([below](#arabic-keyboard-layout)) |
 | `lua/cp/server.lua` | Talks to the browser extensions on port 27121: receives problems and submits with `F7` ([below](#submit-with-f7-cph-submit)) |
 | `lua/plugins/no-autocomplete.lua` | Turns off autocomplete popups, for practice ([below](#autocomplete-is-off-on-purpose)) |
 
@@ -443,6 +444,23 @@ example in another program), type `fg` to bring the program back.
 **kitty:** kitty uses `Ctrl + Shift + Z` for its own scrolling, so
 `kitty.conf` frees it with `map kitty_mod+z`. Without that line, Neovim never
 receives the key.
+
+## Arabic keyboard layout
+
+With the Arabic layout on, every key types an Arabic letter: `q` types `ض`,
+and `Ctrl + A` sends `Ctrl + ش`. Neovim's commands are English letters, so
+nothing worked. `~/.config/nvim/lua/arabic_keys.lua` fixes this in two ways:
+
+1. **The layout switches by itself.** When you press `Esc` to stop typing, the
+   keyboard switches to **English**, so commands such as `q`, `:q`, `dd` and
+   the `Space` keys work. When you start typing again (`i`), it switches back
+   to **Arabic**, if that's what you were typing in. When you go to another
+   app or quit Neovim, you get your layout back. It uses `hyprctl`, so it only
+   works on Hyprland.
+2. **`Ctrl` shortcuts work while typing Arabic.** `Ctrl + ش` does what
+   `Ctrl + A` does, `Ctrl + س` what `Ctrl + S` does, and so on for every key.
+
+You can still switch by hand with `Alt + Shift`. The bar shows `us` or `ara`.
 
 ## Survival keys
 

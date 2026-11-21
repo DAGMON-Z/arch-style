@@ -116,3 +116,7 @@ map("i", "<C-H>", "<C-w>", { desc = "Delete word" }) -- some terminals send this
 -- Indent / unindent a selection with Tab / Shift + Tab
 map("v", "<Tab>", ">gv", { desc = "Indent" })
 map("v", "<S-Tab>", "<gv", { desc = "Unindent" })
+
+-- Arabic layout: Ctrl + an Arabic letter works like Ctrl + the English letter
+-- on that key, so the shortcuts above also work while typing Arabic
+require("arabic_keys").map_ctrl_keys()
