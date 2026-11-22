@@ -10,4 +10,3 @@ virtualbox
 virtualbox-host-dkms
 virtualbox-guest-iso
 torbrowser-launcher
-proton-vpn-gtk-app

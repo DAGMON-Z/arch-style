@@ -25,7 +25,6 @@ Running it again is safe: anything already installed is skipped.
 | LibreOffice | `libreoffice-fresh` | Official repositories |
 | Spotify | `spotify-launcher` | Official repositories |
 | Tor Browser | `torbrowser-launcher` | Official repositories |
-| Proton VPN | `proton-vpn-gtk-app` | Official repositories |
 | VirtualBox | `virtualbox`, `virtualbox-host-dkms`, `virtualbox-guest-iso` | Official repositories |
 | VirtualBox Extension Pack | `virtualbox-ext-oracle` | AUR (free for personal use), installed right after VirtualBox |
 | VS Code | `visual-studio-code-bin` | AUR (Microsoft's own build, with the extension marketplace) |
@@ -110,16 +109,17 @@ stays unlocked until you log out.
 To set it by hand, open the Command Palette (`Ctrl + Shift + P`), run
 **Preferences: Configure Runtime Arguments**, add the line above and restart.
 
-## Tor Browser and Proton VPN
+## Tor Browser
 
-- **Tor Browser:** `torbrowser-launcher` downloads the official Tor Browser
-  from the Tor Project and checks its signature, so you know it's genuine.
-  Open **Tor Browser** from the app list. The first time, it downloads the
-  browser (about 100 MB), then it starts. It updates itself.
-- **Proton VPN:** open **Proton VPN** from the app list and log in with a
-  Proton account. The free plan has no ads and no data limit. Your login is
-  kept in KDE Wallet (`kwallet`, also in this list), so you don't have to log
-  in every time.
+`torbrowser-launcher` downloads the official Tor Browser from the Tor Project
+and checks its signature, so you know it's genuine. Open **Tor Browser** from
+the app list. The first time, it downloads the browser (about 100 MB), then it
+starts. It updates itself.
+
+**Slow, or won't connect?** Some internet providers slow down or block Tor.
+Use a **bridge**: in Tor Browser, open **Settings → Connection → Bridges**,
+choose **Select a built-in bridge**, and pick **obfs4** (or **Snowflake** if
+obfs4 doesn't connect). Bridges also hide from your provider that you use Tor.
 
 ## VirtualBox
 
