@@ -32,6 +32,7 @@ neovim
 networkmanager
 noto-fonts
 noto-fonts-emoji
+openssh
 papirus-icon-theme
 pavucontrol
 persepolis
@@ -43,10 +44,10 @@ power-profiles-daemon
 python-gobject
 qt5-wayland
 qt6-5compat
+qt6ct
 qt6-declarative
 qt6-svg
 qt6-wayland
-qt6ct
 ripgrep
 rofi
 sddm

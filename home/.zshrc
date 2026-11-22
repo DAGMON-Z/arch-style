@@ -154,3 +154,10 @@ if [[ -n $KITTY_WINDOW_ID && -z $NVIM ]] && command -v fastfetch >/dev/null 2>&1
   fi
   unset term_columns
 fi
+
+# SSH server on/off, so other computers can connect only when you want:
+#   sshon   start it (until restart)      sshoff   stop it
+#   sshstatus   is it running?
+alias sshon='sudo systemctl start sshd && echo "SSH is on. Address: $(ip -4 -brief addr show scope global | awk "{print \$3}" | cut -d/ -f1 | head -1)"'
+alias sshoff='sudo systemctl stop sshd && echo "SSH is off."'
+alias sshstatus='systemctl is-active sshd'

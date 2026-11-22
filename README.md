@@ -53,6 +53,7 @@ See [Getting updates](#getting-updates) for what it does.
 14. [Files and downloads: Thunar and Persepolis](docs/14-files-and-downloads.md)
 15. [The terminal shell: zsh with VS Code keys](docs/15-terminal-shell.md)
 16. [My personal apps](docs/16-personal-apps.md)
+17. [SSH: control another computer](docs/17-ssh.md)
 
 ## Screenshots
 
