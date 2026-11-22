@@ -48,9 +48,21 @@ mkdir -p ~/cp && cd ~/cp && nvim a.cpp
 ```
 
 **The quick way:** press **`F6`**. It saves, compiles with the judge's flags
-and runs your program in a terminal at the bottom. Type the input, and press
-`Ctrl + D` when you've finished typing it. When the program ends, press any key
-to close the terminal. `F6` also runs C, Java and Python files.
+and runs your program in a terminal at the bottom. Type the input and press
+Enter: the answers appear right away, line by line. When the program ends,
+press any key to close the terminal. `F6` also runs C, Java and Python files.
+
+- **Answers appear right away**, even with fast I/O (`cin.tie(0)` and `'\n'`
+  instead of `endl`). Normally fast I/O keeps all output until the program
+  ends, which looks like nothing is happening while you type. F6 adds a small
+  header when compiling (`-include ~/.config/nvim/runner/flush.hpp`) that
+  prints every output immediately. It's only for F6: your code, `F5` and
+  submissions are unchanged.
+- **If the program crashes**, F6 says so with its exit code: `139` is a crash
+  such as reading outside an array, `136` is a division by zero.
+- **Compile errors** are shown, with a reminder to fix them and press F6 again.
+- `Ctrl + D` means "end of input". You only need it when your program reads
+  until the input ends, such as `while (cin >> x)`.
 
 **By hand:** press `` Ctrl + ` `` to open a terminal, then:
 

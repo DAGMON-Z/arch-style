@@ -72,24 +72,34 @@ local function run_command()
   local file = vim.fn.expand("%:t")     -- name.cpp
   local name = vim.fn.expand("%:t:r")   -- name
   local q = vim.fn.shellescape
+  -- Small headers that make output appear right away (see ~/.config/nvim/runner)
+  local runner = vim.fn.stdpath("config") .. "/runner/"
   local build = {
-    cpp = "g++ -std=c++20 -O2 -Wall " .. q(file) .. " -o " .. q(name),
-    c = "gcc -std=c17 -O2 -Wall " .. q(file) .. " -o " .. q(name),
+    cpp = "g++ -std=c++20 -O2 -Wall -include " .. q(runner .. "flush.hpp") .. " " .. q(file) .. " -o " .. q(name),
+    c = "gcc -std=c17 -O2 -Wall -include " .. q(runner .. "flush.h") .. " " .. q(file) .. " -o " .. q(name),
     java = "javac " .. q(file),
   }
   local run = {
     cpp = "./" .. q(name),
     c = "./" .. q(name),
     java = "java " .. q(name),
-    python = "python3 " .. q(file),
+    python = "python3 -u " .. q(file), -- -u: print output right away
   }
   local ft = vim.bo.filetype
   if not run[ft] then
     return nil
   end
-  local start = "echo '--- running: type the input, Ctrl+D ends it ---' && " .. run[ft]
-  local cmd = build[ft] and (build[ft] .. " && " .. start) or start
-  return cmd .. "; echo; echo '--- finished: press any key to close ---'; read -rsn1"
+  local lines = {}
+  if build[ft] then
+    table.insert(lines, build[ft] .. [[ || { echo; echo '--- compile errors above: fix them and press F6 again. Any key closes ---'; read -rsn1; exit; }]])
+  end
+  table.insert(lines, [[echo '--- running: type the input (Ctrl+D = end of input) ---']])
+  table.insert(lines, run[ft])
+  table.insert(lines, [[code=$?; echo]])
+  table.insert(lines, [[if [ $code -eq 0 ]; then echo '--- finished: press any key to close ---'; ]]
+    .. [[else echo "--- stopped with exit code $code (139 = crash, e.g. out of bounds; 136 = division by zero). Any key closes ---"; fi]])
+  table.insert(lines, "read -rsn1")
+  return table.concat(lines, "\n")
 end
 
 map({ "n", "i", "v" }, "<F6>", function()
