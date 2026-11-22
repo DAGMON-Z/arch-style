@@ -480,6 +480,21 @@ right-click the device and choose **Trust**, then disconnect and connect again.
 > headphones to headset mode on purpose, because only that mode has a
 > microphone. They switch back when the call ends.
 
+## The minimize button does nothing
+
+**What happened:** clicking an app's minimize button (the `–` at the top right)
+did nothing.
+
+**Why:** Hyprland has no "minimized" windows: a window is either on a
+workspace or on a hidden special workspace. Hyprland receives the app's request
+but ignores it, and doesn't report it anywhere, so it can't be redirected with
+the config either (checked in Hyprland 0.57's source).
+
+**Instead:** use the scratchpad, a hidden workspace:
+
+- `SUPER + SHIFT + S` hides the window (moves it to the scratchpad).
+- `SUPER + S` shows or hides the scratchpad, to get it back.
+
 ## General tips
 
 - Read error messages, and search for the exact text.
