@@ -57,10 +57,19 @@ each part.
   changes the level and shows a popup (see [chapter 5](05-kitty-rofi-dunst.md)).
 - **Screenshots:** the `Print` keys run `~/.config/hypr/scripts/screenshot.sh`.
   It uses `grim` (take the picture), `slurp` (drag to select an area) and
-  `wl-copy` (copy to the clipboard). It creates `~/Pictures/Screenshots` if it's
-  missing and shows a notification with a preview, so you can see that it
-  worked. `Print` also copies the full screenshot, so you can paste it right
-  away with `Ctrl + V`. `Esc` cancels an area selection.
+  `wl-copy` (copy to the clipboard). Every screenshot is copied, so you can
+  paste it right away with `Ctrl + V`, and a notification shows a preview.
+
+  | Keys | Screenshot | Saved to `~/Pictures/Screenshots`? |
+  | --- | --- | --- |
+  | `Print` | Whole screen | No, only copied |
+  | `SHIFT + Print` | An area you drag | No, only copied |
+  | `SUPER + Print` | Whole screen | Yes |
+  | `SUPER + SHIFT + Print` | An area you drag | Yes |
+
+  So: **`SUPER` saves, `SHIFT` picks an area.** `Esc` cancels an area
+  selection. Copy-only screenshots never touch the disk: the preview is kept
+  in `$XDG_RUNTIME_DIR`, a folder in memory that's emptied when you log out.
 - **Autostart:** `set-wallpaper --restore` shows the wallpaper (see [chapter 7](07-wallpaper.md)).
 - **Safety:** `allow_session_lock_restore` lets you restart the lock screen if
   it crashes (see [chapter 6](06-lockscreen.md)).

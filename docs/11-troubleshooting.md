@@ -278,7 +278,7 @@ shows a notification with a preview. If you still see no notification:
 - Run the script by hand to see any error:
 
   ```bash
-  ~/.config/hypr/scripts/screenshot.sh full
+  ~/.config/hypr/scripts/screenshot.sh full-copy
   ```
 
 ## Blurry or pixelated apps (Spotify, Discord)

@@ -426,6 +426,9 @@ hl.on("hyprland.start", function()
 end)
 -- Screenshots. The script saves to ~/Pictures/Screenshots (creating it if
 -- needed) and shows a notification, so you can see that it worked.
-hl.bind("Print",                 hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh full"))      -- whole screen to a file
-hl.bind("SUPER + Print",         hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh area-copy")) -- area to the clipboard
-hl.bind("SUPER + SHIFT + Print", hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh area-save")) -- area to a file
+-- Without SUPER: only copied (paste with Ctrl+V), not saved. With SUPER: saved too.
+-- Add SHIFT to drag a box around an area instead of the whole screen.
+hl.bind("Print",                 hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh full-copy")) -- whole screen, copy only
+hl.bind("SHIFT + Print",         hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh area-copy")) -- area, copy only
+hl.bind("SUPER + Print",         hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh full-save")) -- whole screen, saved + copied
+hl.bind("SUPER + SHIFT + Print", hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh area-save")) -- area, saved + copied
