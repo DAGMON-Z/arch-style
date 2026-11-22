@@ -77,7 +77,9 @@ Click the **Bluetooth icon** on the bar to open **Blueman**.
 4. Right-click it and choose **Pair**. If a code appears, check that it matches
    the one on the device, then confirm.
 5. Right-click it again and choose **Trust**, so it reconnects by itself next
-   time.
+   time. **Don't skip this for headphones:** without it, the good-quality
+   connection can fail and they sound bad (see
+   [troubleshooting](11-troubleshooting.md#bluetooth-headphones-sound-bad)).
 6. Right-click it and choose **Connect**.
 
 For headphones or speakers, sound should switch to them. If not, click the

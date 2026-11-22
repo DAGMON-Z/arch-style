@@ -435,6 +435,51 @@ An empty folder means no wallet yet.
 and set a password, then restart VS Code. `hyprland.lua` now has a
 `float-kde-wallet` rule, so the window floats in the middle of the screen.
 
+## Bluetooth headphones sound bad
+
+**What happened:** with Bluetooth headphones (an oraimo BoomPop Pro), music
+and videos sounded muffled and tinny, like a phone call.
+
+**Why:** Bluetooth headphones have two modes:
+
+- **A2DP** ("High Fidelity Playback"): good stereo sound, no microphone.
+- **HSP/HFP** ("Headset Head Unit"): phone-call quality, with the microphone.
+
+The headphones were in headset mode, and the good mode wasn't offered at all.
+The Bluetooth log showed why:
+
+```text
+a2dp-sink profile connect failed for 24:DF:17:6B:84:CC: Input/output error
+```
+
+The headphones weren't **trusted**. They start the A2DP connection
+themselves, and for an untrusted device that connection can be refused, so
+only the phone-call part connected.
+
+**Check the mode:**
+
+```bash
+pactl list cards | grep -E 'device.description|Active Profile'
+```
+
+`Active Profile: a2dp-sink...` is good. `headset-head-unit...` is phone-call
+quality.
+
+**Fix:** trust the headphones, then reconnect them:
+
+```bash
+bluetoothctl trust 24:DF:17:6B:84:CC
+bluetoothctl disconnect 24:DF:17:6B:84:CC
+bluetoothctl connect 24:DF:17:6B:84:CC
+```
+
+Use your own headphones' address: `bluetoothctl devices` lists it. In Blueman,
+right-click the device and choose **Trust**, then disconnect and connect again.
+
+> Apps that use the microphone (Discord calls, for example) switch the
+> headphones to headset mode on purpose, because only that mode has a
+> microphone. They switch back when the call ends.
+
 ## General tips
 
 - Read error messages, and search for the exact text.
