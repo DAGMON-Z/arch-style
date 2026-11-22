@@ -449,7 +449,7 @@ The headphones were in headset mode, and the good mode wasn't offered at all.
 The Bluetooth log showed why:
 
 ```text
-a2dp-sink profile connect failed for 24:DF:17:6B:84:CC: Input/output error
+a2dp-sink profile connect failed for AA:BB:CC:DD:EE:FF: Input/output error
 ```
 
 The headphones weren't **trusted**. They start the A2DP connection
@@ -468,9 +468,9 @@ quality.
 **Fix:** trust the headphones, then reconnect them:
 
 ```bash
-bluetoothctl trust 24:DF:17:6B:84:CC
-bluetoothctl disconnect 24:DF:17:6B:84:CC
-bluetoothctl connect 24:DF:17:6B:84:CC
+bluetoothctl trust AA:BB:CC:DD:EE:FF
+bluetoothctl disconnect AA:BB:CC:DD:EE:FF
+bluetoothctl connect AA:BB:CC:DD:EE:FF
 ```
 
 Use your own headphones' address: `bluetoothctl devices` lists it. In Blueman,
