@@ -79,7 +79,7 @@ these on:
 | `bluetooth.service` | system | Bluetooth (managed with Blueman, by clicking the bar icon) |
 | `sddm.service` | system | Login screen |
 | `hyprpolkitagent.service` | user | Shows the password popup when an app needs admin rights |
-| `hypridle.service` | user | Suspends after 15 minutes idle (and locks before suspending) |
+| `hypridle.service` | user | Nothing happens when idle (no auto lock or suspend); locks before any suspend |
 | `pipewire.socket`, `pipewire-pulse.socket`, `wireplumber.service` | user | Sound (usually already on) |
 | `power-profiles-daemon.service` | system | Power modes: power-saver, balanced, performance |
 | `thermald.service` | system | Intel thermal control (Intel CPUs only) |

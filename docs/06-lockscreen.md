@@ -27,18 +27,21 @@ it to `text = $TIME`.
 
 Config: `~/.config/hypr/hypridle.conf`
 
-| After | What happens |
+| When | What happens |
 | --- | --- |
-| 15 minutes idle | Suspends the laptop |
-| Before any suspend | Locks first |
+| You leave it unused | **Nothing**: no automatic lock, no automatic suspend |
+| Before any suspend (closing the lid, or Suspend in the power menu) | Locks first |
 
-There's **no lock after a few idle minutes**: that was turned off on purpose,
-so the screen doesn't lock while you're reading or thinking. When you leave,
-lock it yourself with **`SUPER + L`**, or **Lock** in Waybar's power menu. To bring the automatic lock
-back, uncomment the `listener` block for it in `hypridle.conf` and run
-`systemctl --user restart hypridle`.
+Both automatic actions are turned off on purpose: the screen never locks or
+sleeps while you're reading, thinking or waiting for something. When you
+leave, lock it yourself with **`SUPER + L`**, or **Lock** in Waybar's power
+menu.
 
-Apps playing video can ask the system to stay awake, and hypridle respects that.
+> **On battery**, nothing saves power while you're away now. Close the lid, or
+> choose Suspend in the power menu, when you leave the laptop for a while.
+
+To bring either back (lock after 5 minutes, suspend after 15), uncomment its
+`listener` block in `hypridle.conf` and run `systemctl --user restart hypridle`.
 
 hypridle runs as a user service:
 

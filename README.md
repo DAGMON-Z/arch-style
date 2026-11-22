@@ -87,7 +87,7 @@ because GRUB can't be captured from inside Linux. More details are in
 | Persepolis | Download manager | `home/.config/persepolis_download_manager/` |
 | dunst | Notifications and the volume and brightness popup | `home/.config/dunst/` |
 | hyprlock | Lock screen | `home/.config/hypr/hyprlock.conf` |
-| hypridle | Suspends after 15 minutes idle (and locks before suspending) | `home/.config/hypr/hypridle.conf` |
+| hypridle | Nothing happens when idle (no auto lock or suspend); locks before any suspend | `home/.config/hypr/hypridle.conf` |
 | awww | Wallpaper with smooth transitions | `home/.local/bin/set-wallpaper` |
 | SDDM and GRUB themes | Login screen and boot menu | `home/.local/share/rice-boot-themes/` |
 | GTK and Qt theming | Dark apps with Papirus icons | `home/.config/gtk-3.0/`, `gtk-4.0/`, `qt6ct/`, `kdeglobals` |
