@@ -14,3 +14,7 @@ vim.g.autoformat = false
 -- replaces the selection, and a plain arrow key cancels it.
 vim.opt.keymodel = "startsel,stopsel"
 vim.opt.selectmode = "key,mouse"
+-- The selection stops *before* the cursor, like VS Code, where the cursor sits
+-- between characters. Without this, Shift+End also selected the invisible line
+-- break, so cutting a line pulled the next line up into it.
+vim.opt.selection = "exclusive"

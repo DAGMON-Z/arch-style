@@ -461,6 +461,12 @@ copying a selection. Now you're back to typing afterwards, with the cursor
 where it was. If you pressed `Esc` yourself, you stay in normal mode.
 `~/.config/nvim/lua/stay_insert.lua` does this.
 
+**Selections stop before the cursor**, like VS Code, where the cursor sits
+between characters (`vim.opt.selection = "exclusive"` in `options.lua`).
+Neovim's default includes the character under the cursor, so `Shift + End`
+also selected the invisible line break, and cutting the line pulled the next
+line up into it.
+
 > With text selected using `Shift + arrows` while typing, the first `Esc`
 > cancels the selection and you keep typing (like VS Code). A second `Esc`
 > goes to normal mode.
