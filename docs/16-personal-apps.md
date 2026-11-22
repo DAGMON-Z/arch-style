@@ -4,7 +4,7 @@ These are the apps I use every day. They aren't part of the desktop setup, so
 they have their own installer, `apps.sh`. One command installs all of them:
 
 ```bash
-bash ~/arch-style/apps.sh
+bash ~/neon-arch/apps.sh
 ```
 
 It shows the list, asks once, then installs everything without more questions.

@@ -80,22 +80,22 @@ to erase.
 > [troubleshooting](11-troubleshooting.md#forced-shutdown-during-pacman) for
 > why.
 
-## Part 4: Install Arch Style
+## Part 4: Install Neon Arch
 
 ### The one command
 
 This downloads the repository and runs the installer with every general step:
 
 ```bash
-sudo pacman -S --needed git && git clone https://github.com/DAGMON-Z/arch-style.git ~/arch-style && bash ~/arch-style/install.sh --all
+sudo pacman -S --needed git && git clone https://github.com/DAGMON-Z/neon-arch.git ~/neon-arch && bash ~/neon-arch/install.sh --all
 ```
 
 It's three commands joined with `&&`, which means "only continue if the
 previous command worked":
 
 1. `sudo pacman -S --needed git` installs git.
-2. `git clone ... ~/arch-style` downloads this repository to `~/arch-style`.
-3. `bash ~/arch-style/install.sh --all` runs the installer without questions.
+2. `git clone ... ~/neon-arch` downloads this repository to `~/neon-arch`.
+3. `bash ~/neon-arch/install.sh --all` runs the installer without questions.
 
 To make everything bigger, add `--scale` with a size: `1.25` is 125%, `1.5` is
 150%. Without it, `--all` keeps the automatic size:
@@ -117,14 +117,14 @@ the end:
   should review them, and
 - the touchpad fix, because it's only for the MSI Modern 15 F13MG.
 
-Run `bash ~/arch-style/install.sh` without `--all` to choose those.
+Run `bash ~/neon-arch/install.sh` without `--all` to choose those.
 
 ### Or step by step (recommended for learning)
 
 ```bash
 sudo pacman -S --needed git
-git clone https://github.com/DAGMON-Z/arch-style.git ~/arch-style
-cd ~/arch-style
+git clone https://github.com/DAGMON-Z/neon-arch.git ~/neon-arch
+cd ~/neon-arch
 less install.sh                  # read it first. Press q to quit
 bash install.sh --dry-run        # shows what it would do, changes nothing
 bash install.sh                  # asks before every step
@@ -190,7 +190,7 @@ The full list of shortcuts is in the
 2. **Neovim:** run `nvim` once while online, so it downloads its plugins
    ([chapter 9](09-neovim.md)).
 3. **Optional extras:**
-   - AUR apps: `bash ~/arch-style/install.sh` and answer **y** at step 2.
+   - AUR apps: `bash ~/neon-arch/install.sh` and answer **y** at step 2.
    - On an MSI Modern 15 F13MG with touchpad trouble: answer **y** at step 6.
    - Secure Boot: follow [chapter 13](13-secure-boot.md) **after** everything
      else works. It changes firmware settings, so do it last.
@@ -213,14 +213,14 @@ Before editing a config file, copy it to `<file>.bak`, so you can always go back
 When the repository gets new features or fixes, update with:
 
 ```bash
-git -C ~/arch-style pull --ff-only && bash ~/arch-style/install.sh --update
+git -C ~/neon-arch pull --ff-only && bash ~/neon-arch/install.sh --update
 ```
 
-- `git -C ~/arch-style` runs git inside the `~/arch-style` folder.
+- `git -C ~/neon-arch` runs git inside the `~/neon-arch` folder.
 - `pull --ff-only` downloads the latest version, but only if it fits cleanly on
   top of yours. Otherwise it stops instead of mixing versions.
 - `&&` runs the next command only if the previous one worked.
-- `bash ~/arch-style/install.sh --update` then applies what changed:
+- `bash ~/neon-arch/install.sh --update` then applies what changed:
 
 - It installs only the packages you don't have yet.
 - It copies only the config files that changed, saving your old version as `.bak`.
@@ -229,7 +229,7 @@ git -C ~/arch-style pull --ff-only && bash ~/arch-style/install.sh --update
 To see what it would do without changing anything, add `--dry-run`:
 
 ```bash
-bash ~/arch-style/install.sh --update --dry-run
+bash ~/neon-arch/install.sh --update --dry-run
 ```
 
 ## Part 9: If something goes wrong

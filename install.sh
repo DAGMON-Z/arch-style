@@ -1,5 +1,5 @@
 #!/bin/bash
-# Arch Style installer
+# Neon Arch installer
 #
 # Please read this file before running it. It:
 #   1. installs the packages in packages.txt with pacman
@@ -266,7 +266,21 @@ summary() {
 # --update: get the latest version and apply only what changed.
 # Asks for your password only if something needs administrator rights.
 if [[ $UPDATE == yes ]]; then
-    echo "Arch Style update"
+    echo "Neon Arch update"
+
+    # The project was renamed from "Arch Style" (folder ~/arch-style) to
+    # "Neon Arch" (~/neon-arch). Move the folder, keep a link with the old name
+    # so old commands still work, and use the new GitHub address.
+    if [[ $(basename "$REPO") == arch-style && ! -L $REPO && ! -e $HOME/neon-arch ]]; then
+        echo
+        echo "Arch Style is now called Neon Arch. Moving $REPO to ~/neon-arch"
+        echo "(~/arch-style stays as a link, so old commands keep working)."
+        if [[ $DRY == no ]] && mv "$REPO" "$HOME/neon-arch"; then
+            ln -s "$HOME/neon-arch" "$REPO"
+            REPO="$HOME/neon-arch"
+            git -C "$REPO" remote set-url origin https://github.com/DAGMON-Z/neon-arch.git
+        fi
+    fi
     THEMES="$REPO/home/.local/share/rice-boot-themes"
 
     # 1. Download the latest version of this repository
@@ -418,7 +432,7 @@ if [[ $UPDATE == yes ]]; then
     exit 0
 fi
 
-echo "Arch Style installer"
+echo "Neon Arch installer"
 [[ $DRY == yes ]] && echo "DRY RUN: nothing will be changed."
 if [[ $ALL == yes ]]; then
     echo "--all: every general step runs without questions."

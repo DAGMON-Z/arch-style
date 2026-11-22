@@ -1,4 +1,4 @@
-# Arch Style
+# Neon Arch
 
 A beginner-friendly Arch Linux desktop with **Hyprland** and a **Tokyo Night** theme,
 explained step by step.
@@ -19,17 +19,17 @@ Already have a fresh archinstall Hyprland system? This one command installs
 everything:
 
 ```bash
-sudo pacman -S --needed git && git clone https://github.com/DAGMON-Z/arch-style.git ~/arch-style && bash ~/arch-style/install.sh --all
+sudo pacman -S --needed git && git clone https://github.com/DAGMON-Z/neon-arch.git ~/neon-arch && bash ~/neon-arch/install.sh --all
 ```
 
 To see what it would do first, without changing anything, run the installer
-with `--dry-run`. The [guide](docs/00-start-here.md#part-4-install-arch-style)
+with `--dry-run`. The [guide](docs/00-start-here.md#part-4-install-neon-arch)
 explains the options.
 
 **Already installed? Update** to the newest version with one command:
 
 ```bash
-git -C ~/arch-style pull --ff-only && bash ~/arch-style/install.sh --update
+git -C ~/neon-arch pull --ff-only && bash ~/neon-arch/install.sh --update
 ```
 
 See [Getting updates](#getting-updates) for what it does.
@@ -156,8 +156,8 @@ The [step-by-step guide](docs/00-start-here.md) covers this in detail. In short:
 
    ```bash
    sudo pacman -S --needed git
-   git clone https://github.com/DAGMON-Z/arch-style.git ~/arch-style
-   cd ~/arch-style
+   git clone https://github.com/DAGMON-Z/neon-arch.git ~/neon-arch
+   cd ~/neon-arch
    ```
 
 3. **Read `install.sh`**, for example with `less install.sh`. Press `q` to quit.
@@ -193,10 +193,14 @@ The [step-by-step guide](docs/00-start-here.md) covers this in detail. In short:
 When this repository changes, one command updates an installed computer:
 
 ```bash
-git -C ~/arch-style pull --ff-only && bash ~/arch-style/install.sh --update
+git -C ~/neon-arch pull --ff-only && bash ~/neon-arch/install.sh --update
 ```
 
-`git -C ~/arch-style pull --ff-only` downloads the latest version first, so this
+> **Installed it when it was called Arch Style?** Your old update command
+> (`git -C ~/arch-style pull ...`) still works. The first update moves the folder
+> to `~/neon-arch` and leaves `~/arch-style` as a link to it, so both names work.
+
+`git -C ~/neon-arch pull --ff-only` downloads the latest version first, so this
 works even if your copy is older than the `--update` option. `&&` runs the
 update only if the download worked.
 
@@ -218,7 +222,7 @@ If you fork this repository for your own configs, `sync.sh` copies your current
 files back into it:
 
 ```bash
-cd ~/arch-style
+cd ~/neon-arch
 ./sync.sh
 git status
 git add .
@@ -283,14 +287,14 @@ Discord, Brave, Chrome, Outlook, AnyDesk, VLC, Claude Code, Claude Desktop,
 Spotify, LibreOffice, Git, Zoom, and VirtualBox with its Extension Pack.
 
 ```bash
-sudo pacman -S --needed git && { [ -d ~/arch-style ] || git clone https://github.com/DAGMON-Z/arch-style.git ~/arch-style; } && bash ~/arch-style/apps.sh
+sudo pacman -S --needed git && { [ -d ~/neon-arch ] || git clone https://github.com/DAGMON-Z/neon-arch.git ~/neon-arch; } && bash ~/neon-arch/apps.sh
 ```
 
 - `sudo pacman -S --needed git` installs git, if it's missing.
-- `[ -d ~/arch-style ] || git clone ...` downloads this repository, unless you
+- `[ -d ~/neon-arch ] || git clone ...` downloads this repository, unless you
   already have it. `[ -d folder ]` checks whether a folder exists, and `||`
   runs the next part only if it doesn't.
-- `bash ~/arch-style/apps.sh` shows the list of apps, asks once, then installs
+- `bash ~/neon-arch/apps.sh` shows the list of apps, asks once, then installs
   everything.
 
 Restart afterwards, so VirtualBox is ready. WhatsApp, Notion and Teams have no

@@ -84,7 +84,7 @@ power-saver.)
 ### Installing it by hand
 
 ```bash
-cd ~/arch-style/system
+cd ~/neon-arch/system
 sudo install -m 755 usr/local/bin/power-profile-auto /usr/local/bin/power-profile-auto
 sudo install -m 644 etc/udev/rules.d/99-power-profile-auto.rules /etc/udev/rules.d/99-power-profile-auto.rules
 sudo install -m 644 etc/systemd/system/power-profile-auto.service /etc/systemd/system/power-profile-auto.service

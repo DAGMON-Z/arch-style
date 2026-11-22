@@ -12,7 +12,7 @@ This repository has two lists of exactly what this setup needs:
 `install.sh` installs both, asking first. To do it by hand:
 
 ```bash
-cd ~/arch-style
+cd ~/neon-arch
 sudo pacman -S --needed - < packages.txt
 ```
 
@@ -35,7 +35,7 @@ cd /tmp/yay && makepkg -si
 Then:
 
 ```bash
-cd ~/arch-style
+cd ~/neon-arch
 yay -S --needed - < aur-packages.txt
 ```
 
