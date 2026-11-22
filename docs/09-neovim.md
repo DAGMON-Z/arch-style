@@ -461,6 +461,14 @@ copying a selection. Now you're back to typing afterwards, with the cursor
 where it was. If you pressed `Esc` yourself, you stay in normal mode.
 `~/.config/nvim/lua/stay_insert.lua` does this.
 
+**Indentation is 4 spaces**, like VS Code (`shiftwidth`, `tabstop` and
+`softtabstop` in `options.lua`; LazyVim's default is 2). The CP template uses
+4 spaces too. Formatting with `Space c f` follows `~/.clang-format`, which is
+VS Code's default C++ style: 4 spaces, opening braces on their own line, and no
+line-length limit. clang-format uses the nearest `.clang-format` in the file's
+folder or any folder above it, so the one in your home folder covers all your
+code there.
+
 **Selections stop before the cursor**, like VS Code, where the cursor sits
 between characters (`vim.opt.selection = "exclusive"` in `options.lua`).
 Neovim's default includes the character under the cursor, so `Shift + End`

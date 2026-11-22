@@ -32,6 +32,7 @@ HOME_ITEMS=(
     .config/spotify-launcher.conf
     .config/fontconfig/fonts.conf
     .config/clangd
+    .clang-format
     .local/share/applications/pc2.desktop
 )
 

@@ -1,0 +1,12 @@
+# Code style for clang-format, used by Neovim's "format" (Space c f) through
+# clangd. It applies to C and C++ files in this folder and every folder below.
+# This is VS Code's default C++ style ("Visual Studio"): 4 spaces, braces on
+# their own line, and no line-length limit.
+BasedOnStyle: LLVM
+UseTab: Never
+IndentWidth: 4
+TabWidth: 4
+BreakBeforeBraces: Allman
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
+ColumnLimit: 0

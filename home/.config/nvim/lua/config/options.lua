@@ -18,3 +18,8 @@ vim.opt.selectmode = "key,mouse"
 -- between characters. Without this, Shift+End also selected the invisible line
 -- break, so cutting a line pulled the next line up into it.
 vim.opt.selection = "exclusive"
+
+-- Indent with 4 spaces, like VS Code (LazyVim's default is 2)
+vim.opt.shiftwidth = 4 -- size of one indent level (Tab, >>, automatic indent)
+vim.opt.tabstop = 4 -- how wide a real tab character looks
+vim.opt.softtabstop = 4 -- Tab and Backspace move by 4 spaces while typing
