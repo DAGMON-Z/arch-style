@@ -106,7 +106,34 @@ if ! command -v yay >/dev/null 2>&1; then
     fi
     rm -rf "$build"
 fi
-try "AUR packages" yay -S --needed --noconfirm --answerclean None --answerdiff None --removemake "${aur[@]}"
+
+# VS Code: the list has Microsoft's build (visual-studio-code-bin, with the
+# extension marketplace). It can't be installed next to "code", the open-source
+# build from the official repositories, so replace that one. Its settings and
+# shortcuts are copied to where Microsoft's build looks for them.
+if [[ " ${aur[*]} " == *" visual-studio-code-bin "* ]] && pacman -Q code >/dev/null 2>&1 &&
+        ! pacman -Q visual-studio-code-bin >/dev/null 2>&1; then
+    echo "  Replacing \"code\" (open-source VS Code) with Microsoft's VS Code:"
+    for f in settings.json keybindings.json; do
+        old="$HOME/.config/Code - OSS/User/$f"
+        new="$HOME/.config/Code/User/$f"
+        if [[ -f $old && ! -e $new ]]; then
+            run mkdir -p "$(dirname "$new")"
+            run cp "$old" "$new" && echo "  copied your $f"
+        fi
+    done
+    try "remove code" sudo pacman -R --noconfirm code
+fi
+
+# One app at a time, so a problem with one doesn't stop the others
+for pkg in "${aur[@]}"; do
+    if pacman -Q "$pkg" >/dev/null 2>&1; then
+        echo "  $pkg: already installed"
+        continue
+    fi
+    echo "  Installing $pkg"
+    try "$pkg" yay -S --needed --noconfirm --answerclean None --answerdiff None --removemake "$pkg"
+done
 
 # 3. Claude Code, with Anthropic's own installer
 echo

@@ -55,6 +55,17 @@ lists: `apps.sh` installs it in its VirtualBox step, after VirtualBox is set up.
   that opens [Outlook on the web](https://outlook.office.com) in its own Brave
   window, without tabs or an address bar.
 
+### VS Code replaces "code"
+
+The list has **Microsoft's VS Code** (`visual-studio-code-bin`), which has the
+full extension marketplace. It can't be installed next to `code`, the
+open-source build from the official repositories. If you have `code`,
+`apps.sh` removes it first and copies your settings and keyboard shortcuts to
+where Microsoft's build looks for them (`~/.config/Code/User`).
+
+AUR apps are installed **one at a time**, so if one fails, the others still
+get installed. The summary at the end lists any that failed.
+
 ### AUR packages are installed without review
 
 To make it one command, `apps.sh` tells `yay` not to show each build file
