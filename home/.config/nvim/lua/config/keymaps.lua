@@ -7,6 +7,9 @@
 local map = vim.keymap.set
 
 -- Undo / redo. Ctrl+Z would otherwise pause Neovim and drop you to the shell.
+-- Save with Ctrl+S while typing, and keep typing (LazyVim's version pressed Esc)
+map("i", "<C-s>", "<Cmd>write<CR>", { desc = "Save File" })
+
 map("n", "<C-z>", "u", { desc = "Undo" })
 map("i", "<C-z>", "<Cmd>undo<CR>", { desc = "Undo" })
 map("v", "<C-z>", "<Esc>u", { desc = "Undo" })
@@ -57,6 +60,7 @@ end, { desc = "Toggle terminal" })
 
 -- Run the sample tests with F5: save, then run (works while typing too)
 map({ "n", "i", "v" }, "<F5>", function()
+  require("stay_insert").pause() -- back to typing after closing the results
   vim.cmd("stopinsert")
   vim.cmd("silent! write")
   vim.cmd("CompetiTest run")
@@ -89,6 +93,7 @@ local function run_command()
 end
 
 map({ "n", "i", "v" }, "<F6>", function()
+  require("stay_insert").pause() -- back to typing after the program finishes
   vim.cmd("stopinsert")
   vim.cmd("silent! write")
   local cmd = run_command()
@@ -98,7 +103,12 @@ map({ "n", "i", "v" }, "<F6>", function()
   end
   -- Run it with bash: the "press any key" part (read -rsn1) is bash syntax,
   -- and Neovim's own shell may be zsh, which doesn't understand it
-  Snacks.terminal.open({ "bash", "-c", cmd }, { cwd = vim.fn.expand("%:p:h"), auto_close = true, start_insert = true, auto_insert = true })
+  -- Open it a moment later: stopinsert only takes effect after this function
+  -- ends, and it would otherwise stop the terminal from taking your input
+  local cwd = vim.fn.expand("%:p:h")
+  vim.schedule(function()
+    Snacks.terminal.open({ "bash", "-c", cmd }, { cwd = cwd, auto_close = true, start_insert = true, auto_insert = true })
+  end)
 end, { desc = "Save, compile and run" })
 
 -- F7: save and submit with the CPH Submit browser extension (see lua/cp/server.lua)

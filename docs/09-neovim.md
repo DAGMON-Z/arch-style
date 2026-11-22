@@ -455,6 +455,16 @@ test results and terminal work as usual.
 This is an autocmd in `~/.config/nvim/lua/config/autocmds.lua`. To start in
 normal mode again, delete the block under "Open files in insert mode".
 
+**Only `Esc` takes you to normal mode.** Some things used to leave insert mode
+on their own: `F5` and `F6` (when you closed their window), `Ctrl + S`, and
+copying a selection. Now you're back to typing afterwards, with the cursor
+where it was. If you pressed `Esc` yourself, you stay in normal mode.
+`~/.config/nvim/lua/stay_insert.lua` does this.
+
+> With text selected using `Shift + arrows` while typing, the first `Esc`
+> cancels the selection and you keep typing (like VS Code). A second `Esc`
+> goes to normal mode.
+
 ## Arabic keyboard layout
 
 With the Arabic layout on, every key types an Arabic letter: `q` types `ض`,

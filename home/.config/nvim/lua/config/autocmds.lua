@@ -33,3 +33,7 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
 if vim.api.nvim_buf_get_name(0) ~= "" then
   start_typing(vim.api.nvim_get_current_buf())
 end
+
+-- Stay in insert mode unless you press Esc yourself: after F5, F6, saving or
+-- copying, you're back to typing (see lua/stay_insert.lua)
+require("stay_insert").setup()
