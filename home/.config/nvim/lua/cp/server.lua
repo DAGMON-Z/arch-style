@@ -43,10 +43,22 @@ local function save_url(name, url)
   end
 end
 
--- The same file name competitest uses for a problem
-local function file_name(task_name)
-  return (task_name:gsub('[<>:"/\\|?*]', "_"))
+--- The file name for a problem: its title only, without the problem letter
+--- ("A. Is It Frequency" and "A - Is It Frequency" become "Is It Frequency"),
+--- and without quotes or characters that can't be in file names.
+function M.file_name(task_name)
+  local name = task_name
+    :gsub("^%s*%u%d?%d?%.%s+", "") -- "A. ", "C1. " (Codeforces and most sites)
+    :gsub("^%s*%u%d?%d?%s+%-%s+", "") -- "A - " (AtCoder)
+    :gsub("[<>:\"/\\|?*']", "") -- quotes, and characters not allowed in names
+    :gsub("%s+", " ")
+  name = vim.trim(name)
+  if name == "" then
+    name = vim.trim((task_name:gsub("[<>:\"/\\|?*']", "")))
+  end
+  return name ~= "" and name or "problem"
 end
+local file_name = M.file_name
 
 local function notify(msg, level)
   vim.schedule(function()

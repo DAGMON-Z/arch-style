@@ -160,9 +160,27 @@ count as "not for problems":
 > If a problem's file already exists, Neovim asks before replacing it, so your
 > code is never overwritten by surprise.
 
-Each problem is saved as `<problem>.cpp`, for example `A. Example.cpp`. The
-tests are saved next to it as `A. Example_input0.txt`, `A. Example_output0.txt`,
-and so on.
+**File names and folders:** each problem is saved under its title only,
+without the problem letter, quotes or characters that can't be in file names.
+`A. Is It Frequency` becomes `Is It Frequency.cpp`. Everything else goes in a
+**`cph files`** folder next to it: the sample tests (`Is It Frequency_input0.txt`,
+`Is It Frequency_output0.txt`) and the compiled program from `F5` and `F6`. So
+the problem folder only shows your solutions:
+
+```text
+~/cp/Codeforces/Round 1000/
+├── Is It Frequency.cpp
+├── Make It Equal.cpp
+└── cph files/
+    ├── Is It Frequency_input0.txt
+    ├── Is It Frequency_output0.txt
+    └── Is It Frequency          (the compiled program)
+```
+
+**Auto save:** your code is saved by itself, 1 second after you stop typing,
+and when you leave the file, switch to another app or quit Neovim
+(`~/.config/nvim/lua/autosave.lua`). Close a problem, open it later, and your
+code is there. `Ctrl + S` still works too.
 
 **Test your solution:** press **`F5`**, or `Space C t`. Neovim compiles with the judge's
 flags (`-std=c++20 -O2 -Wall`), runs every sample test, and shows each one as

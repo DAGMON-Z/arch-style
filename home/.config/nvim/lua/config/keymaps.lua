@@ -75,14 +75,15 @@ local function run_command()
   -- Small headers that make output appear right away (see ~/.config/nvim/runner)
   local runner = vim.fn.stdpath("config") .. "/runner/"
   local build = {
-    cpp = "g++ -std=c++20 -O2 -Wall -include " .. q(runner .. "flush.hpp") .. " " .. q(file) .. " -o " .. q(name),
-    c = "gcc -std=c17 -O2 -Wall -include " .. q(runner .. "flush.h") .. " " .. q(file) .. " -o " .. q(name),
-    java = "javac " .. q(file),
+    -- the compiled program goes in "cph files", next to the test files
+    cpp = "mkdir -p 'cph files' && g++ -std=c++20 -O2 -Wall -include " .. q(runner .. "flush.hpp") .. " " .. q(file) .. " -o " .. q("cph files/" .. name),
+    c = "mkdir -p 'cph files' && gcc -std=c17 -O2 -Wall -include " .. q(runner .. "flush.h") .. " " .. q(file) .. " -o " .. q("cph files/" .. name),
+    java = "javac -d 'cph files' " .. q(file),
   }
   local run = {
-    cpp = "./" .. q(name),
-    c = "./" .. q(name),
-    java = "java " .. q(name),
+    cpp = q("./cph files/" .. name),
+    c = q("./cph files/" .. name),
+    java = "java -cp 'cph files' " .. q(name),
     python = "python3 -u " .. q(file), -- -u: print output right away
   }
   local ft = vim.bo.filetype

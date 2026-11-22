@@ -37,3 +37,7 @@ end
 -- Stay in insert mode unless you press Esc yourself: after F5, F6, saving or
 -- copying, you're back to typing (see lua/stay_insert.lua)
 require("stay_insert").setup()
+
+-- Auto save: 1 second after you stop typing, and when you leave a file,
+-- switch apps or quit (see lua/autosave.lua)
+require("autosave").setup()

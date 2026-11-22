@@ -111,8 +111,16 @@ return {
     },
     opts = {
       -- Same flags as the judge build in the docs
+      -- The compiled program goes in "cph files" too, so the problem folder
+      -- only shows your solutions
       compile_command = {
-        cpp = { exec = "g++", args = { "-std=c++20", "-O2", "-Wall", "$(FNAME)", "-o", "$(FNOEXT)" } },
+        cpp = {
+          exec = "bash",
+          args = { "-c", 'mkdir -p "cph files" && g++ -std=c++20 -O2 -Wall "$(FNAME)" -o "cph files/$(FNOEXT)"' },
+        },
+      },
+      run_command = {
+        cpp = { exec = "cph files/$(FNOEXT)" },
       },
       -- Competitive Companion sends to port 27121, where lua/cp/server.lua
       -- listens and passes problems on to competitest here
@@ -122,11 +130,18 @@ return {
       -- Save problems in the current folder, or ask (see save_folder above)
       received_files_extension = "cpp",
       received_problems_path = function(task, ext)
-        return save_folder(task) .. "/" .. clean(task.name) .. "." .. ext
+        return save_folder(task) .. "/" .. require("cp.server").file_name(task.name) .. "." .. ext
       end,
       received_contests_directory = function(task)
         return save_folder(task)
       end,
+      -- Each problem of a contest: its title only (see cp/server.lua)
+      received_contests_problems_path = function(task, ext)
+        return require("cp.server").file_name(task.name) .. "." .. ext
+      end,
+      -- Test files (input and output) go in a "cph files" folder next to the
+      -- problems, so the problem folder only shows your solutions
+      testcases_directory = "cph files",
       -- Ask where to save only when save_folder says so
       received_problems_prompt_path = false,
       received_contests_prompt_directory = false,
