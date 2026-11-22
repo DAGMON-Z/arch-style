@@ -11,6 +11,12 @@ return {
         ghost_text = { enabled = false },      -- no grey suggested text
         documentation = { auto_show = false }, -- no automatic help popups
       },
+      -- Tab / Shift + Tab: jump through snippet fields if there are any,
+      -- otherwise indent / unindent like VS Code (see keymaps.lua)
+      keymap = {
+        ["<Tab>"] = { "snippet_forward", "fallback" },
+        ["<S-Tab>"] = { "snippet_backward", "fallback" },
+      },
     },
   },
 }

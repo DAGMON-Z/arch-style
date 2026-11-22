@@ -423,7 +423,7 @@ text:
 | `Ctrl + F` | Find (then `n` for the next match) |
 | `Ctrl + Backspace` | Delete the previous word |
 | `Ctrl + [` / `Ctrl + ]` | Go to the beginning (first character that isn't a space) / end of the line |
-| `Tab` / `Shift + Tab` | Indent / unindent the selection |
+| `Tab` / `Shift + Tab` | Indent / unindent, like VS Code: the selected lines (the selection stays), or the current line. While typing, `Tab` adds indentation and `Shift + Tab` removes it |
 | `` Ctrl + ` `` | Open / hide the terminal |
 | `F5` | Save and run the sample tests (works while typing too) |
 | `F6` | Save, compile and run the code normally, typing the input yourself |

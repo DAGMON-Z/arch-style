@@ -113,9 +113,16 @@ map("n", "<C-f>", "/", { desc = "Find" })
 map("i", "<C-BS>", "<C-w>", { desc = "Delete word" })
 map("i", "<C-H>", "<C-w>", { desc = "Delete word" }) -- some terminals send this for Ctrl+Backspace
 
--- Indent / unindent a selection with Tab / Shift + Tab
-map("v", "<Tab>", ">gv", { desc = "Indent" })
-map("v", "<S-Tab>", "<gv", { desc = "Unindent" })
+-- Tab / Shift + Tab like VS Code: indent / unindent, keeping the selection.
+-- (While typing, Tab still inserts indentation as usual.)
+map("n", "<Tab>", ">>", { desc = "Indent line" })
+map("n", "<S-Tab>", "<<", { desc = "Unindent line" })
+map("i", "<S-Tab>", "<C-d>", { desc = "Unindent line" })
+map("x", "<Tab>", ">gv", { desc = "Indent" })
+map("x", "<S-Tab>", "<gv", { desc = "Unindent" })
+-- Selections made with Shift + arrows are "Select mode": indent, then select again
+map("s", "<Tab>", "<C-o>>gv<C-g>", { desc = "Indent" })
+map("s", "<S-Tab>", "<C-o><gv<C-g>", { desc = "Unindent" })
 
 -- Ctrl + ] : end of the line. Ctrl + [ : beginning of the line (the first
 -- character that isn't a space). kitty sends Ctrl + [ differently from Esc
