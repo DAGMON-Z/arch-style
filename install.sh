@@ -425,8 +425,19 @@ if [[ $UPDATE == yes ]]; then
         run pkill -SIGUSR2 -x waybar || true
         run dunstctl reload >/dev/null 2>&1 || true
         run systemctl --user try-restart hypridle.service >/dev/null 2>&1 || true
+        # BEMO, the desk buddy (docs/18-bemo.md): restart it if this update
+        # changed it, and start it if it isn't running. Hyprland starts it, so
+        # it runs on the desktop even when this update runs over SSH.
+        # ("bemo run" does nothing if BEMO is already running.)
+        if [[ -x $HOME/.local/bin/bemo ]]; then
+            if [[ -n $SINCE ]] && ! git -C "$REPO" diff --quiet "$SINCE" HEAD -- home/.local/bin/bemo; then
+                run "$HOME/.local/bin/bemo" quit >/dev/null 2>&1 || true
+                [[ $DRY == no ]] && sleep 1
+            fi
+            run hyprctl -i 0 dispatch "hl.dsp.exec_cmd(\"$HOME/.local/bin/bemo run\")" >/dev/null || true
+        fi
         echo
-        echo "Reloaded Hyprland, Waybar and dunst. Reopen apps to see their changes."
+        echo "Reloaded Hyprland, Waybar, dunst and BEMO. Reopen apps to see their changes."
     fi
     summary
     exit 0

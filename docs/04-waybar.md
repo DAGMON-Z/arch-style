@@ -14,7 +14,7 @@ Config: `~/.config/waybar/`
 
 - **Left:** Arch logo (opens rofi), workspaces 1 to 5
 - **Center:** clock and date (hover for a calendar)
-- **Right:** CPU, memory, temperature, keyboard layout, volume, brightness,
+- **Right:** BEMO's face and today's focus time ([chapter 18](18-bemo.md)), CPU, memory, temperature, keyboard layout, volume, brightness,
   network, Bluetooth, power mode, battery, power menu
 
 ## The clock
@@ -57,6 +57,7 @@ often don't display in editors. You can browse them at
 
 | Module | Click | Other |
 | --- | --- | --- |
+| BEMO | Have a coffee together | Right-click: BEMO says hi. Hover shows today's work and study time |
 | Volume | Opens the mixer (`pavucontrol`) | Right-click mutes, scroll changes volume |
 | Brightness | | Scroll changes brightness |
 | Network | Opens `nmtui` in a terminal | Hover shows the details |

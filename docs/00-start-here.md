@@ -171,6 +171,7 @@ up to date are skipped.
    | Volume or brightness keys | A popup with a progress bar |
    | `SUPER + L` (or power button on the bar → Lock) | The lock screen. Unlock with your password |
    | Click the leaf or scale icon on the bar | The power mode changes |
+   | Bottom-right corner | [BEMO](18-bemo.md), a little cassette tape that types while you code and reads while you study. `SUPER + SHIFT + C` shares a coffee with it |
    | `hyprland-welcome` in a terminal | The welcome app's checklist: every item green or blue ([what each item means](02-packages.md#hyprland-welcome-app-checklist)) |
 
 The full list of shortcuts is in the
@@ -205,6 +206,7 @@ Read the chapters in any order, and change one thing at a time:
 - [Lock screen and idle](06-lockscreen.md)
 - [GTK and Qt theming](08-gtk-qt-theming.md)
 - [Power management](12-power-management.md)
+- [BEMO, the desk buddy](18-bemo.md)
 
 Before editing a config file, copy it to `<file>.bak`, so you can always go back.
 
@@ -225,6 +227,7 @@ git -C ~/neon-arch pull --ff-only && bash ~/neon-arch/install.sh --update
 - It installs only the packages you don't have yet.
 - It copies only the config files that changed, saving your old version as `.bak`.
 - It turns on any new services, and reloads the desktop so you see the changes.
+- It starts BEMO if it isn't running, and restarts it if the update changed it.
 
 To see what it would do without changing anything, add `--dry-run`:
 

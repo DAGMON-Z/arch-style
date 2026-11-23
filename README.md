@@ -210,7 +210,7 @@ update only if the download worked.
 
 It downloads the latest version and installs any new packages. It also copies
 changed config files (backing up the old ones), turns on any new services, and
-reloads Hyprland, Waybar and dunst. Your wallpaper stays as it is. It asks for
+reloads Hyprland, Waybar and dunst, and starts BEMO. Your wallpaper stays as it is. It asks for
 your password only if something needs administrator rights. Add `--dry-run` to
 see what it would do first.
 

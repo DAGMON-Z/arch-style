@@ -99,7 +99,8 @@ These don't need a service, because they start on demand or from
 
 - dunst starts when the first notification arrives.
 - The portals start when an app asks for them.
-- Waybar, the wallpaper and clipboard history start from `hyprland.lua`.
+- Waybar, the wallpaper, clipboard history and [BEMO](18-bemo.md) start from
+  `hyprland.lua`.
 
 > The touchpad fix (`touchpad-i2c-reset.service`) is **not** turned on with
 > these. It's only for the MSI Modern 15 F13MG, and `install.sh` asks about it
@@ -141,6 +142,9 @@ The parts you see and use every day. wofi is a second launcher that came with th
 | `hypridle` | hyprland’s idle daemon |
 | `hyprpaper` | a blazing fast wayland wallpaper utility with IPC controls |
 | `awww` | An Answer to your Wayland Wallpaper Woes |
+| `gtk-layer-shell` | Lets a small window sit on the desktop like a bar; [BEMO](18-bemo.md) uses it |
+| `python-cairo` | Drawing for Python programs; BEMO draws itself with it |
+| `python-gobject` | Lets Python programs use GTK (BEMO) and power modes (`powerprofilesctl`) |
 
 ### Screenshots, clipboard, keys
 

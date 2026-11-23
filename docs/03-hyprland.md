@@ -70,7 +70,9 @@ each part.
   So: **`SUPER` saves, `SHIFT` picks an area.** `Esc` cancels an area
   selection. Copy-only screenshots never touch the disk: the preview is kept
   in `$XDG_RUNTIME_DIR`, a folder in memory that's emptied when you log out.
-- **Autostart:** `set-wallpaper --restore` shows the wallpaper (see [chapter 7](07-wallpaper.md)).
+- **Autostart:** `set-wallpaper --restore` shows the wallpaper (see [chapter 7](07-wallpaper.md)),
+  and `bemo run` starts BEMO, the desk buddy (see [chapter 18](18-bemo.md)).
+- **BEMO:** `SUPER + SHIFT + C` starts or finishes a coffee with BEMO.
 - **Safety:** `allow_session_lock_restore` lets you restart the lock screen if
   it crashes (see [chapter 6](06-lockscreen.md)).
 
