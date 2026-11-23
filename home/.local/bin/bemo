@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
-"""Reel: a tiny cassette-tape desk buddy for Hyprland.
+"""BEMO: a tiny cassette-tape desk buddy for Hyprland.
 
-Reel sits in a corner of the screen and keeps you company:
+BEMO sits in a corner of the screen and keeps you company:
   * it codes on its own little laptop while you work,
   * reads a book (with glasses) while you study,
   * falls asleep while you are away or the screen is locked,
   * drinks a coffee with you when you tell it you are having one.
 
 Usage:
-  reel run            start the buddy
-  reel run --demo     cycle through every mood (preview)
-  reel coffee         start / stop a coffee together
-  reel away | back    tell Reel you left / came back (hypridle calls these)
-  reel say TEXT       make Reel say something
-  reel stats          print today's focus time
-  reel waybar         JSON line for a waybar custom module
-  reel quit           stop the buddy
+  bemo run            start the buddy
+  bemo run --demo     cycle through every mood (preview)
+  bemo coffee         start / stop a coffee together
+  bemo away | back    tell BEMO you left / came back (hypridle calls these)
+  bemo say TEXT       make BEMO say something
+  bemo stats          print today's focus time
+  bemo waybar         JSON line for a waybar custom module
+  bemo quit           stop the buddy
 
-Click Reel to see today's stats. Right-click it to share a coffee.
+Click BEMO to see today's stats. Right-click it to share a coffee.
 """
 
 import json
@@ -34,11 +34,11 @@ from fnmatch import fnmatch
 from pathlib import Path
 
 RUNTIME = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp"))
-SOCK = RUNTIME / "reel.sock"
-STATUS = RUNTIME / "reel.json"
-STATE_DIR = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "reel"
+SOCK = RUNTIME / "bemo.sock"
+STATUS = RUNTIME / "bemo.json"
+STATE_DIR = Path(os.environ.get("XDG_STATE_HOME", Path.home() / ".local/state")) / "bemo"
 STATS_FILE = STATE_DIR / "stats.json"
-CONFIG_FILE = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "reel/config.json"
+CONFIG_FILE = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "bemo/config.json"
 
 DEFAULTS = {
     # Window classes (shell-style patterns, case-insensitive).
@@ -68,7 +68,7 @@ DEFAULTS = {
     ],
     "break_minutes": 50,      # nudge to stretch after this much focus in a row
     "coffee_minutes": 15,     # a coffee ends by itself after this long
-    "away_minutes": 5,        # no keyboard/mouse for this long = you are away, Reel sleeps
+    "away_minutes": 5,        # no keyboard/mouse for this long = you are away, BEMO sleeps
     "margin_right": 18,
     "margin_bottom": 14,
 }
@@ -98,13 +98,13 @@ PAGE = rgb("#e6dfcc")
 FONT = "JetBrainsMono Nerd Font"
 
 MOODS = {
-    "idle": ("[o‿o]", "Reel is hanging out"),
-    "work": ("[o_o]", "Reel is coding with you"),
-    "study": ("[o‿o]", "Reel is studying with you"),
-    "coffee": ("[^‿^]", "Reel is having a coffee with you"),
-    "sleep": ("[-_-]", "Reel is asleep until you come back"),
-    "wake": ("[O○O]", "Reel just woke up"),
-    "stretch": ("\\[o‿o]/", "Reel is stretching"),
+    "idle": ("[o‿o]", "BEMO is hanging out"),
+    "work": ("[o_o]", "BEMO is coding with you"),
+    "study": ("[o‿o]", "BEMO is studying with you"),
+    "coffee": ("[^‿^]", "BEMO is having a coffee with you"),
+    "sleep": ("[-_-]", "BEMO is asleep until you come back"),
+    "wake": ("[O○O]", "BEMO just woke up"),
+    "stretch": ("\\[o‿o]/", "BEMO is stretching"),
 }
 
 
@@ -115,7 +115,7 @@ def load_config():
     except FileNotFoundError:
         pass
     except (OSError, ValueError) as err:
-        print(f"reel: ignoring {CONFIG_FILE}: {err}", file=sys.stderr)
+        print(f"bemo: ignoring {CONFIG_FILE}: {err}", file=sys.stderr)
     return cfg
 
 
@@ -134,7 +134,7 @@ def send(cmd):
         s.sendto(cmd.encode(), str(SOCK))
         return 0
     except (FileNotFoundError, ConnectionRefusedError):
-        print("reel is not running (start it with: reel run)", file=sys.stderr)
+        print("bemo is not running (start it with: bemo run)", file=sys.stderr)
         return 1
     finally:
         s.close()
@@ -144,7 +144,7 @@ def print_waybar():
     try:
         print(STATUS.read_text().strip())
     except OSError:
-        print(json.dumps({"text": "", "tooltip": "Reel is not running", "class": "off"}))
+        print(json.dumps({"text": "", "tooltip": "BEMO is not running", "class": "off"}))
 
 
 def print_stats():
@@ -158,7 +158,7 @@ def print_stats():
 
 # ---------------------------------------------------------------- the buddy
 
-class Reel:
+class Bemo:
     W, H = 270, 200
 
     def __init__(self, demo=False):
@@ -195,14 +195,14 @@ class Reel:
         self.ev_buf = b""
 
         win = Gtk.Window()
-        win.set_title("reel")
+        win.set_title("bemo")
         win.set_default_size(self.W, self.H)
         win.set_app_paintable(True)
         visual = win.get_screen().get_rgba_visual()
         if visual:
             win.set_visual(visual)
         GtkLayerShell.init_for_window(win)
-        GtkLayerShell.set_namespace(win, "reel")
+        GtkLayerShell.set_namespace(win, "bemo")
         GtkLayerShell.set_layer(win, GtkLayerShell.Layer.TOP)
         GtkLayerShell.set_anchor(win, GtkLayerShell.Edge.BOTTOM, True)
         GtkLayerShell.set_anchor(win, GtkLayerShell.Edge.RIGHT, True)
@@ -240,7 +240,7 @@ class Reel:
             add_signal = lambda sig: GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, sig, self.quit)
         for sig in (signal.SIGINT, signal.SIGTERM):
             add_signal(sig)
-        self.say("hi! I'm Reel" if not demo else "hi! I'm Reel. preview mode", 4)
+        self.say("hi! I'm BEMO" if not demo else "hi! I'm BEMO. preview mode", 4)
         self._tick()
 
     # ------------------------------------------------------------ state
@@ -375,7 +375,7 @@ class Reel:
                 self.transient = ("stretch", now + 6)
                 msg = f"{self.cfg['break_minutes']} min of focus. stretch with me?"
                 self.say(msg, 6)
-                subprocess.Popen(["notify-send", "-a", "Reel", "Reel", msg],
+                subprocess.Popen(["notify-send", "-a", "BEMO", "BEMO", msg],
                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             hour = datetime.now().hour
             if 0 <= hour < 5 and now - self.last_late_nudge > 45 * 60:
@@ -406,7 +406,7 @@ class Reel:
         probe = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
         try:
             probe.sendto(b"ping", str(SOCK))
-            print("reel is already running", file=sys.stderr)
+            print("bemo is already running", file=sys.stderr)
             sys.exit(1)
         except (FileNotFoundError, ConnectionRefusedError):
             pass
@@ -435,7 +435,7 @@ class Reel:
     def _connect_hyprland(self):
         sig = os.environ.get("HYPRLAND_INSTANCE_SIGNATURE")
         if not sig:
-            print("reel: not running under Hyprland; window detection is off", file=sys.stderr)
+            print("bemo: not running under Hyprland; window detection is off", file=sys.stderr)
             return False
         try:
             self.ev = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
@@ -486,7 +486,7 @@ class Reel:
             self.come_back()
         return True
 
-    # ---- dragging: hold the left button and move Reel along the bottom edge
+    # ---- dragging: hold the left button and move BEMO along the bottom edge
 
     def _load_position(self):
         try:
@@ -549,13 +549,13 @@ class Reel:
         return True
 
     def _start_idle_watcher(self):
-        """Run a private hypridle that only tells Reel when you go idle and come back.
+        """Run a private hypridle that only tells BEMO when you go idle and come back.
 
         It is separate from your own hypridle and its config: it never locks or suspends.
         """
         self.idle_proc = None
         me = f"{sys.executable} {Path(__file__).resolve()}"
-        conf = RUNTIME / "reel-hypridle.conf"
+        conf = RUNTIME / "bemo-hypridle.conf"
         conf.write_text(
             "general {\n    ignore_dbus_inhibit = false\n}\n"
             "listener {\n"
@@ -573,7 +573,7 @@ class Reel:
                 ["hypridle", "-q", "-c", str(conf)], preexec_fn=die_with_parent,
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         except OSError as err:
-            print(f"reel: idle detection is off ({err})", file=sys.stderr)
+            print(f"bemo: idle detection is off ({err})", file=sys.stderr)
 
     def quit(self, *_):
         if getattr(self, "idle_proc", None):
@@ -726,7 +726,7 @@ class Reel:
         cr.set_font_size(9)
         cr.set_source_rgba(*BG)
         cr.move_to(-28, -64)
-        cr.show_text("REEL")
+        cr.show_text("BEMO")
         cr.set_font_size(7)
         cr.move_to(20, -64)
         cr.show_text("C-60")
@@ -1140,7 +1140,7 @@ class Reel:
 def main(argv):
     cmd = argv[1] if len(argv) > 1 else "run"
     if cmd == "run":
-        buddy = Reel(demo="--demo" in argv)
+        buddy = Bemo(demo="--demo" in argv)
         buddy.Gtk.main()
         return 0
     if cmd in ("coffee", "away", "back", "quit"):
