@@ -1,0 +1,13 @@
+#!/bin/sh
+# Bigger boot menu text under Secure Boot with shim.
+# GRUB started through shim refuses to load fonts ("prohibited by secure boot
+# policy"), so the theme falls back to GRUB's small built-in 16-pixel font.
+# Running the menu at 1280x720 makes the screen stretch it 1.5x.
+# (GRUB's own header only sets the resolution when a font loads, so set it here.)
+cat <<GRUBCFG
+set gfxmode=1280x720,auto
+load_video
+insmod gfxterm
+terminal_output console
+terminal_output gfxterm
+GRUBCFG

@@ -1,0 +1,13 @@
+# Secure Boot with shim: rebuild and sign GRUB after every GRUB update
+# (see docs/13-secure-boot.md). Does nothing if shim isn't set up.
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = grub
+
+[Action]
+Description = Rebuilding GRUB for Secure Boot (shim)...
+When = PostTransaction
+Exec = /bin/sh -c '[ -e /boot/EFI/BOOT/mmx64.efi ] && /usr/local/bin/grub-shim-install || true'
+Depends = sbctl

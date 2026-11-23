@@ -1,0 +1,58 @@
+#!/bin/bash
+# Rebuild GRUB for Secure Boot with shim, and sign it (see docs/13-secure-boot.md).
+#
+# Boot chain: firmware (factory keys) -> shim (BOOTX64.EFI, signed by Microsoft)
+#             -> GRUB (grubx64.efi, signed with your sbctl key, enrolled as a MOK)
+#             -> kernel (signed with the same key).
+#
+# Under shim, GRUB can't load modules from the disk, so every module it needs
+# is built in. efibootnext is for the "Windows Boot Manager (EFI BootNext)"
+# menu entry. A pacman hook runs this after every GRUB update.
+#
+# Usage: sudo grub-shim-install
+set -euo pipefail
+
+EFI=/boot/EFI/BOOT
+MODS="all_video boot bli cat chain configfile echo efibootnext efifwsetup efinet ext2 fat font gettext gfxmenu gfxterm gfxterm_background gzio halt help jpeg keystatus loadenv loopback linux ls lsefi lsefimmap lsefisystab memdisk minicmd normal part_gpt part_msdos password_pbkdf2 png probe reboot regexp search search_fs_file search_fs_uuid search_label serial sleep smbios test tpm true video"
+SBAT=/etc/grub-shim/sbat.csv
+
+if [[ $EUID -ne 0 ]]; then
+    echo "Run it with sudo: sudo grub-shim-install" >&2
+    exit 1
+fi
+# Only for the shim setup: shim must be BOOTX64.EFI
+if ! sbverify --list "$EFI/BOOTX64.EFI" 2>/dev/null | grep -q "Microsoft"; then
+    echo "$EFI/BOOTX64.EFI is not shim. Set up shim first (docs/13-secure-boot.md)." >&2
+    exit 1
+fi
+
+# SBAT tells shim which GRUB security fixes this build has. The packaged file
+# can lag behind the real value, so use the level grub-install reports.
+set_sbat_level() {
+    sed "s/^grub,[0-9]*,/grub,$1,/" /usr/share/grub/sbat.csv > "$SBAT"
+}
+build() {
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=arch-shim \
+        --no-nvram --sbat "$SBAT" --modules="$MODS" 2>&1
+}
+mkdir -p "$(dirname "$SBAT")"
+[[ -f $SBAT ]] || cp /usr/share/grub/sbat.csv "$SBAT"
+out=$(build)
+level=$(grep -o 'build-time Global SBAT level [0-9]*' <<<"$out" | grep -o '[0-9]*$' | head -1 || true)
+if [[ -n $level ]]; then
+    echo "Setting GRUB's SBAT level to $level"
+    set_sbat_level "$level"
+    out=$(build)
+fi
+echo "$out" | tail -1
+
+cp /boot/EFI/arch-shim/grubx64.efi "$EFI/grubx64.efi"
+rm -r /boot/EFI/arch-shim
+# shim must keep Microsoft's signature: never sign it with your own key
+# (the old method of the guide had BOOTX64.EFI in sbctl's list)
+if sbctl list-files 2>/dev/null | grep -qx "$EFI/BOOTX64.EFI"; then
+    sbctl remove-file "$EFI/BOOTX64.EFI"
+fi
+sbctl sign -s "$EFI/grubx64.efi"
+sbctl sign-all
+sbctl verify | grep -E "grubx64|vmlinuz"
