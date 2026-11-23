@@ -12,10 +12,9 @@
     "margin-bottom": 0,
     "spacing": 3,
 
-    "modules-left": ["custom/arch", "hyprland/workspaces"],
+    "modules-left": ["custom/arch", "hyprland/workspaces", "custom/bemo"],
     "modules-center": ["clock"],
     "modules-right": [
-        "custom/bemo",
         "cpu",
         "memory",
         "temperature",

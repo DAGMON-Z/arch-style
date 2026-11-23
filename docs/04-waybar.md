@@ -12,9 +12,10 @@ Config: `~/.config/waybar/`
 
 ## Layout
 
-- **Left:** Arch logo (opens rofi), workspaces 1 to 5
+- **Left:** Arch logo (opens rofi), workspaces 1 to 5, BEMO's face and today's
+  focus time ([chapter 18](18-bemo.md))
 - **Center:** clock and date (hover for a calendar)
-- **Right:** BEMO's face and today's focus time ([chapter 18](18-bemo.md)), CPU, memory, temperature, keyboard layout, volume, brightness,
+- **Right:** CPU, memory, temperature, keyboard layout, volume, brightness,
   network, Bluetooth, power mode, battery, power menu
 
 ## The clock
