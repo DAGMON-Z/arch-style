@@ -33,3 +33,6 @@ __pycache__/
 # Wallpaper images
 **/Wallpapers/*.jpg
 **/Wallpapers/*.png
+
+# Exception: the keyring service file has "secrets" in its name but holds no secrets
+!home/.local/share/dbus-1/services/org.freedesktop.secrets.service
