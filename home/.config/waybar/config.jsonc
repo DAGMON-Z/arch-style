@@ -15,6 +15,7 @@
     "modules-left": ["custom/arch", "hyprland/workspaces"],
     "modules-center": ["clock"],
     "modules-right": [
+        "custom/reel",
         "cpu",
         "memory",
         "temperature",
@@ -55,6 +56,17 @@
                 "today": "<span color='#ff9e64'><b>{}</b></span>"
             }
         }
+    },
+
+    // Reel, the desk buddy: its mood and today's focus time.
+    // Click: have a coffee together. Right-click: say hi.
+    "custom/reel": {
+        "exec": "~/.local/bin/reel waybar",
+        "return-type": "json",
+        "interval": 5,
+        "format": "{}",
+        "on-click": "~/.local/bin/reel coffee",
+        "on-click-right": "~/.local/bin/reel say hi! back to work?"
     },
 
     "cpu": {

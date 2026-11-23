@@ -19,6 +19,7 @@ gdb
 git
 grim
 grub
+gtk-layer-shell
 gvfs
 gvfs-mtp
 hypridle
@@ -43,6 +44,7 @@ pipewire-alsa
 pipewire-pulse
 playerctl
 power-profiles-daemon
+python-cairo
 python-gobject
 qt5-wayland
 qt6-5compat

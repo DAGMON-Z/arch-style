@@ -34,6 +34,7 @@ window#waybar {
 #custom-arch,
 #workspaces,
 #clock,
+#custom-reel,
 #cpu,
 #memory,
 #temperature,
@@ -55,6 +56,7 @@ window#waybar {
 
 #custom-arch:hover,
 #clock:hover,
+#custom-reel:hover,
 #cpu:hover,
 #memory:hover,
 #temperature:hover,
@@ -118,6 +120,13 @@ window#waybar {
 
 /* Right: one accent color per module */
 #cpu         { color: @blue; }
+/* Reel: color follows its mood */
+#custom-reel         { color: @fg; }
+#custom-reel.work    { color: @blue; }
+#custom-reel.study   { color: @magenta; }
+#custom-reel.coffee  { color: @orange; }
+#custom-reel.sleep   { color: @dim; }
+#custom-reel.off     { color: @dim; }
 #memory      { color: @magenta; }
 #temperature { color: @teal; }
 #language    { color: @orange; }

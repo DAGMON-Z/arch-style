@@ -54,6 +54,7 @@ See [Getting updates](#getting-updates) for what it does.
 15. [The terminal shell: zsh with VS Code keys](docs/15-terminal-shell.md)
 16. [My personal apps](docs/16-personal-apps.md)
 17. [SSH: control another computer](docs/17-ssh.md)
+18. [Reel: a desk buddy for working and studying](docs/18-reel.md)
 
 ## Screenshots
 
@@ -97,6 +98,7 @@ because GRUB can't be captured from inside Linux. More details are in
 | starship | Shell prompt | `home/.config/starship.toml` |
 | fastfetch | System summary in new terminals | `home/.config/fastfetch/` |
 | Power management | Power modes, Intel cooling, power-saver on battery | `system/usr/local/bin/power-profile-auto` |
+| Reel | Desk buddy: codes when you work, reads when you study, sleeps when you're away, shares your coffee | `home/.local/bin/reel` |
 
 The `home/` folder mirrors your home folder. For example,
 `home/.config/kitty/kitty.conf` goes to `~/.config/kitty/kitty.conf`.
@@ -143,6 +145,7 @@ laptops. See [power management](docs/12-power-management.md).
 | `SHIFT + Print` | Screenshot of an area, only copied, not saved |
 | `SUPER + Print` | Screenshot of the whole screen, saved to `~/Pictures/Screenshots` and copied |
 | `SUPER + SHIFT + Print` | Screenshot of an area, saved and copied |
+| `SUPER + SHIFT + C` | Start or finish a coffee with [Reel](docs/18-reel.md) |
 | Volume and brightness keys | Change level, with an on-screen popup |
 | `Alt + Shift` | Switch keyboard layout (English and Arabic) |
 | `SUPER + L` | Lock the screen (unlock with your password) |

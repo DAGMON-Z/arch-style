@@ -423,6 +423,7 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("~/.local/bin/set-wallpaper --restore") -- wallpaper with awww (hyprpaper.conf kept as backup)
 	hl.exec_cmd("wl-paste --watch cliphist store")
+	hl.exec_cmd("~/.local/bin/reel run") -- Reel, the desk buddy in the bottom-right corner
 end)
 -- Screenshots. The script saves to ~/Pictures/Screenshots (creating it if
 -- needed) and shows a notification, so you can see that it worked.
@@ -432,3 +433,6 @@ hl.bind("Print",                 hl.dsp.exec_cmd("~/.config/hypr/scripts/screens
 hl.bind("SHIFT + Print",         hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh area-copy")) -- area, copy only
 hl.bind("SUPER + Print",         hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh full-save")) -- whole screen, saved + copied
 hl.bind("SUPER + SHIFT + Print", hl.dsp.exec_cmd("~/.config/hypr/scripts/screenshot.sh area-save")) -- area, saved + copied
+
+-- Reel: start or finish a coffee together (Reel drinks one too)
+hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("~/.local/bin/reel coffee"))
