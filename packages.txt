@@ -28,6 +28,8 @@ hyprpaper
 hyprpolkitagent
 jdk-openjdk
 kitty
+kwallet
+kwallet-pam
 neovim
 networkmanager
 noto-fonts

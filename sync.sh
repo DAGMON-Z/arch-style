@@ -34,6 +34,7 @@ HOME_ITEMS=(
     .config/clangd
     .clang-format
     .local/share/applications/pc2.desktop
+    .local/share/dbus-1/services/org.freedesktop.secrets.service
 )
 
 # Paths outside your home folder

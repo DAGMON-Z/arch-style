@@ -435,6 +435,41 @@ An empty folder means no wallet yet.
 and set a password, then restart VS Code. `hyprland.lua` now has a
 `float-kde-wallet` rule, so the window floats in the middle of the screen.
 
+## Apps say "No system keyring is available"
+
+**What happened:** Claude Desktop showed "No system keyring is available. Your
+sign-in ... can't be saved on this computer ... Install and unlock GNOME
+Keyring". Other apps (Discord, Element, Chrome-based apps) can have the same
+problem, sometimes silently.
+
+**Why:** apps keep sign-ins in the system **keyring**, which they find on D-Bus
+under the standard name `org.freedesktop.secrets` (the "Secret Service").
+KWallet provides it with its `ksecretd` program, but only KDE's own desktop
+starts that at login. On Hyprland nothing did, so apps found no keyring. (The
+VS Code fix above only helped VS Code, because it names KWallet directly.)
+
+**Check:**
+
+```bash
+busctl --user list | grep org.freedesktop.secrets
+```
+
+A line with `ksecretd` means the keyring is there.
+
+**Fix** (included in this setup):
+
+1. `~/.local/share/dbus-1/services/org.freedesktop.secrets.service` tells
+   D-Bus to start `/usr/bin/ksecretd` the first time any app asks for the
+   keyring. No autostart entry needed.
+2. `kwallet-pam` unlocks the wallet when you log in, if the wallet's password
+   is your login password. The login screen's PAM file (`/etc/pam.d/sddm`)
+   already has the `pam_kwallet5.so` lines; they only need this package.
+3. The first time an app saves a secret, a **KDE Wallet Service** window
+   creates the wallet: choose **Blowfish** and **your login password**, so it
+   unlocks by itself from then on.
+
+Restart the app afterwards.
+
 ## Bluetooth headphones sound bad
 
 **What happened:** with Bluetooth headphones (an oraimo BoomPop Pro), music

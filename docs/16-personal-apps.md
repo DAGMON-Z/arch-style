@@ -28,7 +28,6 @@ Running it again is safe: anything already installed is skipped.
 | VirtualBox | `virtualbox`, `virtualbox-host-dkms`, `virtualbox-guest-iso` | Official repositories |
 | VirtualBox Extension Pack | `virtualbox-ext-oracle` | AUR (free for personal use), installed right after VirtualBox |
 | VS Code | `visual-studio-code-bin` | AUR (Microsoft's own build, with the extension marketplace) |
-| KWallet | `kwallet` | Official repositories, keeps VS Code's sign-ins ([see below](#vs-code-sign-in-kwallet)) |
 | Brave | `brave-bin` | AUR |
 | Google Chrome | `google-chrome` | AUR |
 | AnyDesk | `anydesk-bin` | AUR |
@@ -82,8 +81,10 @@ your desktop. It knows GNOME and KDE but not Hyprland, so without help it shows:
 > in your current desktop environment.
 
 Don't choose **Use weaker encryption**: that stores secrets with a key that is
-easy to find. Instead, `apps.sh` installs **KWallet** (KDE's keyring) and adds
-this line to `~/.vscode/argv.json`, the file for VS Code's startup options:
+easy to find. The setup includes **KWallet**, KDE's keyring, as the keyring for
+every app ([chapter 11](11-troubleshooting.md#apps-say-no-system-keyring-is-available)),
+and `apps.sh` adds this line to `~/.vscode/argv.json`, the file for VS Code's
+startup options:
 
 ```jsonc
 "password-store": "kwallet6"
@@ -102,9 +103,10 @@ middle of the screen (the `float-kde-wallet` rule).
 2. Choose a wallet password. Using your login password is easiest to
    remember.
 
-The wallet is saved in `~/.local/share/kwalletd/`. After each login, the
-first app that needs a secret asks for this password once, and the wallet
-stays unlocked until you log out.
+The wallet is saved in `~/.local/share/kwalletd/`. If its password is the
+same as your login password, it unlocks by itself when you log in
+(`kwallet-pam`). Otherwise the first app that needs a secret asks for the
+wallet password once, and it stays unlocked until you log out.
 
 To set it by hand, open the Command Palette (`Ctrl + Shift + P`), run
 **Preferences: Configure Runtime Arguments**, add the line above and restart.

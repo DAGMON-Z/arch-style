@@ -5,7 +5,6 @@ vlc
 vlc-plugins-all
 libreoffice-fresh
 spotify-launcher
-kwallet
 virtualbox
 virtualbox-host-dkms
 virtualbox-guest-iso
