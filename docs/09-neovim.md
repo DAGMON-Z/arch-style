@@ -16,7 +16,7 @@ Config: `~/.config/nvim/` (started from the
 | `lua/config/options.lua` | Relative line numbers, and no reformatting when saving |
 | `lua/plugins/colorscheme.lua` | tokyonight, "night" style |
 | `lua/plugins/cpp.lua` | Uses the system `clangd` instead of downloading another copy |
-| `~/.config/clangd/config.yaml` | Treats single `.cpp` files as C++20 |
+| `~/.config/clangd/config.yaml` | Treats single `.cpp` files as C++20, and doesn't warn about arrays sized at run time (`int a[n];`), which g++ accepts |
 | `lua/plugins/competitest.lua` | Receives problems from the browser and runs sample tests ([below](#get-problems-from-brave-competitive-companion)) |
 | `templates/cp.cpp` | The starting code for every received problem |
 | `lua/arabic_keys.lua` | Makes Neovim work with the Arabic layout ([below](#arabic-keyboard-layout)) |
