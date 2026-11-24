@@ -20,6 +20,9 @@ while you code, slowly while you read, and stop when it sleeps.
 
 - **Left-click** BEMO to see today's focus time and coffees.
 - **Right-click** it to start or finish a coffee.
+- Only BEMO itself (and its laptop while it works) takes clicks. The empty
+  space above it, where its speech bubbles appear, lets clicks through to the
+  window underneath.
 - **Drag it** with the left mouse button to move it along the bottom of the
   screen. It remembers where you left it.
 

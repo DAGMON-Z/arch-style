@@ -588,6 +588,22 @@ class Bemo:
         self.area.queue_draw()
         return True
 
+    def update_click_area(self, m, base_y):
+        """Only BEMO itself takes clicks. The window is bigger than BEMO (room
+        for speech bubbles above it), and clicks on that empty space should go
+        to the window underneath, not to BEMO."""
+        left, right = self.cx - 80, self.cx + 80        # body, arms, mug
+        if m == "work":
+            right = self.cx + 145                       # its laptop
+        top, bottom = base_y - 115, base_y + 12          # night cap .. feet
+        rect = (int(left), int(top), int(right - left), int(bottom - top))
+        if rect == getattr(self, "_click_rect", None):
+            return
+        self._click_rect = rect
+        x, y, w, h = rect
+        region = self.cairo.Region(self.cairo.RectangleInt(max(x, 0), max(y, 0), w, h))
+        self.win.input_shape_combine_region(region)
+
     # ------------------------------------------------------------ drawing
 
     def on_draw(self, _w, cr):
@@ -609,6 +625,7 @@ class Bemo:
         target_cx = 92 if m == "work" else self.W / 2
         self.cx += (target_cx - self.cx) * min(1, dt * 6)
         base_y = self.H - 16
+        self.update_click_area(m, base_y)
 
         bob = {"idle": math.sin(t * 2) * 1.5,
                "work": abs(math.sin(t * 9)) * 0.8,
