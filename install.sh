@@ -263,6 +263,42 @@ summary() {
     return 0
 }
 
+# The keyring (KWallet): logging in unlocks only the wallet named "kdewallet"
+# (kwallet-pam). KWallet 6 can create it as "Default Keyring" instead, which
+# then asks for its password after every restart. Rename it, keeping a backup,
+# and make "kdewallet" the default wallet.
+fix_wallet_name() {
+    local dir=$HOME/.local/share/kwalletd rc=$HOME/.config/kwalletrc f
+    if [[ -f "$dir/Default Keyring.kwl" && ! -e $dir/kdewallet.kwl ]]; then
+        echo
+        echo "Renaming your keyring from \"Default Keyring\" to \"kdewallet\","
+        echo "so logging in unlocks it (backup: ${dir/#$HOME/\~}.bak.$STAMP)."
+        if [[ $DRY == no ]]; then
+            cp -a "$dir" "$dir.bak.$STAMP"
+            pkill -x ksecretd || true # it starts again when an app needs it
+            sleep 1
+            for f in "$dir/Default Keyring"*; do
+                mv "$f" "$dir/kdewallet${f#"$dir/Default Keyring"}"
+            done
+        fi
+    fi
+    # Point to "kdewallet" if it exists, or if no wallet exists yet (so the
+    # first one gets that name). Never switch away from another existing wallet.
+    if [[ -e $dir/kdewallet.kwl ]] || ! compgen -G "$dir/*.kwl" >/dev/null; then
+        grep -qx 'Default Wallet=kdewallet' "$rc" 2>/dev/null && return 0
+        [[ $DRY == yes ]] && { echo "  would set Default Wallet=kdewallet in ~/.config/kwalletrc"; return 0; }
+        [[ -f $rc ]] && cp -a "$rc" "$rc.bak.$STAMP"
+        if grep -q '^Default Wallet=' "$rc" 2>/dev/null; then
+            sed -i 's/^Default Wallet=.*/Default Wallet=kdewallet/' "$rc"
+        elif grep -q '^\[Wallet\]' "$rc" 2>/dev/null; then
+            sed -i '/^\[Wallet\]/a Default Wallet=kdewallet' "$rc"
+        else
+            mkdir -p "$(dirname "$rc")"
+            printf '[Wallet]\nDefault Wallet=kdewallet\n' >>"$rc"
+        fi
+    fi
+}
+
 # --update: get the latest version and apply only what changed.
 # Asks for your password only if something needs administrator rights.
 if [[ $UPDATE == yes ]]; then
@@ -325,6 +361,7 @@ if [[ $UPDATE == yes ]]; then
         place "$file" "$HOME/$rel"
     done < <(find "$REPO/home" -type f -print0)
     echo "  checked"
+    fix_wallet_name
 
     # 4. Desktop settings (safe to apply again)
     for setting in "color-scheme prefer-dark" "gtk-theme adw-gtk3-dark" "icon-theme Papirus-Dark" \
@@ -515,6 +552,9 @@ if ask "Step 4: set dark mode, Papirus icons, cursor, monospace font, and Thunar
     # Open folders with Thunar
     try "desktop settings" xdg-mime default thunar.desktop inode/directory
 fi
+
+# The keyring: name it so logging in unlocks it (see fix_wallet_name)
+fix_wallet_name
 
 # Java: make sure one is set as the default. Removing the default Java (for
 # example an older version) leaves none, and then "java" isn't found.

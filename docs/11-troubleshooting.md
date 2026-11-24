@@ -470,6 +470,36 @@ A line with `ksecretd` means the keyring is there.
 
 Restart the app afterwards.
 
+## The keyring asks for its password after every restart
+
+**What happened:** after a restart, a window said *"KDE has requested to open
+the wallet 'Default Keyring'. Please enter the password"*, even though the
+wallet's password is the login password.
+
+**Why:** two things:
+
+1. `kwallet-pam`, which unlocks the wallet when you log in, wasn't installed
+   yet (it was added to `packages.txt` later).
+2. The wallet was named **"Default Keyring"**. `kwallet-pam` only unlocks the
+   wallet named **"kdewallet"**, KWallet's standard name.
+
+**Check:**
+
+```bash
+pacman -Q kwallet-pam
+ls ~/.local/share/kwalletd/
+```
+
+- `pacman -Q` prints the version if the package is installed.
+- The folder should hold `kdewallet.kwl`, not `Default Keyring.kwl`.
+
+**Fix:** run the [update](../README.md#getting-updates). It installs
+`kwallet-pam`, renames the wallet to `kdewallet` (keeping a backup in
+`~/.local/share/kwalletd.bak.<date>`), and sets `Default Wallet=kdewallet` in
+`~/.config/kwalletrc`. Then restart. If it still asks, the wallet's password
+isn't your login password: the login can only unlock a wallet with the same
+password.
+
 ## Bluetooth headphones sound bad
 
 **What happened:** with Bluetooth headphones (an oraimo BoomPop Pro), music
