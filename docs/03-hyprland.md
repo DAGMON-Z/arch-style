@@ -51,6 +51,11 @@ each part.
 - **Blur:** 2 passes. More passes look smoother but use more battery.
 - **Workspaces:** slide sideways, matching the three-finger swipe.
 - **Keybinds:** `SUPER+F` maximizes, and `SUPER+SHIFT+F` makes a window fullscreen.
+- **Hide a window:** `SUPER+S` hides the window you're using, like minimizing it.
+  Press `SUPER+S` again to bring it back, to the workspace you're on. Hidden
+  windows wait in `special:drawer`, a workspace that's never shown, so
+  workspaces 1 to 5 don't change. With several hidden, each press brings back
+  the newest. (This replaced Hyprland's default scratchpad keys.)
 - **Launcher:** `SUPER+R` opens rofi in Run mode (`local menu = "rofi -show run"`).
   See [chapter 5](05-kitty-rofi-dunst.md).
 - **Volume and brightness keys:** run `~/.config/hypr/scripts/osd.sh`, which

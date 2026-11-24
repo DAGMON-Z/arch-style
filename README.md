@@ -138,8 +138,7 @@ laptops. See [power management](docs/12-power-management.md).
 | `SUPER + mouse scroll` | Next or previous workspace |
 | `SUPER + left drag` | Move window |
 | `SUPER + right drag` | Resize window |
-| `SUPER + S` | Show or hide the scratchpad |
-| `SUPER + SHIFT + S` | Move window to the scratchpad |
+| `SUPER + S` | Hide the window (like minimizing). Press again to bring it back |
 | Three-finger swipe | Switch workspace |
 | `Print` | Screenshot of the whole screen, only copied (paste with `Ctrl + V`), not saved |
 | `SHIFT + Print` | Screenshot of an area, only copied, not saved |

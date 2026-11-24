@@ -324,9 +324,37 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + " .. key,     hl.dsp.window.move({ workspace = i }))
 end
 
--- Example special workspace (scratchpad)
-hl.bind(mainMod .. " + S",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }))
+-- SUPER + S: hide the window you're using (like minimizing it).
+-- SUPER + S again: bring it back, to the workspace you're on now.
+-- Hidden windows wait in "special:drawer", a workspace that's never shown and
+-- isn't one of workspaces 1 to 5 (the bar doesn't show it either).
+-- If several windows are hidden, each press brings back the newest one.
+local DRAWER = "special:drawer"
+
+local function drawer_toggle()
+	-- Bring back: the window hidden last is the one focused most recently
+	-- (the lowest focus_history_id)
+	local newest = nil
+	for _, w in ipairs(hl.get_workspace_windows(DRAWER) or {}) do
+		if not newest or w.focus_history_id < newest.focus_history_id then
+			newest = w
+		end
+	end
+	if newest then
+		local here = hl.get_active_workspace()
+		local target = "address:" .. newest.address
+		hl.dispatch(hl.dsp.window.move({ workspace = here.id, window = target, follow = false }))
+		hl.dispatch(hl.dsp.focus({ window = target }))
+		return
+	end
+	-- Hide the window you're using
+	local w = hl.get_active_window()
+	if w then
+		hl.dispatch(hl.dsp.window.move({ workspace = DRAWER, window = "address:" .. w.address, follow = false }))
+	end
+end
+
+hl.bind(mainMod .. " + S", drawer_toggle)
 
 -- Scroll through existing workspaces with mainMod + scroll
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
