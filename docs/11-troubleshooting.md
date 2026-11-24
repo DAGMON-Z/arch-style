@@ -565,10 +565,8 @@ workspace or on a hidden special workspace. Hyprland receives the app's request
 but ignores it, and doesn't report it anywhere, so it can't be redirected with
 the config either (checked in Hyprland 0.57's source).
 
-**Instead:** use the scratchpad, a hidden workspace:
-
-- `SUPER + SHIFT + S` hides the window (moves it to the scratchpad).
-- `SUPER + S` shows or hides the scratchpad, to get it back.
+**Instead:** press `SUPER + S`. It hides the window you're using, and pressing
+it again brings the window back (see [chapter 3](03-hyprland.md)).
 
 ## General tips
 
