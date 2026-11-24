@@ -5,3 +5,7 @@ CompileFlags:
   # -Wno-vla-cxx-extension: arrays sized at run time (int a[n];) are fine with
   # g++, the compiler F5/F6 and the judges use, so don't warn about them
   Add: [-std=c++20, -Wall, -Wextra, -Wno-vla-cxx-extension]
+Diagnostics:
+  # g++ also accepts "int a[n] = {};" (zeros an array sized at run time), but
+  # clang calls it an error. clangd is clang, so hide that one message.
+  Suppress: [variable_object_no_init]
