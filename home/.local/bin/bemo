@@ -595,7 +595,9 @@ class Bemo:
         left, right = self.cx - 80, self.cx + 80        # body, arms, mug
         if m == "work":
             right = self.cx + 145                       # its laptop
-        top, bottom = base_y - 115, base_y + 12          # night cap .. feet
+        # top of its head (it bobs and hops a little), or of its night cap
+        top = base_y - (110 if m == "sleep" else 94)
+        bottom = base_y + 12                             # feet
         rect = (int(left), int(top), int(right - left), int(bottom - top))
         if rect == getattr(self, "_click_rect", None):
             return
