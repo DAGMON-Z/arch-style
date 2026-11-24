@@ -476,12 +476,18 @@ Restart the app afterwards.
 the wallet 'Default Keyring'. Please enter the password"*, even though the
 wallet's password is the login password.
 
-**Why:** two things:
+**Why:** three things:
 
 1. `kwallet-pam`, which unlocks the wallet when you log in, wasn't installed
    yet (it was added to `packages.txt` later).
 2. The wallet was named **"Default Keyring"**. `kwallet-pam` only unlocks the
    wallet named **"kdewallet"**, KWallet's standard name.
+3. At login, `kwallet-pam` starts an unlocked keyring (`ksecretd --pam-login`)
+   that waits for a helper, `pam_kwallet_init`, to connect it to the desktop.
+   KDE Plasma runs that helper by itself, but its autostart entry says
+   `X-systemd-skip=true`, so on Hyprland it never ran. The first app that
+   asked for the keyring then started a **second, locked** keyring, and that
+   one asked for the password.
 
 **Check:**
 
@@ -496,7 +502,11 @@ ls ~/.local/share/kwalletd/
 **Fix:** run the [update](../README.md#getting-updates). It installs
 `kwallet-pam`, renames the wallet to `kdewallet` (keeping a backup in
 `~/.local/share/kwalletd.bak.<date>`), and sets `Default Wallet=kdewallet` in
-`~/.config/kwalletrc`. Then restart. If it still asks, the wallet's password
+`~/.config/kwalletrc`. It also adds `~/.local/bin/keyring-start`, which runs
+`pam_kwallet_init` when Hyprland starts (`hyprland.lua`), and also when an app
+asks for the keyring first (the D-Bus file
+`~/.local/share/dbus-1/services/org.freedesktop.secrets.service`). Then
+restart. If it still asks, the wallet's password
 isn't your login password: the login can only unlock a wallet with the same
 password.
 

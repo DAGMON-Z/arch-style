@@ -420,6 +420,8 @@ hl.window_rule({
     center = true,
 })
 hl.on("hyprland.start", function()
+	-- first: connect the keyring your login unlocked (see ~/.local/bin/keyring-start)
+	hl.exec_cmd("~/.local/bin/keyring-start")
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("~/.local/bin/set-wallpaper --restore") -- wallpaper with awww (hyprpaper.conf kept as backup)
 	hl.exec_cmd("wl-paste --watch cliphist store")

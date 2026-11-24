@@ -1,0 +1,33 @@
+#!/bin/bash
+# keyring-start: connect the keyring that logging in already unlocked.
+#
+# At login, kwallet-pam starts KWallet's ksecretd and unlocks it with your
+# password ("ksecretd --pam-login"). It then waits for pam_kwallet_init to
+# connect it to your desktop session. KDE Plasma runs pam_kwallet_init by
+# itself, Hyprland doesn't: so apps started a second, locked keyring that
+# asked for the wallet password after every restart.
+#
+# Runs at login (hyprland.lua), and from the D-Bus file
+# ~/.local/share/dbus-1/services/org.freedesktop.secrets.service if an app
+# asks for the keyring first (then with --dbus).
+# See docs/11-troubleshooting.md, "The keyring asks for its password".
+
+answering() { busctl --user status org.freedesktop.secrets >/dev/null 2>&1; }
+
+if ! answering && [[ -S ${PAM_KWALLET5_LOGIN:-} ]] &&
+        pgrep -u "$UID" -f '^/usr/bin/ksecretd --pam-login' >/dev/null; then
+    /usr/lib/pam_kwallet_init >/dev/null 2>&1
+    # wait until it answers (up to 5 seconds), so apps waiting for it get it
+    for _ in $(seq 50); do
+        answering && exit 0
+        sleep 0.1
+    done
+fi
+
+# No unlocked keyring from the login (for example kwallet-pam isn't installed,
+# or the wallet password isn't the login password): start a normal one, which
+# asks for the wallet password once.
+if [[ ${1:-} == --dbus ]] && ! answering; then
+    exec /usr/bin/ksecretd
+fi
+exit 0
