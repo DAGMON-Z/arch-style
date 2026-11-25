@@ -268,17 +268,26 @@ summary() {
 # then asks for its password after every restart. Rename it, keeping a backup,
 # and make "kdewallet" the default wallet.
 fix_wallet_name() {
-    local dir=$HOME/.local/share/kwalletd rc=$HOME/.config/kwalletrc f
-    if [[ -f "$dir/Default Keyring.kwl" && ! -e $dir/kdewallet.kwl ]]; then
+    local dir=$HOME/.local/share/kwalletd rc=$HOME/.config/kwalletrc f old
+    # The wallet to rename: the one kwalletrc names, or "Default Keyring"
+    # (apps create it with a capital or a small k)
+    old=$(sed -n "s/^Default Wallet=//p" "$rc" 2>/dev/null | head -n 1 || true)
+    if [[ -z $old || $old == kdewallet || ! -f $dir/$old.kwl ]]; then
+        old=""
+        for f in "$dir"/[Dd]efault\ [Kk]eyring.kwl; do
+            if [[ -f $f ]]; then old=$(basename "$f" .kwl); fi
+        done
+    fi
+    if [[ -n $old && ! -e $dir/kdewallet.kwl ]]; then
         echo
-        echo "Renaming your keyring from \"Default Keyring\" to \"kdewallet\","
+        echo "Renaming your keyring from \"$old\" to \"kdewallet\","
         echo "so logging in unlocks it (backup: ${dir/#$HOME/\~}.bak.$STAMP)."
         if [[ $DRY == no ]]; then
             cp -a "$dir" "$dir.bak.$STAMP"
             pkill -x ksecretd || true # it starts again when an app needs it
             sleep 1
-            for f in "$dir/Default Keyring"*; do
-                mv "$f" "$dir/kdewallet${f#"$dir/Default Keyring"}"
+            for f in .kwl .salt _attributes.json; do
+                if [[ -e $dir/$old$f ]]; then mv "$dir/$old$f" "$dir/kdewallet$f"; fi
             done
         fi
     fi
