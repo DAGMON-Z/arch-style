@@ -555,6 +555,16 @@ right-click the device and choose **Trust**, then disconnect and connect again.
 > headphones to headset mode on purpose, because only that mode has a
 > microphone. They switch back when the call ends.
 
+## A program froze and won't close
+
+**What happened:** a window stops responding, and `SUPER + C` does nothing. `SUPER + C` asks the program politely to close, and a frozen program can't answer.
+
+**Fix, from quickest to strongest:**
+
+1. **Force-close it:** click the frozen window (or move the mouse over it) and press `SUPER + SHIFT + Q`. Hyprland kills its program immediately. Unsaved work in that window is lost.
+2. **Task manager:** press `CTRL + SHIFT + Esc` to open Mission Center (like the Windows Task Manager). The **Apps** tab lists every running program; select one and press **End Task** (the arrow next to it has **Force Stop**). The **Performance** tab shows CPU, memory, disk, network and GPU use, so you can see what's slowing the computer down.
+3. **From a terminal:** `btop` shows every process (move with the arrow keys, `k` to kill, `q` to quit). Or kill a program by name: `pkill -f firefox` (polite), `pkill -9 -f firefox` (forced).
+
 ## The minimize button does nothing
 
 **What happened:** clicking an app's minimize button (the `–` at the top right)

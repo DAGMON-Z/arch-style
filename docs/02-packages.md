@@ -160,7 +160,7 @@ grim takes screenshots and slurp lets you select an area. wl-clipboard and cliph
 
 ### Terminal, shell and tools
 
-kitty is the terminal, starship the prompt, fastfetch the system summary. btop and htop show running programs.
+kitty is the terminal, starship the prompt, fastfetch the system summary. btop and htop show running programs in the terminal; Mission Center is the task manager with a window (`CTRL + SHIFT + Esc`).
 
 | Package | What it is |
 | --- | --- |
@@ -169,6 +169,7 @@ kitty is the terminal, starship the prompt, fastfetch the system summary. btop a
 | `fastfetch` | A feature-rich and performance oriented neofetch like system information tool |
 | `btop` | A monitor of system resources, bpytop ported to C++ |
 | `htop` | Interactive process viewer |
+| `mission-center` | Task manager like Windows': running apps with End Task, plus CPU, memory, disk, network and GPU graphs |
 | `less` | A terminal based program for viewing text files |
 | `nano` | Pico editor clone with enhancements |
 | `vim` | Vi Improved, a highly configurable, improved version of the vi text editor |

@@ -127,6 +127,8 @@ laptops. See [power management](docs/12-power-management.md).
 | Click the Arch logo on the bar | App launcher with icons (rofi in Apps mode) |
 | `SUPER + E` | File manager (Thunar) |
 | `SUPER + C` | Close window |
+| `SUPER + SHIFT + Q` | Force-close a frozen window (kills its program) |
+| `CTRL + SHIFT + Esc` | Task manager: see running apps and end them (Mission Center) |
 | `SUPER + F` | Maximize or restore |
 | `SUPER + SHIFT + F` | Fullscreen or restore |
 | `SUPER + V` | Float or tile window |

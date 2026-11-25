@@ -77,6 +77,10 @@ each part.
   in `$XDG_RUNTIME_DIR`, a folder in memory that's emptied when you log out.
 - **Autostart:** `set-wallpaper --restore` shows the wallpaper (see [chapter 7](07-wallpaper.md)),
   and `bemo run` starts BEMO, the desk buddy (see [chapter 18](18-bemo.md)).
+- **Frozen windows:** `SUPER+C` asks a window to close, which a frozen program
+  can't answer. `SUPER+SHIFT+Q` force-kills the program of the window you're on.
+- **Task manager:** `CTRL+SHIFT+Esc` opens Mission Center, like Windows' Task
+  Manager: every running app with **End Task**, and live usage graphs.
 - **BEMO:** `SUPER + SHIFT + C` starts or finishes a coffee with BEMO.
 - **Safety:** `allow_session_lock_restore` lets you restart the lock screen if
   it crashes (see [chapter 6](06-lockscreen.md)).
