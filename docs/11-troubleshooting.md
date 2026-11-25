@@ -244,6 +244,22 @@ standard, unchanged colors.
   lost, switch **HDMI Black Level** (sometimes called RGB range) between its
   two settings and keep the one that looks better.
 
+**Why HDMI looks washed out:** over HDMI, the graphics card often sends
+"limited range" color (black is sent as dark grey, level 16 instead of 0). See
+what yours sends (here for an AMD card and the `HDMI-A-1` port):
+
+```bash
+modetest -M amdgpu -c | grep -A2 'Broadcast RGB'
+```
+
+`value: 0` means Automatic, which picks limited range on most 1080p HDMI
+screens. Hyprland has no setting to change it, so set the monitor to expect
+it: on Samsung monitors, **Picture → HDMI Black Level → Low**. Blacks become
+black again and colors get their strength back.
+
+Note: a screenshot can't show this problem. It captures the picture before
+it goes through the cable, so it always looks right.
+
 ## No performance mode on a desktop PC
 
 **What happened:** on a desktop with an AMD Ryzen 5 3400G, the power pill only
