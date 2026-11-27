@@ -79,6 +79,9 @@ each part.
   and `bemo run` starts BEMO, the desk buddy (see [chapter 18](18-bemo.md)).
 - **Frozen windows:** `SUPER+C` asks a window to close, which a frozen program
   can't answer. `SUPER+SHIFT+Q` force-kills the program of the window you're on.
+- **Touchpad scrolling:** natural, like Windows and phones: the page moves
+  with your fingers (`natural_scroll = true` under `touchpad`). A mouse wheel
+  isn't affected. For the old direction, set it back to `false`.
 - **Calculator:** the keyboard's Calculator key (if it has one) opens GNOME
   Calculator, as a small floating window. Its menu switches to **Advanced** for
   scientific functions, or **Programming** for binary and hex.
