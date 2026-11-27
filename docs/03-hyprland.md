@@ -79,6 +79,12 @@ each part.
   and `bemo run` starts BEMO, the desk buddy (see [chapter 18](18-bemo.md)).
 - **Frozen windows:** `SUPER+C` asks a window to close, which a frozen program
   can't answer. `SUPER+SHIFT+Q` force-kills the program of the window you're on.
+- **Calculator:** the keyboard's Calculator key (if it has one) opens GNOME
+  Calculator, as a small floating window. Its menu switches to **Advanced** for
+  scientific functions, or **Programming** for binary and hex.
+- **Title bar buttons:** apps show only a close button
+  (`gtk-decoration-layout=menu:close` in `~/.config/gtk-3.0/settings.ini` and
+  `gtk-4.0`), because minimize and maximize from apps do nothing here.
 - **Task manager:** `CTRL+SHIFT+Esc` opens Mission Center, like Windows' Task
   Manager: every running app with **End Task**, and live usage graphs.
 - **BEMO:** `SUPER + SHIFT + C` starts or finishes a coffee with BEMO.

@@ -17,6 +17,7 @@ fzf
 gcc
 gdb
 git
+gnome-calculator
 grim
 grub
 gtk-layer-shell

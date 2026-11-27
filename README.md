@@ -129,6 +129,7 @@ laptops. See [power management](docs/12-power-management.md).
 | `SUPER + C` | Close window |
 | `SUPER + SHIFT + Q` | Force-close a frozen window (kills its program) |
 | `CTRL + SHIFT + Esc` | Task manager: see running apps and end them (Mission Center) |
+| `Calculator` key | Scientific calculator (GNOME Calculator; also in the app launcher) |
 | `SUPER + F` | Maximize or restore |
 | `SUPER + SHIFT + F` | Fullscreen or restore |
 | `SUPER + V` | Float or tile window |

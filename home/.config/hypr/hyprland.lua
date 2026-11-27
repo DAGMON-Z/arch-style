@@ -373,6 +373,7 @@ hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("~/.config/hypr/scripts/osd.sh volume-up"), { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("~/.config/hypr/scripts/osd.sh volume-down"),      { locked = true, repeating = true })
 hl.bind("XF86AudioMute",        hl.dsp.exec_cmd("~/.config/hypr/scripts/osd.sh volume-mute"),     { locked = true, repeating = true })
+hl.bind("XF86Calculator", hl.dsp.exec_cmd("gnome-calculator")) -- the keyboard's Calculator key, if it has one
 hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("~/.config/hypr/scripts/osd.sh mic-mute"),   { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessUp",  hl.dsp.exec_cmd("~/.config/hypr/scripts/osd.sh brightness-up"),                  { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown",hl.dsp.exec_cmd("~/.config/hypr/scripts/osd.sh brightness-down"),                  { locked = true, repeating = true })
@@ -447,6 +448,15 @@ hl.window_rule({
 hl.window_rule({
     name   = "float-kde-wallet",
     match  = { class = "^org\\.kde\\.(ksecretd|kwalletd6)$" },
+
+    float  = true,
+    center = true,
+})
+
+-- Calculator: a small floating window in the middle, not a tiled half screen
+hl.window_rule({
+    name   = "float-calculator",
+    match  = { class = "^org\\.gnome\\.Calculator$" },
 
     float  = true,
     center = true,

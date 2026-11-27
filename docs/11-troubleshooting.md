@@ -587,12 +587,25 @@ right-click the device and choose **Trust**, then disconnect and connect again.
 did nothing.
 
 **Why:** Hyprland has no "minimized" windows: a window is either on a
-workspace or on a hidden special workspace. Hyprland receives the app's request
-but ignores it, and doesn't report it anywhere, so it can't be redirected with
-the config either (checked in Hyprland 0.57's source).
+workspace or on a hidden special workspace. The app does send the request
+(`set_minimized`), but Hyprland 0.57.2 drops it: the `window.minimize` Lua
+event, `window.update_state` and the event socket (`socket2`) all stay silent,
+for Wayland and X11 apps alike (tested). That event only fires when a taskbar
+asks to minimize a window. So the config can't turn the button into "hide".
 
-**Instead:** press `SUPER + S`. It hides the window you're using, and pressing
-it again brings the window back (see [chapter 3](03-hyprland.md)).
+The maximize button is turned off on purpose: the `suppress-maximize-events`
+rule in `hyprland.lua` ignores apps asking to be maximized, because many ask
+for it when they open, which breaks tiling.
+
+**Fix:** the dead buttons are hidden. `gtk-decoration-layout=menu:close` in
+`~/.config/gtk-3.0/settings.ini` and `~/.config/gtk-4.0/settings.ini` leaves
+only the close button (apps already open keep their old buttons until they
+restart). Use the keyboard instead:
+
+- `SUPER + S` hides the window, and `SUPER + S` again brings it back.
+- `SUPER + F` maximizes it, `SUPER + SHIFT + F` makes it fullscreen.
+
+Apps that draw their own title bar (VS Code, Discord) keep their buttons.
 
 ## General tips
 

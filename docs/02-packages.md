@@ -169,6 +169,7 @@ kitty is the terminal, starship the prompt, fastfetch the system summary. btop a
 | `fastfetch` | A feature-rich and performance oriented neofetch like system information tool |
 | `btop` | A monitor of system resources, bpytop ported to C++ |
 | `htop` | Interactive process viewer |
+| `gnome-calculator` | Calculator with Basic, Advanced (scientific), Financial and Programming (binary, hex) modes. Opens floating |
 | `mission-center` | Task manager like Windows': running apps with End Task, plus CPU, memory, disk, network and GPU graphs |
 | `less` | A terminal based program for viewing text files |
 | `nano` | Pico editor clone with enhancements |
